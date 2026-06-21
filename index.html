@@ -5,1280 +5,978 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DrillMaster — Veilig aan de Kolomboormachine</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: #06080f;
-    color: #e2e8f0;
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #0a0e1a;
+    --panel: #111827;
+    --border: #1e2d40;
+    --teal: #00d4c8;
+    --pink: #e040fb;
+    --gold: #ffd700;
+    --red: #ff3b3b;
+    --orange: #ff8c00;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --good: #00c853;
+    --bad: #ff3b3b;
+  }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Segoe UI', system-ui, sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
-}
+  }
 
-/* ===== SPLASH ===== */
-#splash {
-    position: fixed; inset: 0; z-index: 100;
-    background: #06080f;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 20px;
-}
-.splash-logo {
-    font-size: 64px; margin-bottom: 12px;
-    animation: pulse-glow 2s infinite;
-}
-.splash-title {
-    font-size: 42px; font-weight: 900; letter-spacing: -1px;
-    background: linear-gradient(135deg, #00e5ff, #b100ff);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    margin-bottom: 4px;
-}
-.splash-sub { color: #64748b; font-size: 14px; margin-bottom: 32px; }
-.splash-card {
-    background: #0f1628; border: 1px solid #1e2d4a;
-    border-radius: 16px; padding: 28px; width: 100%; max-width: 400px;
-}
-.splash-card h2 { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
-.form-group { margin-bottom: 16px; }
-.form-group label {
-    display: block; font-size: 11px; font-weight: 700;
-    color: #64748b; text-transform: uppercase; letter-spacing: 0.05em;
-    margin-bottom: 6px;
-}
-.form-group input {
-    width: 100%; background: #0a1020; border: 1px solid #1e2d4a;
-    border-radius: 8px; color: #e2e8f0; padding: 10px 14px;
-    font-size: 14px; outline: none; transition: border-color 0.2s;
-}
-.form-group input:focus { border-color: #00e5ff; }
-
-/* ===== BUTTONS ===== */
-.btn-start {
-    width: 100%; background: linear-gradient(135deg, #00e5ff, #0099cc);
-    color: #000; font-weight: 900; font-size: 16px;
-    border: none; border-radius: 10px; padding: 14px;
-    cursor: pointer; transition: all 0.2s; margin-top: 8px;
-}
-.btn-start:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,229,255,0.3); }
-
-.btn-choice {
-    width: 100%; background: #0f1628; border: 2px solid #1e2d4a;
-    color: #e2e8f0; font-size: 15px; font-weight: 600;
-    border-radius: 12px; padding: 16px 20px; cursor: pointer;
-    transition: all 0.25s; text-align: left; display: flex;
-    align-items: center; gap: 12px; margin-bottom: 10px;
-}
-.btn-choice:hover { border-color: #00e5ff; background: #0d1a30; transform: translateX(4px); }
-.btn-choice .choice-letter {
-    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 900; font-size: 14px;
-    background: #1e2d4a; color: #94a3b8;
-    transition: all 0.2s;
-}
-.btn-choice:hover .choice-letter { background: #00e5ff22; color: #00e5ff; }
-
-.btn-continue {
-    background: linear-gradient(135deg, #00e5ff, #0099cc);
-    color: #000; font-weight: 900; font-size: 15px;
-    border: none; border-radius: 10px; padding: 14px 28px;
-    cursor: pointer; transition: all 0.2s; margin-top: 16px;
-}
-.btn-continue:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,229,255,0.3); }
-
-.btn-retry {
-    background: linear-gradient(135deg, #ff2eb3, #b100ff);
-    color: #fff; font-weight: 900; font-size: 15px;
-    border: none; border-radius: 10px; padding: 14px 28px;
-    cursor: pointer; transition: all 0.2s; margin-top: 16px;
-}
-.btn-retry:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(255,46,179,0.3); }
-
-/* ===== GAME SCREEN ===== */
-#game { display: none; min-height: 100vh; }
-
-/* HUD */
-.hud {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-    background: rgba(6,8,15,0.95); border-bottom: 1px solid #1e2d4a;
-    backdrop-filter: blur(10px);
-    padding: 10px 20px;
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 16px;
-}
-.hud-left { display: flex; align-items: center; gap: 12px; }
-.hud-title { font-weight: 900; font-size: 15px; color: #00e5ff; }
-.hud-sub { font-size: 11px; color: #64748b; }
-.hud-right { display: flex; align-items: center; gap: 16px; }
-.hearts { display: flex; gap: 6px; }
-.heart { font-size: 22px; transition: all 0.3s; }
-.heart.lost { filter: grayscale(1); opacity: 0.3; transform: scale(0.8); }
-.xp-display {
-    background: #0d1a30; border: 1px solid #00e5ff44;
-    border-radius: 20px; padding: 4px 12px;
-    font-size: 13px; font-weight: 700; color: #00e5ff;
-}
-.progress-display {
-    background: #0d1a30; border: 1px solid #1e2d4a;
-    border-radius: 20px; padding: 4px 12px;
-    font-size: 12px; color: #64748b;
-}
-.hud-player {
-    font-size: 12px; color: #94a3b8; font-weight: 600;
-}
-
-/* SCENE */
-.scene-wrapper {
-    padding-top: 70px; min-height: 100vh;
-    display: flex; flex-direction: column;
-}
-.scene-image-container {
-    position: relative; width: 100%; height: 0;
-    padding-bottom: 42%; overflow: hidden;
-    background: #0a0f1e;
-}
-.scene-image {
-    position: absolute; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; transition: opacity 0.6s ease;
-}
-.scene-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to bottom, transparent 40%, #06080f 100%);
-}
-.scene-badge {
-    position: absolute; top: 16px; left: 16px;
-    background: rgba(6,8,15,0.85); border: 1px solid #1e2d4a;
-    border-radius: 8px; padding: 6px 12px;
-    font-size: 12px; font-weight: 700; color: #64748b;
-    backdrop-filter: blur(4px);
-}
-.scene-badge.danger { border-color: #ff444455; color: #ff4444; }
-.scene-badge.warning { border-color: #ffaa0055; color: #ffaa00; }
-.scene-badge.safe { border-color: #00ff8855; color: #00ff88; }
-
-/* STORY CONTENT */
-.story-content {
-    flex: 1; padding: 24px 20px 40px;
-    max-width: 800px; margin: 0 auto; width: 100%;
-}
-.scene-number {
-    font-size: 11px; font-weight: 700; color: #64748b;
-    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;
-}
-.scene-title {
-    font-size: 24px; font-weight: 900; color: #fff;
-    margin-bottom: 12px; line-height: 1.2;
-}
-.scene-text {
-    font-size: 16px; line-height: 1.7; color: #94a3b8;
-    margin-bottom: 28px;
-}
-.choices-label {
-    font-size: 11px; font-weight: 700; color: #64748b;
-    text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px;
-}
-
-/* CONSEQUENCE PANEL */
-.consequence-panel {
-    border-radius: 12px; padding: 20px; margin-bottom: 20px;
-    border: 2px solid;
-}
-.consequence-panel.good {
-    background: #001a0d; border-color: #00ff8855;
-}
-.consequence-panel.bad {
-    background: #1a0000; border-color: #ff444455;
-}
-.consequence-panel.fatal {
-    background: #1a0008; border-color: #ff2eb355;
-    animation: danger-pulse 1s ease-in-out 3;
-}
-.consequence-icon { font-size: 40px; margin-bottom: 12px; }
-.consequence-title {
-    font-size: 20px; font-weight: 900; margin-bottom: 8px;
-}
-.consequence-panel.good .consequence-title { color: #00ff88; }
-.consequence-panel.bad .consequence-title { color: #ff4444; }
-.consequence-panel.fatal .consequence-title { color: #ff2eb3; }
-.consequence-text { font-size: 14px; color: #94a3b8; line-height: 1.6; }
-
-/* GAME OVER */
-.gameover-screen {
-    text-align: center; padding: 40px 20px;
-    max-width: 600px; margin: 0 auto;
-}
-.gameover-img {
-    width: 100%; border-radius: 16px; margin-bottom: 24px;
-    border: 2px solid #ff2eb355;
-    box-shadow: 0 0 40px rgba(255,46,179,0.2);
-}
-.gameover-title {
-    font-size: 48px; font-weight: 900; color: #ff2eb3;
-    margin-bottom: 8px;
-    text-shadow: 0 0 30px rgba(255,46,179,0.5);
-}
-.gameover-sub { font-size: 16px; color: #64748b; margin-bottom: 24px; }
-
-/* WIN SCREEN */
-.win-screen {
-    text-align: center; padding: 40px 20px;
-    max-width: 600px; margin: 0 auto;
-}
-.win-img {
-    width: 100%; border-radius: 16px; margin-bottom: 24px;
-    border: 2px solid #ffd70055;
-    box-shadow: 0 0 40px rgba(255,215,0,0.2);
-}
-.win-title {
-    font-size: 48px; font-weight: 900;
-    background: linear-gradient(135deg, #ffd700, #00e5ff);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    margin-bottom: 8px;
-}
-.win-sub { font-size: 16px; color: #64748b; margin-bottom: 24px; }
-.win-stats {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
-    margin-bottom: 24px;
-}
-.win-stat {
-    background: #0f1628; border: 1px solid #1e2d4a;
-    border-radius: 10px; padding: 16px 8px; text-align: center;
-}
-.win-stat-val { font-size: 28px; font-weight: 900; color: #00e5ff; }
-.win-stat-lbl { font-size: 11px; color: #64748b; margin-top: 4px; }
-
-/* VOICE BUTTON */
-.voice-btn {
-    background: #0f1628; border: 1px solid #1e2d4a;
-    color: #64748b; border-radius: 8px; padding: 6px 12px;
-    font-size: 12px; cursor: pointer; transition: all 0.2s;
-    display: inline-flex; align-items: center; gap: 6px;
-    margin-bottom: 16px;
-}
-.voice-btn:hover { border-color: #00e5ff55; color: #00e5ff; }
-.voice-btn.speaking { border-color: #00e5ff; color: #00e5ff; animation: pulse-glow 1s infinite; }
-
-/* STREAK */
-.streak-banner {
-    background: linear-gradient(135deg, #ffd70022, #ffaa0022);
-    border: 1px solid #ffd70044; border-radius: 10px;
-    padding: 10px 16px; margin-bottom: 16px;
-    font-size: 13px; font-weight: 700; color: #ffd700;
-    display: none; align-items: center; gap: 8px;
-}
-
-/* ANIMATIONS */
-@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes pulse-glow { 0%,100% { box-shadow: 0 0 8px rgba(0,229,255,0.3); } 50% { box-shadow: 0 0 20px rgba(0,229,255,0.7); } }
-@keyframes danger-pulse { 0%,100% { box-shadow: 0 0 8px rgba(255,46,179,0.3); } 50% { box-shadow: 0 0 30px rgba(255,46,179,0.8); } }
-@keyframes shake { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-8px); } 40%,80% { transform: translateX(8px); } }
-@keyframes heartbeat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.3); } }
-
-.fade-in { animation: fadeIn 0.4s ease; }
-.shake { animation: shake 0.5s ease; }
-
-/* SCROLLBAR */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #06080f; }
-::-webkit-scrollbar-thumb { background: #1e2d4a; border-radius: 3px; }
-
-/* LEERKRACHT PANEL */
-.panel-overlay {
-    position: fixed; inset: 0; z-index: 200;
-    background: rgba(0,0,0,0.85);
-    display: none; align-items: flex-start; justify-content: center;
-    padding: 20px; overflow-y: auto;
-}
-.panel-box {
-    background: #0f1628; border: 2px solid #00e5ff44;
-    border-radius: 16px; width: 100%; max-width: 700px;
-    padding: 28px; margin: auto;
-}
-.panel-box h2 { font-size: 20px; font-weight: 900; margin-bottom: 20px; }
-.panel-section {
-    background: #0a1020; border: 1px solid #1e2d4a;
-    border-radius: 10px; padding: 16px; margin-bottom: 16px;
-}
-.panel-section h3 { font-size: 13px; font-weight: 700; color: #64748b; margin-bottom: 12px; text-transform: uppercase; }
-.panel-input {
-    width: 100%; background: #0f1628; border: 1px solid #1e2d4a;
-    border-radius: 8px; color: #e2e8f0; padding: 8px 12px;
-    font-size: 13px; outline: none; margin-bottom: 8px;
-    transition: border-color 0.2s;
-}
-.panel-input:focus { border-color: #00e5ff; }
-.panel-label { font-size: 11px; color: #64748b; margin-bottom: 4px; display: block; }
-.panel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.btn-save-panel {
-    background: linear-gradient(135deg, #00e5ff, #0099cc);
-    color: #000; font-weight: 700; border: none; border-radius: 8px;
-    padding: 10px 20px; cursor: pointer; font-size: 13px;
-    transition: all 0.2s; margin-top: 8px;
-}
-.btn-save-panel:hover { opacity: 0.9; }
-.btn-close-panel {
-    background: #0f1628; border: 1px solid #ff444433;
-    color: #ff4444; border-radius: 8px; padding: 10px 20px;
-    cursor: pointer; font-size: 13px; font-weight: 600;
-    transition: all 0.2s; float: right;
-}
-.btn-close-panel:hover { border-color: #ff4444; }
-.scene-editor {
-    border: 1px solid #1e2d4a; border-radius: 8px;
-    padding: 12px; margin-bottom: 10px; background: #060810;
-}
-.scene-editor-header {
-    font-size: 12px; font-weight: 700; color: #00e5ff;
-    margin-bottom: 10px; display: flex; justify-content: space-between;
+  /* ===== SPLASH SCREEN ===== */
+  #splash {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-}
-.choice-editor {
-    background: #0f1628; border: 1px solid #1e2d4a;
-    border-radius: 6px; padding: 10px; margin-bottom: 6px;
-}
-.choice-type-select {
-    background: #0a1020; border: 1px solid #1e2d4a;
-    border-radius: 6px; color: #e2e8f0; padding: 6px 10px;
-    font-size: 12px; outline: none; width: 100%; margin-top: 4px;
-}
+    justify-content: center;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at center, #0d1b2a 0%, #0a0e1a 70%);
+    padding: 2rem;
+  }
+  #splash .logo {
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    color: var(--teal);
+    text-shadow: 0 0 30px rgba(0,212,200,0.5);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+  }
+  #splash .subtitle {
+    color: var(--muted);
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+  }
+  #splash .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: 0 0 40px rgba(0,212,200,0.1);
+  }
+  #splash h2 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+  }
+  #splash label {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+    margin-top: 1rem;
+  }
+  #splash input {
+    width: 100%;
+    background: #1a2332;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    color: var(--text);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  #splash input:focus { border-color: var(--teal); }
+  #splash .btn-start {
+    width: 100%;
+    margin-top: 2rem;
+    background: linear-gradient(135deg, var(--teal), #0099ff);
+    border: none;
+    border-radius: 10px;
+    padding: 1rem;
+    color: #000;
+    font-size: 1.1rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform 0.1s, box-shadow 0.2s;
+    box-shadow: 0 0 20px rgba(0,212,200,0.3);
+  }
+  #splash .btn-start:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(0,212,200,0.5); }
+  #splash .info-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  #splash .info-row span { display: flex; align-items: center; gap: 0.3rem; }
 
-/* MOBILE */
-@media (max-width: 600px) {
-    .scene-image-container { padding-bottom: 56%; }
-    .hud { flex-wrap: wrap; gap: 8px; }
-    .win-stats { grid-template-columns: repeat(2, 1fr); }
-    .panel-grid { grid-template-columns: 1fr; }
-}
+  /* ===== GAME SCREEN ===== */
+  #game { display: none; flex-direction: column; min-height: 100vh; }
+
+  /* Header */
+  .game-header {
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    padding: 0.8rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .game-header .brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); letter-spacing: 0.1em; }
+  .game-header .brand span { color: var(--muted); font-weight: 400; font-size: 0.8rem; margin-left: 0.5rem; }
+  .hearts { display: flex; gap: 0.3rem; font-size: 1.5rem; }
+  .heart { transition: transform 0.3s; }
+  .heart.lost { filter: grayscale(1); opacity: 0.3; transform: scale(0.8); }
+  .xp-badge {
+    background: linear-gradient(135deg, #1a2332, #0d1b2a);
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.85rem;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .player-badge {
+    background: var(--border);
+    border-radius: 20px;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  .progress-bar-wrap {
+    height: 3px;
+    background: var(--border);
+    width: 100%;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), #0099ff);
+    transition: width 0.5s ease;
+  }
+
+  /* Main game area */
+  .game-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* Scene counter */
+  .scene-counter {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 1rem;
+  }
+
+  /* Scene image */
+  .scene-image-wrap {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+    position: relative;
+    box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    max-height: 380px;
+  }
+  .scene-image-wrap img {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.4s;
+  }
+  .scene-label {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    background: rgba(0,0,0,0.7);
+    border: 1px solid var(--teal);
+    border-radius: 6px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.75rem;
+    color: var(--teal);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .scene-label.danger { border-color: var(--red); color: var(--red); }
+  .scene-label.warning { border-color: var(--orange); color: var(--orange); }
+
+  /* Scene card */
+  .scene-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  .scene-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+  .scene-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #a0aec0;
+    margin-bottom: 1.5rem;
+  }
+  .voice-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .voice-btn:hover { border-color: var(--teal); color: var(--teal); }
+  .voice-btn.speaking { border-color: var(--teal); color: var(--teal); background: rgba(0,212,200,0.1); }
+
+  /* Choices */
+  .choices-label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  .choices { display: flex; flex-direction: column; gap: 0.8rem; width: 100%; }
+  .choice-btn {
+    background: #1a2332;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem 1.5rem;
+    color: var(--text);
+    font-size: 1rem;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .choice-btn:hover { border-color: var(--teal); background: rgba(0,212,200,0.05); transform: translateX(4px); }
+  .choice-btn .choice-letter {
+    background: var(--border);
+    border-radius: 6px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    color: var(--teal);
+  }
+  .choice-btn:hover .choice-letter { background: var(--teal); color: #000; }
+  .choice-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* Consequence panel */
+  .consequence-panel {
+    display: none;
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+    animation: slideIn 0.3s ease;
+  }
+  .consequence-panel.small { background: rgba(255,140,0,0.1); border: 1px solid var(--orange); }
+  .consequence-panel.big { background: rgba(255,59,59,0.1); border: 1px solid var(--red); }
+  .consequence-panel.good { background: rgba(0,200,83,0.1); border: 1px solid var(--good); }
+  .consequence-panel .con-title {
+    font-size: 1rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+  }
+  .consequence-panel.small .con-title { color: var(--orange); }
+  .consequence-panel.big .con-title { color: var(--red); }
+  .consequence-panel.good .con-title { color: var(--good); }
+  .consequence-panel .con-text { font-size: 0.9rem; line-height: 1.6; color: #a0aec0; }
+  .consequence-panel .con-continue {
+    margin-top: 1rem;
+    background: none;
+    border: 1px solid currentColor;
+    border-radius: 8px;
+    padding: 0.5rem 1.2rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  .consequence-panel.small .con-continue { color: var(--orange); }
+  .consequence-panel.big .con-continue { color: var(--red); }
+  .consequence-panel.good .con-continue { color: var(--good); }
+  .consequence-panel .con-continue:hover { background: rgba(255,255,255,0.05); }
+
+  /* ===== GAME OVER SCREEN ===== */
+  #gameover {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at center, #1a0000 0%, #0a0e1a 70%);
+    padding: 2rem;
+    text-align: center;
+  }
+  #gameover .go-img {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--red);
+    box-shadow: 0 0 40px rgba(255,59,59,0.3);
+  }
+  #gameover h1 { font-size: 3rem; color: var(--red); font-weight: 900; text-shadow: 0 0 30px rgba(255,59,59,0.5); margin-bottom: 0.5rem; }
+  #gameover p { color: var(--muted); margin-bottom: 2rem; font-size: 1.1rem; }
+  #gameover .go-stats { display: flex; gap: 2rem; justify-content: center; margin-bottom: 2rem; }
+  #gameover .go-stat { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.5rem; }
+  #gameover .go-stat .val { font-size: 2rem; font-weight: 800; color: var(--teal); }
+  #gameover .go-stat .lbl { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; }
+  #gameover .btn-retry {
+    background: linear-gradient(135deg, var(--red), #ff6b6b);
+    border: none;
+    border-radius: 10px;
+    padding: 1rem 2.5rem;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 800;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: transform 0.1s;
+  }
+  #gameover .btn-retry:hover { transform: scale(1.05); }
+
+  /* ===== WIN SCREEN ===== */
+  #winscreen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at center, #001a10 0%, #0a0e1a 70%);
+    padding: 2rem;
+    text-align: center;
+  }
+  #winscreen .win-img {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--good);
+    box-shadow: 0 0 40px rgba(0,200,83,0.3);
+  }
+  #winscreen h1 { font-size: 2.5rem; color: var(--gold); font-weight: 900; text-shadow: 0 0 30px rgba(255,215,0,0.5); margin-bottom: 0.5rem; }
+  #winscreen .win-sub { color: var(--good); font-size: 1.1rem; margin-bottom: 2rem; }
+  #winscreen .win-stats { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
+  #winscreen .win-stat { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.5rem; }
+  #winscreen .win-stat .val { font-size: 2rem; font-weight: 800; color: var(--gold); }
+  #winscreen .win-stat .lbl { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; }
+  #winscreen .btn-replay {
+    background: linear-gradient(135deg, var(--good), #00e676);
+    border: none;
+    border-radius: 10px;
+    padding: 1rem 2.5rem;
+    color: #000;
+    font-size: 1.1rem;
+    font-weight: 800;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: transform 0.1s;
+  }
+  #winscreen .btn-replay:hover { transform: scale(1.05); }
+
+  /* Confetti */
+  .confetti-piece {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    animation: confettiFall linear forwards;
+    pointer-events: none;
+    z-index: 9999;
+  }
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* Flash overlay */
+  .flash-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 200;
+    opacity: 0;
+    transition: opacity 0.1s;
+  }
+  .flash-overlay.red { background: rgba(255,59,59,0.3); }
+  .flash-overlay.green { background: rgba(0,200,83,0.2); }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes heartShake {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.3) rotate(-10deg); }
+    75% { transform: scale(0.8) rotate(10deg); }
+  }
+  .heart-shake { animation: heartShake 0.4s ease; }
+
+  @media (max-width: 600px) {
+    .game-header { flex-wrap: wrap; gap: 0.5rem; }
+    .scene-image-wrap img { height: 220px; }
+    #gameover h1, #winscreen h1 { font-size: 2rem; }
+    #gameover .go-stats, #winscreen .win-stats { gap: 1rem; }
+  }
 </style>
 </head>
 <body>
 
+<!-- Flash overlay for feedback -->
+<div class="flash-overlay" id="flash"></div>
+
 <!-- ===== SPLASH ===== -->
 <div id="splash">
-    <div class="splash-logo">⚡</div>
-    <div class="splash-title">DrillMaster</div>
-    <div class="splash-sub">Veilig aan de Kolomboormachine — Logic Connections · VTI Oostende</div>
-    <div class="splash-card fade-in">
-        <h2>🎮 Start het avontuur</h2>
-        <div class="form-group">
-            <label>Jouw naam</label>
-            <input type="text" id="input-naam" placeholder="Voornaam Achternaam" />
-        </div>
-        <div class="form-group">
-            <label>Jouw klas</label>
-            <input type="text" id="input-klas" placeholder="bv. 2B, 3ME..." />
-        </div>
-        <button class="btn-start" onclick="startGame()">⚡ Start het Avontuur</button>
-        <p style="text-align:center;color:#374151;font-size:11px;margin-top:12px;">3 hartjes · 12 scenes · Kies verstandig</p>
+  <div class="logo">⚡ DrillMaster</div>
+  <div class="subtitle">Veilig aan de Kolomboormachine · Logic Connections</div>
+  <div class="card">
+    <h2>🎮 Start het avontuur</h2>
+    <label for="input-naam">Jouw naam</label>
+    <input type="text" id="input-naam" placeholder="Voornaam Achternaam" autocomplete="off">
+    <label for="input-klas">Jouw klas</label>
+    <input type="text" id="input-klas" placeholder="bv. 2B, 3ME..." autocomplete="off">
+    <button class="btn-start" onclick="startGame()">⚡ Start het Avontuur</button>
+    <div class="info-row">
+      <span>❤️❤️❤️ 3 hartjes</span>
+      <span>📍 12 scenes</span>
+      <span>⚠️ Echte gevolgen</span>
     </div>
-    <button onclick="showPanel()" style="margin-top:16px;background:none;border:1px solid #1e2d4a;color:#374151;border-radius:8px;padding:8px 16px;cursor:pointer;font-size:12px;">⚙️ Leerkrachtpaneel</button>
+  </div>
 </div>
 
 <!-- ===== GAME ===== -->
 <div id="game">
-    <!-- HUD -->
-    <div class="hud">
-        <div class="hud-left">
-            <div>
-                <div class="hud-title" id="hud-title">DrillMaster</div>
-                <div class="hud-sub" id="hud-sub">Veilig aan de Kolomboormachine</div>
-            </div>
-        </div>
-        <div class="hud-right">
-            <div class="progress-display" id="hud-progress">Scene 1 / 12</div>
-            <div class="xp-display" id="hud-xp">⚡ 0 XP</div>
-            <div class="hearts" id="hearts">
-                <span class="heart" id="heart-1">❤️</span>
-                <span class="heart" id="heart-2">❤️</span>
-                <span class="heart" id="heart-3">❤️</span>
-            </div>
-            <div class="hud-player" id="hud-player">—</div>
-            <button onclick="showPanel()" style="background:#0f1628;border:1px solid #1e2d4a;color:#64748b;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:11px;">⚙️</button>
-        </div>
+  <div class="game-header">
+    <div class="brand">⚡ DrillMaster <span>Kolomboormachine</span></div>
+    <div class="hearts" id="hearts">
+      <span class="heart" id="h1">❤️</span>
+      <span class="heart" id="h2">❤️</span>
+      <span class="heart" id="h3">❤️</span>
+    </div>
+    <div class="xp-badge">⚡ <span id="xp-display">0</span> XP</div>
+    <div class="player-badge" id="player-badge">Speler</div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+  </div>
+
+  <div class="game-main">
+    <div class="scene-counter" id="scene-counter">Scene 1 / 12</div>
+
+    <div class="scene-image-wrap">
+      <img id="scene-img" src="" alt="Scene afbeelding">
+      <div class="scene-label" id="scene-label">Scene 1</div>
     </div>
 
-    <!-- SCENE AREA -->
-    <div class="scene-wrapper" id="scene-wrapper">
-        <!-- dynamisch gevuld -->
+    <div class="scene-card">
+      <div class="scene-title" id="scene-title">Titel</div>
+      <div class="scene-text" id="scene-text">Tekst</div>
+      <button class="voice-btn" id="voice-btn" onclick="toggleVoice()">🔊 Voorlezen</button>
     </div>
+
+    <div class="consequence-panel" id="consequence-panel">
+      <div class="con-title" id="con-title">Gevolg</div>
+      <div class="con-text" id="con-text">Tekst</div>
+      <button class="con-continue" id="con-continue" onclick="continueAfterConsequence()">→ Verder</button>
+    </div>
+
+    <div class="choices-label" id="choices-label">Wat doe jij?</div>
+    <div class="choices" id="choices"></div>
+  </div>
 </div>
 
-<!-- ===== LEERKRACHT PANEL ===== -->
-<div class="panel-overlay" id="panel-overlay">
-    <div class="panel-box">
-        <button class="btn-close-panel" onclick="hidePanel()">✕ Sluiten</button>
-        <h2>⚙️ Leerkrachtpaneel</h2>
-        <div id="panel-content"></div>
-    </div>
+<!-- ===== GAME OVER ===== -->
+<div id="gameover">
+  <img class="go-img" src="images/scene_gameover.png" alt="Game Over">
+  <h1>💀 GAME OVER</h1>
+  <p id="go-reason">Je hebt te veel gevaarlijke fouten gemaakt.</p>
+  <div class="go-stats">
+    <div class="go-stat"><div class="val" id="go-scenes">0</div><div class="lbl">Scenes</div></div>
+    <div class="go-stat"><div class="val" id="go-xp">0</div><div class="lbl">XP</div></div>
+    <div class="go-stat"><div class="val" id="go-fouten">0</div><div class="lbl">Fouten</div></div>
+  </div>
+  <button class="btn-retry" onclick="resetGame()">🔄 Opnieuw proberen</button>
+</div>
+
+<!-- ===== WIN ===== -->
+<div id="winscreen">
+  <img class="win-img" src="images/scene_win.png" alt="Gewonnen!">
+  <h1>🏆 MEESTER!</h1>
+  <div class="win-sub">Je hebt de kolomboormachine veilig bediend. Respect!</div>
+  <div class="win-stats">
+    <div class="win-stat"><div class="val" id="win-xp">0</div><div class="lbl">Totaal XP</div></div>
+    <div class="win-stat"><div class="val" id="win-hartjes">0</div><div class="lbl">Hartjes over</div></div>
+    <div class="win-stat"><div class="val" id="win-fouten">0</div><div class="lbl">Fouten</div></div>
+    <div class="win-stat"><div class="val" id="win-score">A</div><div class="lbl">Score</div></div>
+  </div>
+  <button class="btn-replay" onclick="resetGame()">🔄 Opnieuw spelen</button>
 </div>
 
 <script>
-// ============================================================
-// GAME DATA — pas hier het verhaal aan
-// ============================================================
-let GAME = {
-    titel: "DrillMaster",
-    ondertitel: "Veilig aan de Kolomboormachine",
-    school: "Logic Connections · VTI Oostende",
-    xpPerJuist: 50,
-    xpPerFout: -10,
-    maxHartjes: 3,
-    consecutieveFoutenGameOver: 2,
-
-    // SCENES — het verhaal
-    // type keuze: "goed" | "klein_fout" | "groot_fout"
-    // nextScene: sceneId om naartoe te gaan (null = volgende in rij)
-    // consequenceScene: sceneId van de gevolg-scene (bij fout)
-    scenes: [
-        {
-            id: "s1",
-            type: "keuze",
-            afbeelding: "images/scene_intro.png",
-            badge: "📍 Scene 1 — Aankomst",
-            badgeType: "",
-            titel: "De eerste dag in de werkplaats",
-            tekst: "Je stapt de werkplaats binnen. De leerkracht geeft uitleg over de kolomboormachine. Aan het einde zegt hij: 'Zorg dat je volledig uitgerust bent voor je begint.' Je kijkt naar je werkbank. Je veiligheidsbril ligt er nog naast — je hebt hem nog niet opgezet.",
-            voiceTekst: "Je stapt de werkplaats binnen. De leerkracht geeft uitleg over de kolomboormachine. Aan het einde zegt hij: Zorg dat je volledig uitgerust bent voor je begint. Je kijkt naar je werkbank. Je veiligheidsbril ligt er nog naast — je hebt hem nog niet opgezet.",
-            keuzes: [
-                { letter: "A", tekst: "Je zet meteen je veiligheidsbril op en je gehoorbescherming.", type: "goed" },
-                { letter: "B", tekst: "Je denkt: 'Ik boor maar één gaatje, dat gaat wel.' Je begint zonder bril.", type: "klein_fout" },
-                { letter: "C", tekst: "Je wacht tot de leerkracht het zegt en doet ondertussen niets.", type: "klein_fout" }
-            ]
-        },
-        {
-            id: "s1_fout",
-            type: "gevolg",
-            afbeelding: "images/scene_pbm.png",
-            badge: "⚠️ Kleine fout",
-            badgeType: "warning",
-            titel: "Spat in je oog!",
-            tekst: "Terwijl je boort zonder bril, spat er een metaaldeeltje weg. Het raakt je oog. Het prikt enorm. Je moet stoppen en je oog spoelen. De leerkracht geeft je een waarschuwing. Je verliest kostbare tijd.",
-            voiceTekst: "Terwijl je boort zonder bril, spat er een metaaldeeltje weg. Het raakt je oog. Het prikt enorm. Je moet stoppen en je oog spoelen. De leerkracht geeft je een waarschuwing.",
-            keuzes: []
-        },
-        {
-            id: "s2",
-            type: "keuze",
-            afbeelding: "images/scene_klem.png",
-            badge: "📍 Scene 2 — Vastzetten",
-            badgeType: "",
-            titel: "Het werkstuk vastzetten",
-            tekst: "Je legt een stuk metaal op de boorplaat. Je wil een gat boren van 8mm. Het werkstuk ligt los op de tafel. Je hebt een machineklem bij de hand.",
-            voiceTekst: "Je legt een stuk metaal op de boorplaat. Je wil een gat boren van 8mm. Het werkstuk ligt los op de tafel. Je hebt een machineklem bij de hand.",
-            keuzes: [
-                { letter: "A", tekst: "Je zet het werkstuk stevig vast met de machineklem.", type: "goed" },
-                { letter: "B", tekst: "Je houdt het werkstuk met je hand vast — het is maar een klein gaatje.", type: "groot_fout" },
-                { letter: "C", tekst: "Je legt een lap stof onder het werkstuk zodat het niet schuift.", type: "klein_fout" }
-            ]
-        },
-        {
-            id: "s2_fout_klein",
-            type: "gevolg",
-            afbeelding: "images/scene_hand.png",
-            badge: "⚠️ Kleine fout",
-            badgeType: "warning",
-            titel: "Niet veilig genoeg",
-            tekst: "Een lap stof houdt het werkstuk niet voldoende vast. Bij het boren schuift het licht weg. De boor gaat scheef. Het gat zit op de verkeerde plaats. Je moet opnieuw beginnen. De leerkracht legt uit waarom een klem verplicht is.",
-            voiceTekst: "Een lap stof houdt het werkstuk niet voldoende vast. Bij het boren schuift het licht weg. De boor gaat scheef. Het gat zit op de verkeerde plaats. Je moet opnieuw beginnen.",
-            keuzes: []
-        },
-        {
-            id: "s2_fout_groot",
-            type: "gevolg_groot",
-            afbeelding: "images/scene_spoed.png",
-            badge: "🚨 LEVENSGEVAARLIJK",
-            badgeType: "danger",
-            titel: "De boor grijpt het werkstuk!",
-            tekst: "De boor grijpt het metaal. Het werkstuk draait met hoge snelheid mee rond. Het slaat hard tegen je hand. Je voelt een scherpe pijn. Er is bloed. De leerkracht stopt alles en belt 112. Je gaat met de ambulance naar de spoed.",
-            voiceTekst: "De boor grijpt het metaal. Het werkstuk draait met hoge snelheid mee rond. Het slaat hard tegen je hand. Je voelt een scherpe pijn. Er is bloed. De leerkracht stopt alles en belt 112. Je gaat met de ambulance naar de spoed.",
-            keuzes: []
-        },
-        {
-            id: "s3",
-            type: "keuze",
-            afbeelding: "images/scene_sleutel.png",
-            badge: "📍 Scene 3 — De boorkopsleutel",
-            badgeType: "",
-            titel: "Boor verwisselen",
-            tekst: "Je hebt de boor verwisseld met de boorkopsleutel. De sleutel zit nog in het boorkop. Je wil de machine starten.",
-            voiceTekst: "Je hebt de boor verwisseld met de boorkopsleutel. De sleutel zit nog in het boorkop. Je wil de machine starten.",
-            keuzes: [
-                { letter: "A", tekst: "Je verwijdert de boorkopsleutel voor je de machine start.", type: "goed" },
-                { letter: "B", tekst: "Je start de machine — de sleutel valt er toch wel uit.", type: "groot_fout" },
-                { letter: "C", tekst: "Je vraagt de leerkracht of het mag zo.", type: "klein_fout" }
-            ]
-        },
-        {
-            id: "s3_fout_groot",
-            type: "gevolg_groot",
-            afbeelding: "images/scene_gameover.png",
-            badge: "🚨 LEVENSGEVAARLIJK",
-            badgeType: "danger",
-            titel: "De sleutel vliegt weg!",
-            tekst: "De machine start. De boorkopsleutel wordt met enorme kracht weggeslingerd. Hij raakt een medeleerling in het gezicht. Ernstig letsel. De les wordt onmiddellijk stopgezet. Dit had dodelijk kunnen zijn.",
-            voiceTekst: "De machine start. De boorkopsleutel wordt met enorme kracht weggeslingerd. Hij raakt een medeleerling in het gezicht. Ernstig letsel. De les wordt onmiddellijk stopgezet. Dit had dodelijk kunnen zijn.",
-            keuzes: []
-        },
-        {
-            id: "s3_fout_klein",
-            type: "gevolg",
-            afbeelding: "images/scene_intro.png",
-            badge: "⚠️ Kleine fout",
-            badgeType: "warning",
-            titel: "Altijd zelf controleren",
-            tekst: "De leerkracht kijkt en zegt: 'Sleutel eruit — altijd!' Je verwijdert de sleutel. Maar je had dit zelf moeten weten. In de echte werkplaats is er niet altijd iemand die het zegt.",
-            voiceTekst: "De leerkracht kijkt en zegt: Sleutel eruit — altijd! Je verwijdert de sleutel. Maar je had dit zelf moeten weten. In de echte werkplaats is er niet altijd iemand die het zegt.",
-            keuzes: []
-        },
-        {
-            id: "s4",
-            type: "keuze",
-            afbeelding: "images/scene_gevaar.png",
-            badge: "📍 Scene 4 — Beschermkap",
-            badgeType: "",
-            titel: "De beschermkap staat open",
-            tekst: "Je bent klaar om te boren. Je merkt dat de beschermkap van de boor open staat. De machine staat aan.",
-            voiceTekst: "Je bent klaar om te boren. Je merkt dat de beschermkap van de boor open staat. De machine staat aan.",
-            keuzes: [
-                { letter: "A", tekst: "Je zet de machine uit, sluit de beschermkap, en start opnieuw.", type: "goed" },
-                { letter: "B", tekst: "Je boort toch — de kap maakt niet zoveel uit.", type: "groot_fout" },
-                { letter: "C", tekst: "Je probeert de kap dicht te doen terwijl de machine draait.", type: "groot_fout" }
-            ]
-        },
-        {
-            id: "s4_fout_groot",
-            type: "gevolg_groot",
-            afbeelding: "images/scene_spoed.png",
-            badge: "🚨 LEVENSGEVAARLIJK",
-            badgeType: "danger",
-            titel: "Ernstig ongeluk!",
-            tekst: "De draaiende boor grijpt je mouw. In een fractie van een seconde wordt je arm meegetrokken. Ernstige verwonding. Ambulance ter plaatse. Dit had vermeden kunnen worden met één simpele handeling: kap dicht.",
-            voiceTekst: "De draaiende boor grijpt je mouw. In een fractie van een seconde wordt je arm meegetrokken. Ernstige verwonding. Ambulance ter plaatse. Dit had vermeden kunnen worden met één simpele handeling: kap dicht.",
-            keuzes: []
-        },
-        {
-            id: "s5",
-            type: "keuze",
-            afbeelding: "images/scene_te_laat.png",
-            badge: "📍 Scene 5 — Te laat",
-            badgeType: "",
-            titel: "Je bent 10 minuten te laat",
-            tekst: "Je komt te laat de werkplaats binnen. De les is al begonnen. Iedereen werkt al. Je wil snel aan de slag gaan.",
-            voiceTekst: "Je komt te laat de werkplaats binnen. De les is al begonnen. Iedereen werkt al. Je wil snel aan de slag gaan.",
-            keuzes: [
-                { letter: "A", tekst: "Je meldt je bij de leerkracht, zet je PBM's op en wacht op toestemming.", type: "goed" },
-                { letter: "B", tekst: "Je gaat snel naar je werkplek en begint meteen zonder PBM's.", type: "klein_fout" },
-                { letter: "C", tekst: "Je staat stil bij de deur en wacht tot de leerkracht je ziet.", type: "klein_fout" }
-            ]
-        },
-        {
-            id: "s5_fout",
-            type: "gevolg",
-            afbeelding: "images/scene_pbm.png",
-            badge: "⚠️ Kleine fout",
-            badgeType: "warning",
-            titel: "Onveilig gedrag",
-            tekst: "Zonder PBM's werken is verboden. De leerkracht stopt je onmiddellijk. Je krijgt een punt aftrek voor veiligheidsgedrag. In een echte werkplaats zou je naar huis gestuurd worden.",
-            voiceTekst: "Zonder PBM's werken is verboden. De leerkracht stopt je onmiddellijk. Je krijgt een punt aftrek voor veiligheidsgedrag.",
-            keuzes: []
-        },
-        {
-            id: "s6",
-            type: "keuze",
-            afbeelding: "images/scene_klem.png",
-            badge: "📍 Scene 6 — Snelheid instellen",
-            badgeType: "",
-            titel: "Welke snelheid gebruik je?",
-            tekst: "Je wil een gat boren in aluminium met een boor van 10mm. De machine heeft meerdere snelheidsstanden. Je collega zegt: 'Zet hem gewoon op de hoogste stand, dat gaat sneller.'",
-            voiceTekst: "Je wil een gat boren in aluminium met een boor van 10mm. De machine heeft meerdere snelheidsstanden. Je collega zegt: Zet hem gewoon op de hoogste stand, dat gaat sneller.",
-            keuzes: [
-                { letter: "A", tekst: "Je raadpleegt de snelheidstabel en kiest de juiste stand voor aluminium en 10mm.", type: "goed" },
-                { letter: "B", tekst: "Je volgt het advies van je collega en zet de hoogste stand.", type: "klein_fout" },
-                { letter: "C", tekst: "Je vraagt de leerkracht welke stand je moet gebruiken.", type: "goed" }
-            ]
-        },
-        {
-            id: "s6_fout",
-            type: "gevolg",
-            afbeelding: "images/scene_gevaar.png",
-            badge: "⚠️ Kleine fout",
-            badgeType: "warning",
-            titel: "Boor gebroken!",
-            tekst: "Te hoge snelheid voor dit materiaal. De boor loopt heet en breekt af. Een stuk boor vliegt weg. Niemand raakt gewond, maar de boor is kapot en het werkstuk is beschadigd. Materiaalverlies kost geld.",
-            voiceTekst: "Te hoge snelheid voor dit materiaal. De boor loopt heet en breekt af. Een stuk boor vliegt weg. Niemand raakt gewond, maar de boor is kapot en het werkstuk is beschadigd.",
-            keuzes: []
-        },
-        {
-            id: "s7",
-            type: "keuze",
-            afbeelding: "images/scene_intro.png",
-            badge: "📍 Scene 7 — Opruimen",
-            badgeType: "",
-            titel: "Na het boren: opruimen",
-            tekst: "Je hebt geboord. Er liggen metaalspanen op de tafel en op de vloer. Je wil ze wegvegen.",
-            voiceTekst: "Je hebt geboord. Er liggen metaalspanen op de tafel en op de vloer. Je wil ze wegvegen.",
-            keuzes: [
-                { letter: "A", tekst: "Je gebruikt een kwast of spanen-haak om de spanen weg te vegen.", type: "goed" },
-                { letter: "B", tekst: "Je veegt de spanen weg met je blote hand.", type: "groot_fout" },
-                { letter: "C", tekst: "Je blaast de spanen weg met je mond.", type: "klein_fout" }
-            ]
-        },
-        {
-            id: "s7_fout_groot",
-            type: "gevolg_groot",
-            afbeelding: "images/scene_spoed.png",
-            badge: "🚨 LEVENSGEVAARLIJK",
-            badgeType: "danger",
-            titel: "Metaalspanen zijn messen!",
-            tekst: "Metaalspanen zijn scherp als scheermessen. Je hand wordt op meerdere plaatsen gesneden. Diepe wonden. Naar de spoed voor hechtingen. Nooit spanen aanraken met blote handen.",
-            voiceTekst: "Metaalspanen zijn scherp als scheermessen. Je hand wordt op meerdere plaatsen gesneden. Diepe wonden. Naar de spoed voor hechtingen. Nooit spanen aanraken met blote handen.",
-            keuzes: []
-        },
-        {
-            id: "s7_fout_klein",
-            type: "gevolg",
-            afbeelding: "images/scene_pbm.png",
-            badge: "⚠️ Kleine fout",
-            badgeType: "warning",
-            titel: "Spanen in je ogen!",
-            tekst: "Je blaast de spanen weg. Een fijn deeltje waait in je oog. Pijnlijk en gevaarlijk. Gebruik altijd een kwast of haak — nooit blazen.",
-            voiceTekst: "Je blaast de spanen weg. Een fijn deeltje waait in je oog. Pijnlijk en gevaarlijk. Gebruik altijd een kwast of haak — nooit blazen.",
-            keuzes: []
-        },
-        {
-            id: "s8",
-            type: "keuze",
-            afbeelding: "images/scene_klem.png",
-            badge: "📍 Scene 8 — Diepteaanslag",
-            badgeType: "",
-            titel: "Diepte instellen",
-            tekst: "Je moet een gat boren van exact 15mm diep. Je hebt een diepteaanslag op de machine.",
-            voiceTekst: "Je moet een gat boren van exact 15mm diep. Je hebt een diepteaanslag op de machine.",
-            keuzes: [
-                { letter: "A", tekst: "Je stelt de diepteaanslag correct in op 15mm voor je begint.", type: "goed" },
-                { letter: "B", tekst: "Je schat het op het zicht — je hebt een goed oog voor afstand.", type: "klein_fout" },
-                { letter: "C", tekst: "Je boort door tot je voelt dat het diep genoeg is.", type: "klein_fout" }
-            ]
-        },
-        {
-            id: "s8_fout",
-            type: "gevolg",
-            afbeelding: "images/scene_gevaar.png",
-            badge: "⚠️ Kleine fout",
-            badgeType: "warning",
-            titel: "Te diep geboord!",
-            tekst: "Je boort te diep. De boor gaat door het werkstuk en raakt de boorplaat. De boor is beschadigd. Het werkstuk is onbruikbaar. Altijd de diepteaanslag gebruiken — dat is waarvoor hij bestaat.",
-            voiceTekst: "Je boort te diep. De boor gaat door het werkstuk en raakt de boorplaat. De boor is beschadigd. Het werkstuk is onbruikbaar.",
-            keuzes: []
-        },
-        {
-            id: "s9",
-            type: "keuze",
-            afbeelding: "images/scene_intro.png",
-            badge: "📍 Scene 9 — Machine controleren",
-            badgeType: "",
-            titel: "Voor het starten: machine check",
-            tekst: "Je staat klaar om te starten. Je collega heeft de machine voor jou gebruikt. Je weet niet in welke staat hij hem heeft achtergelaten.",
-            voiceTekst: "Je staat klaar om te starten. Je collega heeft de machine voor jou gebruikt. Je weet niet in welke staat hij hem heeft achtergelaten.",
-            keuzes: [
-                { letter: "A", tekst: "Je doet een volledige visuele check: kap dicht, sleutel eruit, werkstuk vast, boor correct.", type: "goed" },
-                { letter: "B", tekst: "Je vertrouwt je collega en start meteen.", type: "klein_fout" },
-                { letter: "C", tekst: "Je vraagt je collega of alles in orde is.", type: "klein_fout" }
-            ]
-        },
-        {
-            id: "s9_fout",
-            type: "gevolg",
-            afbeelding: "images/scene_sleutel.png",
-            badge: "⚠️ Kleine fout",
-            badgeType: "warning",
-            titel: "Sleutel vergeten!",
-            tekst: "Je collega had de boorkopsleutel laten zitten. Jij start de machine. De sleutel vliegt weg — net naast een medeleerling. Altijd zelf controleren. Vertrouw nooit blind op een ander.",
-            voiceTekst: "Je collega had de boorkopsleutel laten zitten. Jij start de machine. De sleutel vliegt weg — net naast een medeleerling. Altijd zelf controleren. Vertrouw nooit blind op een ander.",
-            keuzes: []
-        },
-        {
-            id: "s10",
-            type: "keuze",
-            afbeelding: "images/scene_gevaar.png",
-            badge: "📍 Scene 10 — Noodstop",
-            badgeType: "",
-            titel: "Iets gaat fout tijdens het boren",
-            tekst: "Terwijl je boort, merk je dat het werkstuk begint te trillen en te bewegen. De klem lijkt los te zijn gekomen.",
-            voiceTekst: "Terwijl je boort, merk je dat het werkstuk begint te trillen en te bewegen. De klem lijkt los te zijn gekomen.",
-            keuzes: [
-                { letter: "A", tekst: "Je drukt onmiddellijk de noodstop in en roept de leerkracht.", type: "goed" },
-                { letter: "B", tekst: "Je probeert snel de klem bij te draaien terwijl de machine draait.", type: "groot_fout" },
-                { letter: "C", tekst: "Je boort snel verder — bijna klaar.", type: "groot_fout" }
-            ]
-        },
-        {
-            id: "s10_fout_groot",
-            type: "gevolg_groot",
-            afbeelding: "images/scene_gameover.png",
-            badge: "🚨 LEVENSGEVAARLIJK",
-            badgeType: "danger",
-            titel: "Nooit werken aan een draaiende machine!",
-            tekst: "Je hand raakt de draaiende boor. Ernstige verwonding aan vingers en hand. Operatie noodzakelijk. Bij een draaiende machine ingrijpen is één van de gevaarlijkste dingen die je kan doen.",
-            voiceTekst: "Je hand raakt de draaiende boor. Ernstige verwonding aan vingers en hand. Operatie noodzakelijk. Bij een draaiende machine ingrijpen is één van de gevaarlijkste dingen die je kan doen.",
-            keuzes: []
-        },
-        {
-            id: "s11",
-            type: "keuze",
-            afbeelding: "images/scene_pbm.png",
-            badge: "📍 Scene 11 — Lange mouwen",
-            badgeType: "",
-            titel: "Kledingcheck",
-            tekst: "Je draagt vandaag een trui met wijde, lange mouwen. Je staat voor de kolomboormachine.",
-            voiceTekst: "Je draagt vandaag een trui met wijde, lange mouwen. Je staat voor de kolomboormachine.",
-            keuzes: [
-                { letter: "A", tekst: "Je rolt je mouwen op of zet ze vast voor je begint.", type: "goed" },
-                { letter: "B", tekst: "Je werkt met de lange mouwen — het valt wel mee.", type: "groot_fout" },
-                { letter: "C", tekst: "Je vraagt de leerkracht of het mag.", type: "klein_fout" }
-            ]
-        },
-        {
-            id: "s11_fout_groot",
-            type: "gevolg_groot",
-            afbeelding: "images/scene_spoed.png",
-            badge: "🚨 LEVENSGEVAARLIJK",
-            badgeType: "danger",
-            titel: "Mouw gegrepen door de boor!",
-            tekst: "De draaiende boor grijpt je losse mouw. In een fractie van een seconde wordt je arm meegetrokken. Ernstige verwonding. Wijde kleding en draaiende machines zijn een dodelijke combinatie.",
-            voiceTekst: "De draaiende boor grijpt je losse mouw. In een fractie van een seconde wordt je arm meegetrokken. Ernstige verwonding. Wijde kleding en draaiende machines zijn een dodelijke combinatie.",
-            keuzes: []
-        },
-        {
-            id: "s11_fout_klein",
-            type: "gevolg",
-            afbeelding: "images/scene_pbm.png",
-            badge: "⚠️ Kleine fout",
-            badgeType: "warning",
-            titel: "Altijd zelf weten",
-            tekst: "De leerkracht zegt: 'Mouwen omhoog of vastgemaakt — altijd.' Dit moet je zelf weten. In de werkplaats is er geen tijd om voor elke leerling te controleren.",
-            voiceTekst: "De leerkracht zegt: Mouwen omhoog of vastgemaakt — altijd. Dit moet je zelf weten.",
-            keuzes: []
-        },
-        {
-            id: "s12",
-            type: "keuze",
-            afbeelding: "images/scene_intro.png",
-            badge: "📍 Scene 12 — Eindcheck",
-            badgeType: "",
-            titel: "Klaar! Maar ben je echt klaar?",
-            tekst: "Je hebt geboord. Je wil de werkplaats verlaten. De machine staat nog aan en er liggen spanen op de vloer.",
-            voiceTekst: "Je hebt geboord. Je wil de werkplaats verlaten. De machine staat nog aan en er liggen spanen op de vloer.",
-            keuzes: [
-                { letter: "A", tekst: "Je zet de machine uit, ruimt de spanen op met een kwast, en meldt je klaar bij de leerkracht.", type: "goed" },
-                { letter: "B", tekst: "Je laat alles staan — de volgende leerling doet het maar.", type: "klein_fout" },
-                { letter: "C", tekst: "Je zet de machine uit maar laat de spanen liggen.", type: "klein_fout" }
-            ]
-        },
-        {
-            id: "s12_fout",
-            type: "gevolg",
-            afbeelding: "images/scene_te_laat.png",
-            badge: "⚠️ Kleine fout",
-            badgeType: "warning",
-            titel: "Achterlaten is gevaarlijk",
-            tekst: "Een medeleerling glijdt uit over de spanen op de vloer. Gelukkig geen ernstig letsel. Maar jij bent verantwoordelijk. Iedere leerling ruimt zijn eigen werkplek op — altijd.",
-            voiceTekst: "Een medeleerling glijdt uit over de spanen op de vloer. Gelukkig geen ernstig letsel. Maar jij bent verantwoordelijk. Iedere leerling ruimt zijn eigen werkplek op — altijd.",
-            keuzes: []
-        }
-    ],
-
-    // Volgorde van het hoofdpad (sceneIds in volgorde)
-    hoofdpad: ["s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11","s12"],
-
-    // Mapping: welke keuze leidt naar welke gevolg-scene
-    // { sceneId: { keuzeIndex: gevolg_sceneId } }
-    gevolgen: {
-        "s1": { 1: "s1_fout", 2: "s1_fout" },
-        "s2": { 1: "s2_fout_groot", 2: "s2_fout_klein" },
-        "s3": { 1: "s3_fout_groot", 2: "s3_fout_klein" },
-        "s4": { 1: "s4_fout_groot", 2: "s4_fout_groot" },
-        "s5": { 1: "s5_fout", 2: "s5_fout" },
-        "s6": { 1: "s6_fout" },
-        "s7": { 1: "s7_fout_groot", 2: "s7_fout_klein" },
-        "s8": { 1: "s8_fout", 2: "s8_fout" },
-        "s9": { 1: "s9_fout", 2: "s9_fout" },
-        "s10": { 1: "s10_fout_groot", 2: "s10_fout_groot" },
-        "s11": { 1: "s11_fout_groot", 2: "s11_fout_klein" },
-        "s12": { 1: "s12_fout", 2: "s12_fout" }
-    }
+// ===== SCENE DATA =====
+const SCENES = {
+  s1: {
+    id: 's1',
+    type: 'good',
+    label: 'Scene 1 — Aankomst',
+    title: 'De eerste dag in de werkplaats',
+    text: 'Je stapt de werkplaats binnen. De leerkracht geeft uitleg over de kolomboormachine. Aan het einde zegt hij: "Zorg dat je volledig uitgerust bent voor je begint." Je kijkt naar je werkbank. Je veiligheidsbril en gehoorbescherming liggen er nog naast — je hebt ze nog niet opgezet.',
+    image: 'images/scene_s1_aankomst.png',
+    sceneNum: 1,
+    choices: [
+      { letter: 'A', text: 'Je zet meteen je veiligheidsbril op en je gehoorbescherming.', correct: true, next: 's2' },
+      { letter: 'B', text: 'Je denkt: "Ik boor maar één gaatje, dat gaat wel." Je begint zonder bril.', correct: false, faultType: 'small', faultScene: 'f1a', next: 's1' },
+      { letter: 'C', text: 'Je wacht tot de leerkracht het zegt en doet ondertussen niets.', correct: false, faultType: 'small', faultScene: 'f1b', next: 's1' }
+    ]
+  },
+  s2: {
+    id: 's2', type: 'good', label: 'Scene 2 — Werkbon', title: 'De juiste boor kiezen',
+    text: 'Je krijgt een werkbon. Daarop staat: boor een gat van 8mm in een stalen plaat. Je kijkt naar de boorkoppen op de tafel. Er liggen er drie: een 6mm, een 8mm en een 10mm boor.',
+    image: 'images/scene_s2_werkbon.png', sceneNum: 2,
+    choices: [
+      { letter: 'A', text: 'Je kiest de 8mm boor, zoals op de werkbon staat.', correct: true, next: 's3' },
+      { letter: 'B', text: 'Je pakt de 10mm want "groter is beter".', correct: false, faultType: 'small', faultScene: 'f2a', next: 's2' },
+      { letter: 'C', text: 'Je pakt de eerste de beste boor die je ziet zonder te kijken.', correct: false, faultType: 'small', faultScene: 'f2b', next: 's2' }
+    ]
+  },
+  s3: {
+    id: 's3', type: 'good', label: 'Scene 3 — Boor vastzetten', title: 'De boor in de boorkop zetten',
+    text: 'Je hebt de juiste boor. Nu moet je hem vastzetten in de boorkop. Je pakt de boorkopsleutel en begint de boor vast te draaien.',
+    image: 'images/scene_s3_boor_vastzetten.png', sceneNum: 3,
+    choices: [
+      { letter: 'A', text: 'Je zet de boor stevig vast en haalt de sleutel weg voor je start.', correct: true, next: 's4' },
+      { letter: 'B', text: 'Je laat de sleutel in de boorkop zitten en zet de machine aan.', correct: false, faultType: 'big', faultScene: 'f3a', next: 's3' },
+      { letter: 'C', text: 'Je zet de boor maar half vast, het lijkt stevig genoeg.', correct: false, faultType: 'small', faultScene: 'f3b', next: 's3' }
+    ]
+  },
+  s4: {
+    id: 's4', type: 'good', label: 'Scene 4 — Klemmen', title: 'Het werkstuk vastklemmen',
+    text: 'Je legt de stalen plaat op de boorstafel. Nu moet je hem vastzetten zodat hij niet kan bewegen tijdens het boren.',
+    image: 'images/scene_s4_klemmen.png', sceneNum: 4,
+    choices: [
+      { letter: 'A', text: 'Je klempt de plaat stevig vast met de machine-klem.', correct: true, next: 's5' },
+      { letter: 'B', text: 'Je houdt de plaat vast met je hand terwijl je boort.', correct: false, faultType: 'big', faultScene: 'f4a', next: 's4' },
+      { letter: 'C', text: 'Je legt de plaat gewoon neer zonder te klemmen, hij lijkt stabiel.', correct: false, faultType: 'small', faultScene: 'f4b', next: 's4' }
+    ]
+  },
+  s5: {
+    id: 's5', type: 'good', label: 'Scene 5 — Snelheid', title: 'De juiste boorsnelheid instellen',
+    text: 'Voor je begint moet je de juiste boorsnelheid instellen. Op de machine hangt een tabel. Voor staal met een 8mm boor staat er: 500 toeren per minuut.',
+    image: 'images/scene_s5_snelheid.png', sceneNum: 5,
+    choices: [
+      { letter: 'A', text: 'Je kijkt in de tabel en stelt 500 t/min in.', correct: true, next: 's6' },
+      { letter: 'B', text: 'Je laat de snelheid op de hoogste stand staan van de vorige leerling.', correct: false, faultType: 'small', faultScene: 'f5a', next: 's5' },
+      { letter: 'C', text: 'Je stelt op goed geluk een snelheid in zonder de tabel te raadplegen.', correct: false, faultType: 'small', faultScene: 'f5b', next: 's5' }
+    ]
+  },
+  s6: {
+    id: 's6', type: 'good', label: 'Scene 6 — Beschermkap', title: 'De beschermkap controleren',
+    text: 'Je bent bijna klaar om te starten. Je kijkt naar de beschermkap van de boorkop — die staat nog open van de vorige leerling.',
+    image: 'images/scene_s6_beschermkap.png', sceneNum: 6,
+    choices: [
+      { letter: 'A', text: 'Je sluit de beschermkap voor je de machine start.', correct: true, next: 's7' },
+      { letter: 'B', text: 'Je start de machine met de beschermkap open.', correct: false, faultType: 'big', faultScene: 'f6a', next: 's6' },
+      { letter: 'C', text: 'Je laat hem open maar belooft jezelf "voorzichtig" te zijn.', correct: false, faultType: 'small', faultScene: 'f6b', next: 's6' }
+    ]
+  },
+  s7: {
+    id: 's7', type: 'good', label: 'Scene 7 — Boren', title: 'Het boren starten',
+    text: 'Alles is klaar. Je zet de machine aan. De boor draait. Je brengt de boor langzaam naar het werkstuk toe.',
+    image: 'images/scene_s7_boren.png', sceneNum: 7,
+    choices: [
+      { letter: 'A', text: 'Je boort rustig, met regelmatige druk, en koelt af als het warm wordt.', correct: true, next: 's8' },
+      { letter: 'B', text: 'Je duwt hard om sneller klaar te zijn.', correct: false, faultType: 'small', faultScene: 'f7a', next: 's7' },
+      { letter: 'C', text: 'Je laat de boor te snel zakken zonder controle.', correct: false, faultType: 'small', faultScene: 'f7b', next: 's7' }
+    ]
+  },
+  s8: {
+    id: 's8', type: 'good', label: 'Scene 8 — Spaanders', title: 'Metaalspaanders verwijderen',
+    text: 'Het boren gaat goed. Er komen lange metaalspaanders vrij die zich oprollen rond de boor. Je moet ze verwijderen.',
+    image: 'images/scene_s8_spaanders.png', sceneNum: 8,
+    choices: [
+      { letter: 'A', text: 'Je stopt de machine, wacht tot alles stilstaat en verwijdert de spaanders met een haak.', correct: true, next: 's9' },
+      { letter: 'B', text: 'Je probeert de spaanders weg te vegen met je blote hand terwijl de machine draait.', correct: false, faultType: 'big', faultScene: 'f8a', next: 's8' },
+      { letter: 'C', text: 'Je blaast de spaanders weg met je mond.', correct: false, faultType: 'small', faultScene: 'f8b', next: 's8' }
+    ]
+  },
+  s9: {
+    id: 's9', type: 'good', label: 'Scene 9 — Controle', title: 'Het gat controleren',
+    text: 'Het gat is geboord. Je wil controleren of het de juiste maat heeft. Je pakt de schuifmaat.',
+    image: 'images/scene_s9_controle.png', sceneNum: 9,
+    choices: [
+      { letter: 'A', text: 'Je stopt de machine volledig, wacht tot de boor stilstaat en meet dan.', correct: true, next: 's10' },
+      { letter: 'B', text: 'Je steekt je vinger in het gat terwijl de boor nog uitloopt.', correct: false, faultType: 'big', faultScene: 'f9a', next: 's9' },
+      { letter: 'C', text: 'Je meet terwijl de machine aanstaat maar de boor niet beweegt.', correct: false, faultType: 'small', faultScene: 'f9b', next: 's9' }
+    ]
+  },
+  s10: {
+    id: 's10', type: 'good', label: 'Scene 10 — Opruimen', title: 'De werkplaats opruimen',
+    text: 'Het gat is perfect 8mm. Je bent klaar met het werkstuk. Nu moet je de werkplaats opruimen voor de volgende leerling.',
+    image: 'images/scene_s10_opruimen.png', sceneNum: 10,
+    choices: [
+      { letter: 'A', text: 'Je verwijdert de boor, ruimt spaanders op met een borstel en legt alles terug op zijn plaats.', correct: true, next: 's11' },
+      { letter: 'B', text: 'Je laat de boor in de machine zitten en gaat weg.', correct: false, faultType: 'small', faultScene: 'f10a', next: 's10' },
+      { letter: 'C', text: 'Je veegt de spaanders op de grond en gaat weg.', correct: false, faultType: 'small', faultScene: 'f10b', next: 's10' }
+    ]
+  },
+  s11: {
+    id: 's11', type: 'good', label: 'Scene 11 — Overdracht', title: 'De volgende leerling',
+    text: 'De volgende leerling komt naar de machine. Hij vraagt: "Is de machine klaar voor gebruik?"',
+    image: 'images/scene_s11_volgende.png', sceneNum: 11,
+    choices: [
+      { letter: 'A', text: '"Ja, alles is opgeruimd, de boor is weg en de beschermkap is dicht."', correct: true, next: 's12' },
+      { letter: 'B', text: 'Je zegt "ja" maar je weet eigenlijk niet zeker of je alles gedaan hebt.', correct: false, faultType: 'small', faultScene: 'f11a', next: 's11' },
+      { letter: 'C', text: 'Je zegt niets en loopt gewoon weg.', correct: false, faultType: 'small', faultScene: 'f11b', next: 's11' }
+    ]
+  },
+  s12: {
+    id: 's12', type: 'good', label: 'Scene 12 — Evaluatie', title: 'De leerkracht evalueert',
+    text: 'De leerkracht heeft je de hele tijd geobserveerd. Hij komt naar je toe en vraagt: "Kan je uitleggen wat je gedaan hebt en waarom?"',
+    image: 'images/scene_s12_evaluatie.png', sceneNum: 12,
+    choices: [
+      { letter: 'A', text: 'Je legt alle stappen uit: PBM, juiste boor, klemmen, snelheid, kap, boren, opruimen.', correct: true, next: 'WIN' },
+      { letter: 'B', text: 'Je kan de helft uitleggen maar vergeet de veiligheidsregels te noemen.', correct: false, faultType: 'small', faultScene: 'f12a', next: 's12' },
+      { letter: 'C', text: '"Ik heb gewoon gedaan wat er stond."', correct: false, faultType: 'small', faultScene: 'f12b', next: 's12' }
+    ]
+  }
 };
 
-// ============================================================
-// STATE
-// ============================================================
+const FAULT_SCENES = {
+  f1a: { type: 'small', title: '⚠️ Kleine fout — Geen PBM', text: 'Een metaalspaander springt recht in jouw richting. Je knippert net op tijd met je ogen. Dat was op het nippertje. De leerkracht zegt streng: "Bril op. Nu. Altijd." Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f1b: { type: 'small', title: '⚠️ Kleine fout — Passief gedrag', text: 'De leerkracht kijkt je aan: "Je PBM zijn jouw verantwoordelijkheid, niet de mijne. Zet ze op." Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f2a: { type: 'small', title: '⚠️ Kleine fout — Verkeerde boor', text: 'Het gat is te groot. Het werkstuk is onbruikbaar. Je moet opnieuw beginnen met nieuw materiaal. Dat kost tijd en geld. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f2b: { type: 'small', title: '⚠️ Kleine fout — Willekeurige boor', text: 'De boor past niet bij het materiaal. Hij breekt af bij de eerste aanraking. Je moet een nieuwe boor halen. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f3a: { type: 'big', title: '💀 GEVAAR — Sleutel in boorkop!', text: 'Je zet de machine aan. De sleutel vliegt met enorme kracht weg en raakt je in het gezicht. Je valt achteruit. De leerkracht roept: "STOP!" Je wordt naar de spoedafdeling gebracht. Dit had je oog kunnen kosten. Dit is een klassiek dodelijk werkplaatsongeluk.', image: 'images/scene_f_sleutel_groot.png' },
+  f3b: { type: 'small', title: '⚠️ Kleine fout — Half vastgezet', text: 'De boor begint te trillen en valt eruit. Je moet hem opnieuw stevig vastzetten. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f4a: { type: 'big', title: '💀 GEVAAR — Hand vasthouden!', text: 'De boor grijpt de plaat. De plaat draait met kracht mee en snijdt in je hand. Je schreeuwt het uit. De leerkracht schakelt de machine uit. Je hand bloedt hevig. Ambulance gebeld. Dit had je vingers kunnen kosten.', image: 'images/scene_f_hand_groot.png' },
+  f4b: { type: 'small', title: '⚠️ Kleine fout — Niet geklemd', text: 'De plaat schuift weg tijdens het boren. Het gat zit op de verkeerde plek. Je moet opnieuw beginnen. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f5a: { type: 'small', title: '⚠️ Kleine fout — Te hoge snelheid', text: 'De boor draait te snel voor staal. Hij wordt roodgloeiend heet en breekt. Je moet een nieuwe boor halen en de snelheid correct instellen. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f5b: { type: 'small', title: '⚠️ Kleine fout — Gok snelheid', text: 'De snelheid is verkeerd. Het staal brandt aan. Je moet stoppen en opnieuw instellen. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f6a: { type: 'big', title: '💀 GEVAAR — Beschermkap open!', text: 'Een stuk van de boor breekt af aan hoge snelheid. Het projectiel schiet recht op je af. Je wordt geraakt in de schouder. De leerkracht schakelt alles uit. Dit had je hoofd kunnen zijn. Beschermkappen redden levens.', image: 'images/scene_f_kap_groot.png' },
+  f6b: { type: 'small', title: '⚠️ Kleine fout — Kap open', text: 'De leerkracht ziet het en stopt je: "Beschermkap dicht. Altijd. Geen uitzonderingen." Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f7a: { type: 'small', title: '⚠️ Kleine fout — Te hard geduwd', text: 'De boor breekt af door te veel druk. Je moet een nieuwe boor halen. Geduld is een vereiste bij boren. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f7b: { type: 'small', title: '⚠️ Kleine fout — Te snel gezakt', text: 'De boor slaat hard in het materiaal. Het werkstuk verschuift. Je moet opnieuw beginnen. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f8a: { type: 'big', title: '💀 GEVAAR — Hand bij draaiende machine!', text: 'De draaiende spaander wikkelt zich om je vingers. Je trekt terug maar de machine trekt mee. Je verliest twee vingertoppen. Ambulance. Dit is een klassiek werkplaatsongeluk dat elk jaar mensen treft.', image: 'images/scene_f_spaander_groot.png' },
+  f8b: { type: 'small', title: '⚠️ Kleine fout — Blazen', text: 'Een spaander vliegt in je oog. Je moet naar de EHBO. Bril op, altijd. Je verliest een hartje.', image: 'images/scene_f_spoed.png' },
+  f9a: { type: 'big', title: '💀 GEVAAR — Vinger in uitlopende boor!', text: 'De boor loopt nog uit. Hij grijpt je vinger. Je schreeuwt. Ernstige snijwonde. Naar de spoed. Wacht altijd tot de machine volledig stilstaat.', image: 'images/scene_f_spoed.png' },
+  f9b: { type: 'small', title: '⚠️ Kleine fout — Meten bij aanstaande machine', text: 'De leerkracht stopt je: "Machine volledig uit voor je meet. Altijd." Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f10a: { type: 'small', title: '⚠️ Kleine fout — Boor laten zitten', text: 'De volgende leerling start de machine zonder te weten dat er een boor in zit. Bijna-ongeluk. Jij bent verantwoordelijk. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f10b: { type: 'small', title: '⚠️ Kleine fout — Spaanders op grond', text: 'Een andere leerling glijdt uit op de spaanders en valt. Jij hebt dit veroorzaakt. Opruimen is ook veiligheid. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f11a: { type: 'small', title: '⚠️ Kleine fout — Onzeker "ja" zeggen', text: 'De volgende leerling vindt de boor nog in de machine. Jij had "ja" gezegd. De leerkracht spreekt je aan. Communiceer eerlijk. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f11b: { type: 'small', title: '⚠️ Kleine fout — Weglopen zonder communicatie', text: 'De leerkracht ziet je weglopen zonder communicatie: "In een werkplaats communiceer je altijd. Altijd." Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f12a: { type: 'small', title: '⚠️ Kleine fout — Halve uitleg', text: 'De leerkracht zegt: "Je hebt de stappen gevolgd maar je begrijpt nog niet waarom. Dat is gevaarlijk. Begrijpen is belangrijker dan doen." Je verliest een hartje.', image: 'images/scene_f_klein.png' },
+  f12b: { type: 'small', title: '⚠️ Kleine fout — Geen begrip', text: 'De leerkracht schudt zijn hoofd: "Begrijpen is belangrijker dan uitvoeren. Probeer opnieuw." Je verliest een hartje.', image: 'images/scene_f_klein.png' }
+};
+
+// ===== GAME STATE =====
 let STATE = {
-    naam: "", klas: "",
-    hartjes: 3,
-    xp: 0,
-    sceneIndex: 0,          // index in hoofdpad
-    consecutieveFouten: 0,
-    totaalFouten: 0,
-    totaalJuist: 0,
-    gameOver: false,
-    gewonnen: false,
-    huidigGevolg: null,     // sceneId van gevolg dat getoond wordt
-    ttsActief: false
+  naam: '',
+  klas: '',
+  hearts: 3,
+  xp: 0,
+  currentScene: 's1',
+  fouten: 0,
+  consecutiveBig: 0,
+  pendingNext: null,
+  speaking: false
 };
 
 let synth = window.speechSynthesis;
-let huidigUtterance = null;
+let utterance = null;
 
-// ============================================================
-// START
-// ============================================================
+// ===== FUNCTIONS =====
 function startGame() {
-    const naam = document.getElementById('input-naam').value.trim();
-    const klas = document.getElementById('input-klas').value.trim();
-    if (!naam) { alert('Vul je naam in.'); return; }
-    STATE.naam = naam;
-    STATE.klas = klas || '—';
-    STATE.hartjes = GAME.maxHartjes;
-    STATE.xp = 0;
-    STATE.sceneIndex = 0;
-    STATE.consecutieveFouten = 0;
-    STATE.totaalFouten = 0;
-    STATE.totaalJuist = 0;
-    STATE.gameOver = false;
-    STATE.gewonnen = false;
-    STATE.huidigGevolg = null;
-
-    document.getElementById('splash').style.display = 'none';
-    document.getElementById('game').style.display = 'block';
-    updateHUD();
-    toonScene(GAME.hoofdpad[0]);
+  const naam = document.getElementById('input-naam').value.trim();
+  const klas = document.getElementById('input-klas').value.trim();
+  if (!naam) { document.getElementById('input-naam').focus(); return; }
+  STATE.naam = naam;
+  STATE.klas = klas || '—';
+  document.getElementById('player-badge').textContent = naam + ' · ' + (klas || '—');
+  document.getElementById('splash').style.display = 'none';
+  document.getElementById('game').style.display = 'flex';
+  loadScene('s1');
 }
 
-// ============================================================
-// HUD
-// ============================================================
-function updateHUD() {
-    document.getElementById('hud-title').textContent = GAME.titel;
-    document.getElementById('hud-sub').textContent = GAME.ondertitel;
-    document.getElementById('hud-player').textContent = STATE.naam + ' · ' + STATE.klas;
-    document.getElementById('hud-xp').textContent = '⚡ ' + STATE.xp + ' XP';
-    document.getElementById('hud-progress').textContent = 'Scene ' + (STATE.sceneIndex + 1) + ' / ' + GAME.hoofdpad.length;
+function loadScene(sceneId) {
+  STATE.currentScene = sceneId;
+  const scene = SCENES[sceneId];
+  if (!scene) return;
 
-    for (let i = 1; i <= GAME.maxHartjes; i++) {
-        const h = document.getElementById('heart-' + i);
-        if (h) h.classList.toggle('lost', i > STATE.hartjes);
+  // Update header
+  const progress = ((scene.sceneNum - 1) / 12) * 100;
+  document.getElementById('progress-fill').style.width = progress + '%';
+  document.getElementById('scene-counter').textContent = 'Scene ' + scene.sceneNum + ' / 12';
+
+  // Update image
+  const img = document.getElementById('scene-img');
+  img.style.opacity = 0;
+  img.src = scene.image;
+  img.onload = () => { img.style.opacity = 1; };
+
+  // Update label
+  const lbl = document.getElementById('scene-label');
+  lbl.textContent = scene.label;
+  lbl.className = 'scene-label';
+
+  // Update text
+  document.getElementById('scene-title').textContent = scene.title;
+  document.getElementById('scene-text').textContent = scene.text;
+
+  // Hide consequence panel
+  document.getElementById('consequence-panel').style.display = 'none';
+  document.getElementById('choices-label').style.display = 'block';
+
+  // Render choices
+  renderChoices(scene.choices);
+
+  // Stop voice
+  stopVoice();
+}
+
+function renderChoices(choices) {
+  const container = document.getElementById('choices');
+  container.innerHTML = '';
+  choices.forEach((c, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.innerHTML = '<span class="choice-letter">' + c.letter + '</span><span>' + c.text + '</span>';
+    btn.onclick = () => makeChoice(i);
+    container.appendChild(btn);
+  });
+}
+
+function makeChoice(index) {
+  const scene = SCENES[STATE.currentScene];
+  const choice = scene.choices[index];
+
+  // Disable all buttons
+  document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+  document.getElementById('choices-label').style.display = 'none';
+  stopVoice();
+
+  if (choice.correct) {
+    // Correct!
+    STATE.xp += 50;
+    STATE.consecutiveBig = 0;
+    document.getElementById('xp-display').textContent = STATE.xp;
+    flashScreen('green');
+    showConsequence('good', '✅ Juiste keuze! +50 XP', 'Goed gedaan. Je hebt de juiste beslissing genomen.', choice.next);
+  } else {
+    // Wrong
+    STATE.fouten++;
+    STATE.xp = Math.max(0, STATE.xp - 10);
+    document.getElementById('xp-display').textContent = STATE.xp;
+
+    const fault = FAULT_SCENES[choice.faultScene];
+    const isBig = choice.faultType === 'big';
+
+    if (isBig) {
+      STATE.consecutiveBig++;
+    } else {
+      STATE.consecutiveBig = 0;
     }
-}
 
-// ============================================================
-// SCENE RENDEREN
-// ============================================================
-function toonScene(sceneId) {
-    stopSpeech();
-    const scene = GAME.scenes.find(s => s.id === sceneId);
-    if (!scene) return;
+    loseHeart();
+    flashScreen('red');
 
-    const wrapper = document.getElementById('scene-wrapper');
-    wrapper.innerHTML = '';
-    wrapper.classList.remove('fade-in');
-    void wrapper.offsetWidth;
-    wrapper.classList.add('fade-in');
-
-    if (scene.type === 'keuze') {
-        toonKeuzeScene(scene, wrapper);
-    } else if (scene.type === 'gevolg') {
-        toonGevolgScene(scene, wrapper, false);
-    } else if (scene.type === 'gevolg_groot') {
-        toonGevolgScene(scene, wrapper, true);
+    // Check game over conditions
+    if (STATE.hearts <= 0 || STATE.consecutiveBig >= 2) {
+      STATE.pendingNext = 'GAMEOVER';
+    } else {
+      STATE.pendingNext = choice.next;
     }
 
-    updateHUD();
+    showConsequence(isBig ? 'big' : 'small', fault.title, fault.text, STATE.pendingNext, fault.image);
+  }
 }
 
-function toonKeuzeScene(scene, wrapper) {
-    const idx = GAME.hoofdpad.indexOf(scene.id);
-    wrapper.innerHTML = `
-    <div class="scene-image-container">
-        <img class="scene-image" src="${scene.afbeelding}" alt="${scene.titel}" onerror="this.style.background='#0f1628';this.style.display='block'">
-        <div class="scene-overlay"></div>
-        <div class="scene-badge ${scene.badgeType}">${scene.badge}</div>
-    </div>
-    <div class="story-content">
-        <div class="scene-number">Scene ${idx + 1} van ${GAME.hoofdpad.length}</div>
-        <div class="scene-title">${scene.titel}</div>
-        <button class="voice-btn" id="voice-btn" onclick="toggleSpeech('${scene.id}')">🔊 Voorlezen</button>
-        <div class="scene-text">${scene.tekst}</div>
-        <div class="choices-label">Wat doe jij?</div>
-        ${scene.keuzes.map((k, i) => `
-        <button class="btn-choice" onclick="maakKeuze('${scene.id}', ${i})">
-            <span class="choice-letter">${k.letter}</span>
-            <span>${k.tekst}</span>
-        </button>`).join('')}
-    </div>`;
+function showConsequence(type, title, text, next, image) {
+  const panel = document.getElementById('consequence-panel');
+  panel.className = 'consequence-panel ' + type;
+  panel.style.display = 'block';
+  document.getElementById('con-title').textContent = title;
+  document.getElementById('con-text').textContent = text;
+  STATE.pendingNext = next;
+
+  // Update scene image to fault image if provided
+  if (image && type !== 'good') {
+    const img = document.getElementById('scene-img');
+    img.style.opacity = 0;
+    img.src = image;
+    img.onload = () => { img.style.opacity = 1; };
+  }
+
+  panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-function toonGevolgScene(scene, wrapper, isGroot) {
-    const type = isGroot ? 'fatal' : 'bad';
-    const icon = isGroot ? '🚨' : '⚠️';
-    wrapper.innerHTML = `
-    <div class="scene-image-container">
-        <img class="scene-image" src="${scene.afbeelding}" alt="${scene.titel}" onerror="this.style.background='#0f1628'">
-        <div class="scene-overlay"></div>
-        <div class="scene-badge ${scene.badgeType}">${scene.badge}</div>
-    </div>
-    <div class="story-content">
-        <div class="consequence-panel ${type}">
-            <div class="consequence-icon">${icon}</div>
-            <div class="consequence-title">${scene.titel}</div>
-            <div class="consequence-text">${scene.tekst}</div>
-        </div>
-        <button class="voice-btn" id="voice-btn" onclick="toggleSpeechText('${scene.id}')">🔊 Voorlezen</button>
-        <div id="gevolg-actie"></div>
-    </div>`;
+function continueAfterConsequence() {
+  const next = STATE.pendingNext;
+  document.getElementById('consequence-panel').style.display = 'none';
 
-    // Automatisch speech starten
-    setTimeout(() => speakText(scene.voiceTekst || scene.tekst), 400);
+  if (next === 'WIN') {
+    showWin();
+  } else if (next === 'GAMEOVER' || STATE.hearts <= 0) {
+    showGameOver();
+  } else {
+    loadScene(next);
+  }
+}
 
-    // Bepaal wat er na het gevolg gebeurt
+function loseHeart() {
+  const hearts = ['h3', 'h2', 'h1'];
+  const idx = 3 - STATE.hearts;
+  if (idx < 3) {
+    const el = document.getElementById(hearts[idx]);
+    el.classList.add('lost', 'heart-shake');
+    setTimeout(() => el.classList.remove('heart-shake'), 400);
+  }
+  STATE.hearts--;
+}
+
+function flashScreen(color) {
+  const flash = document.getElementById('flash');
+  flash.className = 'flash-overlay ' + color;
+  flash.style.opacity = 1;
+  setTimeout(() => { flash.style.opacity = 0; }, 300);
+}
+
+function toggleVoice() {
+  if (STATE.speaking) {
+    stopVoice();
+  } else {
+    startVoice();
+  }
+}
+
+function startVoice() {
+  if (!synth) return;
+  stopVoice();
+  const scene = SCENES[STATE.currentScene];
+  if (!scene) return;
+  const text = scene.title + '. ' + scene.text;
+  utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'nl-NL';
+  utterance.rate = 0.95;
+  utterance.onend = () => {
+    STATE.speaking = false;
+    document.getElementById('voice-btn').className = 'voice-btn';
+    document.getElementById('voice-btn').textContent = '🔊 Voorlezen';
+  };
+  synth.speak(utterance);
+  STATE.speaking = true;
+  document.getElementById('voice-btn').className = 'voice-btn speaking';
+  document.getElementById('voice-btn').textContent = '⏹ Stop';
+}
+
+function stopVoice() {
+  if (synth) synth.cancel();
+  STATE.speaking = false;
+  const btn = document.getElementById('voice-btn');
+  if (btn) { btn.className = 'voice-btn'; btn.textContent = '🔊 Voorlezen'; }
+}
+
+function showGameOver() {
+  stopVoice();
+  document.getElementById('game').style.display = 'none';
+  const go = document.getElementById('gameover');
+  go.style.display = 'flex';
+  document.getElementById('go-scenes').textContent = SCENES[STATE.currentScene]?.sceneNum || '?';
+  document.getElementById('go-xp').textContent = STATE.xp;
+  document.getElementById('go-fouten').textContent = STATE.fouten;
+}
+
+function showWin() {
+  stopVoice();
+  document.getElementById('game').style.display = 'none';
+  const win = document.getElementById('winscreen');
+  win.style.display = 'flex';
+  document.getElementById('win-xp').textContent = STATE.xp;
+  document.getElementById('win-hartjes').textContent = STATE.hearts;
+  document.getElementById('win-fouten').textContent = STATE.fouten;
+  const score = STATE.fouten === 0 ? 'S' : STATE.fouten <= 2 ? 'A' : STATE.fouten <= 5 ? 'B' : 'C';
+  document.getElementById('win-score').textContent = score;
+  spawnConfetti();
+}
+
+function spawnConfetti() {
+  const colors = ['#00d4c8', '#ffd700', '#e040fb', '#00c853', '#ff6b6b'];
+  for (let i = 0; i < 80; i++) {
     setTimeout(() => {
-        const actieDiv = document.getElementById('gevolg-actie');
-        if (!actieDiv) return;
-        if (STATE.gameOver) {
-            actieDiv.innerHTML = `<button class="btn-retry" onclick="toonGameOver()">💀 Bekijk resultaat</button>`;
-        } else {
-            const volgende = GAME.hoofdpad[STATE.sceneIndex];
-            actieDiv.innerHTML = `<button class="btn-continue" onclick="toonScene('${volgende}')">➡️ Verder</button>`;
-        }
-    }, 300);
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.top = '-20px';
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      el.style.width = (Math.random() * 10 + 5) + 'px';
+      el.style.height = (Math.random() * 10 + 5) + 'px';
+      el.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      el.style.animationDelay = Math.random() * 0.5 + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }, i * 30);
+  }
 }
 
-// ============================================================
-// KEUZE VERWERKEN
-// ============================================================
-function maakKeuze(sceneId, keuzeIdx) {
-    stopSpeech();
-    const scene = GAME.scenes.find(s => s.id === sceneId);
-    const keuze = scene.keuzes[keuzeIdx];
-
-    if (keuze.type === 'goed') {
-        // Juiste keuze
-        STATE.xp += GAME.xpPerJuist;
-        STATE.totaalJuist++;
-        STATE.consecutieveFouten = 0;
-
-        // Volgende scene in hoofdpad
-        STATE.sceneIndex++;
-        if (STATE.sceneIndex >= GAME.hoofdpad.length) {
-            toonWin();
-        } else {
-            toonSuccesFlash(() => toonScene(GAME.hoofdpad[STATE.sceneIndex]));
-        }
-
-    } else {
-        // Foute keuze
-        const isGroot = keuze.type === 'groot_fout';
-        STATE.totaalFouten++;
-        STATE.consecutieveFouten++;
-
-        if (isGroot) {
-            // Grote fout = altijd hartje weg
-            verliesHartje();
-        } else {
-            // Kleine fout = hartje weg
-            verliesHartje();
-        }
-
-        // XP aftrek
-        STATE.xp = Math.max(0, STATE.xp + GAME.xpPerFout);
-
-        // Game over check: 2 fouten na elkaar
-        if (STATE.consecutieveFouten >= GAME.consecutieveFoutenGameOver) {
-            STATE.gameOver = true;
-        }
-        // Of geen hartjes meer
-        if (STATE.hartjes <= 0) {
-            STATE.gameOver = true;
-        }
-
-        // Toon gevolg-scene
-        const gevolgenMap = GAME.gevolgen[sceneId];
-        let gevolgId = null;
-        if (gevolgenMap && gevolgenMap[keuzeIdx] !== undefined) {
-            gevolgId = gevolgenMap[keuzeIdx];
-        }
-
-        if (gevolgId) {
-            STATE.huidigGevolg = gevolgId;
-            // Na gevolg: als niet game over, ga naar volgende scene in hoofdpad
-            if (!STATE.gameOver) {
-                STATE.sceneIndex++;
-                if (STATE.sceneIndex >= GAME.hoofdpad.length) {
-                    STATE.gewonnen = true;
-                }
-            }
-            toonScene(gevolgId);
-        } else {
-            // Geen gevolg-scene, ga direct verder
-            if (STATE.gameOver) {
-                toonGameOver();
-            } else {
-                STATE.sceneIndex++;
-                toonScene(GAME.hoofdpad[STATE.sceneIndex] || GAME.hoofdpad[GAME.hoofdpad.length - 1]);
-            }
-        }
-    }
-    updateHUD();
+function resetGame() {
+  stopVoice();
+  STATE = { naam: STATE.naam, klas: STATE.klas, hearts: 3, xp: 0, currentScene: 's1', fouten: 0, consecutiveBig: 0, pendingNext: null, speaking: false };
+  // Reset hearts display
+  ['h1','h2','h3'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('lost');
+    el.textContent = '❤️';
+  });
+  document.getElementById('xp-display').textContent = '0';
+  document.getElementById('progress-fill').style.width = '0%';
+  document.getElementById('gameover').style.display = 'none';
+  document.getElementById('winscreen').style.display = 'none';
+  document.getElementById('game').style.display = 'flex';
+  loadScene('s1');
 }
 
-function verliesHartje() {
-    if (STATE.hartjes > 0) STATE.hartjes--;
-    // Schud de hartjes
-    const heartsEl = document.getElementById('hearts');
-    if (heartsEl) {
-        heartsEl.classList.add('shake');
-        setTimeout(() => heartsEl.classList.remove('shake'), 500);
-    }
-    updateHUD();
-}
-
-function toonSuccesFlash(callback) {
-    const wrapper = document.getElementById('scene-wrapper');
-    wrapper.innerHTML = `
-    <div style="min-height:60vh;display:flex;align-items:center;justify-content:center;padding:40px;">
-        <div class="fade-in" style="text-align:center;">
-            <div style="font-size:64px;margin-bottom:16px;">✅</div>
-            <div style="font-size:24px;font-weight:900;color:#00ff88;margin-bottom:8px;">Juiste keuze!</div>
-            <div style="font-size:14px;color:#64748b;margin-bottom:24px;">+${GAME.xpPerJuist} XP verdiend</div>
-            <button class="btn-continue" onclick="(${callback})()">➡️ Verder</button>
-        </div>
-    </div>`;
-}
-
-// ============================================================
-// GAME OVER
-// ============================================================
-function toonGameOver() {
-    stopSpeech();
-    const wrapper = document.getElementById('scene-wrapper');
-    wrapper.innerHTML = `
-    <div style="padding-top:20px;">
-        <div class="gameover-screen fade-in">
-            <img class="gameover-img" src="images/scene_gameover.png" alt="Game Over" onerror="this.style.display='none'">
-            <div class="gameover-title">GAME OVER</div>
-            <div class="gameover-sub">Je veiligheidsfouten hadden ernstige gevolgen.<br>Leer ervan en probeer opnieuw.</div>
-            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;">
-                <div class="win-stat"><div class="win-stat-val" style="color:#ff4444;">${STATE.totaalFouten}</div><div class="win-stat-lbl">Fouten</div></div>
-                <div class="win-stat"><div class="win-stat-val">${STATE.totaalJuist}</div><div class="win-stat-lbl">Juist</div></div>
-                <div class="win-stat"><div class="win-stat-val">${STATE.xp}</div><div class="win-stat-lbl">XP</div></div>
-            </div>
-            <button class="btn-retry" onclick="herstart()">🔄 Opnieuw proberen</button>
-        </div>
-    </div>`;
-    speakText('Game over. Je veiligheidsfouten hadden ernstige gevolgen. Leer ervan en probeer opnieuw.');
-}
-
-// ============================================================
-// WIN
-// ============================================================
-function toonWin() {
-    stopSpeech();
-    const wrapper = document.getElementById('scene-wrapper');
-    const score = Math.round((STATE.totaalJuist / GAME.hoofdpad.length) * 100);
-    wrapper.innerHTML = `
-    <div style="padding-top:20px;">
-        <div class="win-screen fade-in">
-            <img class="win-img" src="images/scene_success.png" alt="Gewonnen!" onerror="this.style.display='none'">
-            <div class="win-title">MEESTER!</div>
-            <div class="win-sub">Je hebt alle 12 scenes doorstaan.<br>Je bent klaar voor de echte werkplaats.</div>
-            <div class="win-stats">
-                <div class="win-stat"><div class="win-stat-val">${STATE.xp}</div><div class="win-stat-lbl">Totaal XP</div></div>
-                <div class="win-stat"><div class="win-stat-val">${score}%</div><div class="win-stat-lbl">Score</div></div>
-                <div class="win-stat"><div class="win-stat-val">${STATE.hartjes}❤️</div><div class="win-stat-lbl">Hartjes over</div></div>
-            </div>
-            <button class="btn-continue" onclick="herstart()">🔄 Opnieuw spelen</button>
-        </div>
-    </div>`;
-    speakText('Gefeliciteerd! Je hebt alle twaalf scenes doorstaan. Je bent klaar voor de echte werkplaats!');
-}
-
-// ============================================================
-// HERSTART
-// ============================================================
-function herstart() {
-    stopSpeech();
-    STATE.hartjes = GAME.maxHartjes;
-    STATE.xp = 0;
-    STATE.sceneIndex = 0;
-    STATE.consecutieveFouten = 0;
-    STATE.totaalFouten = 0;
-    STATE.totaalJuist = 0;
-    STATE.gameOver = false;
-    STATE.gewonnen = false;
-    STATE.huidigGevolg = null;
-    updateHUD();
-    toonScene(GAME.hoofdpad[0]);
-}
-
-// ============================================================
-// SPEECH (Text-to-Speech)
-// ============================================================
-function speakText(tekst) {
-    if (!synth) return;
-    stopSpeech();
-    const u = new SpeechSynthesisUtterance(tekst);
-    u.lang = 'nl-NL';
-    u.rate = 0.95;
-    u.pitch = 1;
-    huidigUtterance = u;
-    u.onstart = () => {
-        const btn = document.getElementById('voice-btn');
-        if (btn) btn.classList.add('speaking');
-        STATE.ttsActief = true;
-    };
-    u.onend = () => {
-        const btn = document.getElementById('voice-btn');
-        if (btn) btn.classList.remove('speaking');
-        STATE.ttsActief = false;
-    };
-    synth.speak(u);
-}
-
-function stopSpeech() {
-    if (synth) synth.cancel();
-    STATE.ttsActief = false;
-    const btn = document.getElementById('voice-btn');
-    if (btn) btn.classList.remove('speaking');
-}
-
-function toggleSpeech(sceneId) {
-    if (STATE.ttsActief) {
-        stopSpeech();
-    } else {
-        const scene = GAME.scenes.find(s => s.id === sceneId);
-        if (scene) speakText(scene.voiceTekst || scene.tekst);
-    }
-}
-
-function toggleSpeechText(sceneId) {
-    if (STATE.ttsActief) {
-        stopSpeech();
-    } else {
-        const scene = GAME.scenes.find(s => s.id === sceneId);
-        if (scene) speakText(scene.voiceTekst || scene.tekst);
-    }
-}
-
-// ============================================================
-// LEERKRACHT PANEL
-// ============================================================
-function showPanel() {
-    renderPanel();
-    document.getElementById('panel-overlay').style.display = 'flex';
-}
-
-function hidePanel() {
-    document.getElementById('panel-overlay').style.display = 'none';
-}
-
-function renderPanel() {
-    const c = document.getElementById('panel-content');
-    c.innerHTML = `
-    <div class="panel-section">
-        <h3>Algemene instellingen</h3>
-        <div class="panel-grid">
-            <div>
-                <label class="panel-label">Titel</label>
-                <input class="panel-input" id="p-titel" value="${GAME.titel}" />
-            </div>
-            <div>
-                <label class="panel-label">Ondertitel</label>
-                <input class="panel-input" id="p-sub" value="${GAME.ondertitel}" />
-            </div>
-            <div>
-                <label class="panel-label">XP per juiste keuze</label>
-                <input class="panel-input" type="number" id="p-xp" value="${GAME.xpPerJuist}" />
-            </div>
-            <div>
-                <label class="panel-label">Max hartjes</label>
-                <input class="panel-input" type="number" id="p-hartjes" value="${GAME.maxHartjes}" min="1" max="5" />
-            </div>
-        </div>
-        <button class="btn-save-panel" onclick="slaAlgemeenOp()">💾 Opslaan</button>
-    </div>
-
-    <div class="panel-section">
-        <h3>📖 Scenes bewerken</h3>
-        <p style="font-size:12px;color:#64748b;margin-bottom:12px;">Klik op een scene om de tekst en keuzes aan te passen.</p>
-        ${GAME.scenes.filter(s => s.type === 'keuze').map(s => `
-        <div class="scene-editor">
-            <div class="scene-editor-header">
-                <span>${s.badge}</span>
-                <button onclick="toggleSceneEditor('${s.id}')" style="background:#0d1a30;border:1px solid #00e5ff44;color:#00e5ff;border-radius:6px;padding:4px 10px;cursor:pointer;font-size:11px;">✏️ Bewerken</button>
-            </div>
-            <div id="editor-${s.id}" style="display:none;">
-                <label class="panel-label">Titel</label>
-                <input class="panel-input" id="se-titel-${s.id}" value="${s.titel}" />
-                <label class="panel-label">Verhaal tekst</label>
-                <textarea class="panel-input" id="se-tekst-${s.id}" rows="3" style="resize:vertical;">${s.tekst}</textarea>
-                <label class="panel-label">Afbeelding pad (bv. images/mijn_foto.jpg)</label>
-                <input class="panel-input" id="se-img-${s.id}" value="${s.afbeelding}" />
-                ${s.keuzes.map((k, ki) => `
-                <div class="choice-editor">
-                    <label class="panel-label">Keuze ${k.letter}</label>
-                    <input class="panel-input" id="se-keuze-${s.id}-${ki}" value="${k.tekst}" />
-                    <label class="panel-label">Type</label>
-                    <select class="choice-type-select" id="se-type-${s.id}-${ki}">
-                        <option value="goed" ${k.type==='goed'?'selected':''}>✅ Goed (juiste keuze)</option>
-                        <option value="klein_fout" ${k.type==='klein_fout'?'selected':''}>⚠️ Kleine fout (hartje weg)</option>
-                        <option value="groot_fout" ${k.type==='groot_fout'?'selected':''}>🚨 Grote fout (levensgevaarlijk)</option>
-                    </select>
-                </div>`).join('')}
-                <button class="btn-save-panel" onclick="slaSceneOp('${s.id}')">💾 Scene opslaan</button>
-            </div>
-        </div>`).join('')}
-    </div>`;
-}
-
-function toggleSceneEditor(id) {
-    const el = document.getElementById('editor-' + id);
-    if (el) el.style.display = el.style.display === 'none' ? 'block' : 'none';
-}
-
-function slaAlgemeenOp() {
-    GAME.titel = document.getElementById('p-titel').value.trim() || GAME.titel;
-    GAME.ondertitel = document.getElementById('p-sub').value.trim() || GAME.ondertitel;
-    GAME.xpPerJuist = parseInt(document.getElementById('p-xp').value) || GAME.xpPerJuist;
-    GAME.maxHartjes = parseInt(document.getElementById('p-hartjes').value) || GAME.maxHartjes;
-    updateHUD();
-    alert('✅ Opgeslagen!');
-}
-
-function slaSceneOp(sceneId) {
-    const scene = GAME.scenes.find(s => s.id === sceneId);
-    if (!scene) return;
-    scene.titel = document.getElementById(`se-titel-${sceneId}`)?.value.trim() || scene.titel;
-    scene.tekst = document.getElementById(`se-tekst-${sceneId}`)?.value.trim() || scene.tekst;
-    scene.voiceTekst = scene.tekst;
-    scene.afbeelding = document.getElementById(`se-img-${sceneId}`)?.value.trim() || scene.afbeelding;
-    scene.keuzes.forEach((k, ki) => {
-        k.tekst = document.getElementById(`se-keuze-${sceneId}-${ki}`)?.value.trim() || k.tekst;
-        k.type = document.getElementById(`se-type-${sceneId}-${ki}`)?.value || k.type;
-    });
-    alert(`✅ Scene opgeslagen!`);
-}
-
-// ============================================================
-// BOOT
-// ============================================================
+// Enter key on inputs
 document.addEventListener('DOMContentLoaded', () => {
-    // Zet hartjes correct
-    const heartsDiv = document.getElementById('hearts');
-    if (heartsDiv) {
-        heartsDiv.innerHTML = '';
-        for (let i = 1; i <= 3; i++) {
-            heartsDiv.innerHTML += `<span class="heart" id="heart-${i}">❤️</span>`;
-        }
-    }
+  document.getElementById('input-naam').addEventListener('keydown', e => { if (e.key === 'Enter') startGame(); });
+  document.getElementById('input-klas').addEventListener('keydown', e => { if (e.key === 'Enter') startGame(); });
 });
 </script>
 </body>
