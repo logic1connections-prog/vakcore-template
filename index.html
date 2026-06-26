@@ -3,981 +3,666 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DrillMaster — Veilig aan de Kolomboormachine</title>
+<title>DrillMaster — De Werkplaats Missie</title>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
   :root {
-    --bg: #0a0e1a;
-    --panel: #111827;
-    --border: #1e2d40;
-    --teal: #00d4c8;
-    --pink: #e040fb;
-    --gold: #ffd700;
-    --red: #ff3b3b;
-    --orange: #ff8c00;
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a24;
+    --teal: #00e5cc;
+    --pink: #e500a4;
+    --purple: #7c3aed;
+    --gold: #f59e0b;
+    --red: #ef4444;
+    --orange: #f97316;
+    --green: #10b981;
     --text: #e2e8f0;
     --muted: #64748b;
-    --good: #00c853;
-    --bad: #ff3b3b;
+    --border: #2d2d3d;
   }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Segoe UI',system-ui,sans-serif; min-height:100vh; overflow-x:hidden; }
 
-  /* ===== SPLASH SCREEN ===== */
-  #splash {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: radial-gradient(ellipse at center, #0d1b2a 0%, #0a0e1a 70%);
-    padding: 2rem;
-  }
-  #splash .logo {
-    font-size: 3rem;
-    font-weight: 900;
-    letter-spacing: 0.1em;
-    color: var(--teal);
-    text-shadow: 0 0 30px rgba(0,212,200,0.5);
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-  }
-  #splash .subtitle {
-    color: var(--muted);
-    font-size: 0.9rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 3rem;
-  }
-  #splash .card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 2.5rem;
-    width: 100%;
-    max-width: 440px;
-    box-shadow: 0 0 40px rgba(0,212,200,0.1);
-  }
-  #splash h2 {
-    font-size: 1.3rem;
-    margin-bottom: 1.5rem;
-    color: var(--text);
-  }
-  #splash label {
-    display: block;
-    font-size: 0.8rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.4rem;
-    margin-top: 1rem;
-  }
-  #splash input {
-    width: 100%;
-    background: #1a2332;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.8rem 1rem;
-    color: var(--text);
-    font-size: 1rem;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  #splash input:focus { border-color: var(--teal); }
-  #splash .btn-start {
-    width: 100%;
-    margin-top: 2rem;
-    background: linear-gradient(135deg, var(--teal), #0099ff);
-    border: none;
-    border-radius: 10px;
-    padding: 1rem;
-    color: #000;
-    font-size: 1.1rem;
-    font-weight: 800;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: transform 0.1s, box-shadow 0.2s;
-    box-shadow: 0 0 20px rgba(0,212,200,0.3);
-  }
-  #splash .btn-start:hover { transform: translateY(-2px); box-shadow: 0 0 30px rgba(0,212,200,0.5); }
-  #splash .info-row {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    margin-top: 1.5rem;
-    font-size: 0.8rem;
-    color: var(--muted);
-  }
-  #splash .info-row span { display: flex; align-items: center; gap: 0.3rem; }
+  /* SPLASH */
+  #splash { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:100vh; padding:2rem; background: radial-gradient(ellipse at center, #1a0a2e 0%, var(--bg) 70%); }
+  .splash-logo { font-size:3rem; font-weight:900; letter-spacing:0.1em; color:var(--teal); text-shadow:0 0 30px var(--teal); margin-bottom:0.5rem; }
+  .splash-sub { color:var(--muted); font-size:1rem; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:3rem; }
+  .splash-card { background:var(--bg2); border:1px solid var(--border); border-radius:1rem; padding:2.5rem; width:100%; max-width:420px; }
+  .splash-card h2 { font-size:1.5rem; margin-bottom:2rem; text-align:center; }
+  .form-group { margin-bottom:1.5rem; }
+  .form-group label { display:block; font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:0.5rem; }
+  .form-group input { width:100%; background:var(--bg3); border:1px solid var(--border); border-radius:0.5rem; padding:0.75rem 1rem; color:var(--text); font-size:1rem; outline:none; transition:border-color 0.2s; }
+  .form-group input:focus { border-color:var(--teal); }
+  .btn-start { width:100%; background:linear-gradient(135deg,var(--teal),var(--purple)); border:none; border-radius:0.5rem; padding:1rem; color:#fff; font-size:1.1rem; font-weight:700; letter-spacing:0.1em; cursor:pointer; transition:opacity 0.2s,transform 0.1s; }
+  .btn-start:hover { opacity:0.9; transform:translateY(-1px); }
+  .splash-stats { display:flex; gap:2rem; margin-top:2rem; justify-content:center; color:var(--muted); font-size:0.85rem; }
 
-  /* ===== GAME SCREEN ===== */
-  #game { display: none; flex-direction: column; min-height: 100vh; }
+  /* HUD */
+  #game { display:none; min-height:100vh; }
+  .hud { position:sticky; top:0; z-index:100; background:rgba(10,10,15,0.95); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); padding:0.75rem 1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; }
+  .hud-brand { font-weight:900; font-size:1.1rem; color:var(--teal); letter-spacing:0.05em; }
+  .hud-hearts { display:flex; gap:0.3rem; font-size:1.4rem; }
+  .heart { transition:all 0.3s; }
+  .heart.lost { filter:grayscale(1); opacity:0.3; }
+  .hud-xp { background:var(--bg3); border:1px solid var(--border); border-radius:2rem; padding:0.3rem 0.8rem; font-size:0.85rem; color:var(--gold); font-weight:700; }
+  .hud-progress { font-size:0.8rem; color:var(--muted); }
+  .hud-user { font-size:0.8rem; color:var(--muted); }
 
-  /* Header */
-  .game-header {
-    background: var(--panel);
-    border-bottom: 1px solid var(--border);
-    padding: 0.8rem 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-  }
-  .game-header .brand { font-size: 1.1rem; font-weight: 800; color: var(--teal); letter-spacing: 0.1em; }
-  .game-header .brand span { color: var(--muted); font-weight: 400; font-size: 0.8rem; margin-left: 0.5rem; }
-  .hearts { display: flex; gap: 0.3rem; font-size: 1.5rem; }
-  .heart { transition: transform 0.3s; }
-  .heart.lost { filter: grayscale(1); opacity: 0.3; transform: scale(0.8); }
-  .xp-badge {
-    background: linear-gradient(135deg, #1a2332, #0d1b2a);
-    border: 1px solid var(--gold);
-    border-radius: 20px;
-    padding: 0.3rem 0.8rem;
-    font-size: 0.85rem;
-    color: var(--gold);
-    font-weight: 700;
-  }
-  .player-badge {
-    background: var(--border);
-    border-radius: 20px;
-    padding: 0.3rem 0.8rem;
-    font-size: 0.8rem;
-    color: var(--muted);
-  }
-  .progress-bar-wrap {
-    height: 3px;
-    background: var(--border);
-    width: 100%;
-  }
-  .progress-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--teal), #0099ff);
-    transition: width 0.5s ease;
-  }
+  /* SCENE */
+  .scene-wrap { max-width:900px; margin:0 auto; padding:2rem 1rem; }
+  .scene-img { width:100%; border-radius:1rem; margin-bottom:1.5rem; border:1px solid var(--border); max-height:400px; object-fit:cover; }
+  .scene-badge { display:inline-block; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; padding:0.25rem 0.75rem; border-radius:2rem; margin-bottom:0.75rem; font-weight:700; }
+  .badge-intro { background:rgba(0,229,204,0.15); color:var(--teal); border:1px solid var(--teal); }
+  .badge-choice { background:rgba(124,58,237,0.15); color:#a78bfa; border:1px solid #7c3aed; }
+  .badge-danger { background:rgba(239,68,68,0.15); color:var(--red); border:1px solid var(--red); }
+  .badge-impact { background:rgba(249,115,22,0.15); color:var(--orange); border:1px solid var(--orange); }
+  .badge-recovery { background:rgba(245,158,11,0.15); color:var(--gold); border:1px solid var(--gold); }
+  .badge-mentor { background:rgba(16,185,129,0.15); color:var(--green); border:1px solid var(--green); }
+  .badge-success { background:rgba(16,185,129,0.2); color:var(--green); border:1px solid var(--green); }
+  .badge-boss { background:rgba(229,0,164,0.15); color:var(--pink); border:1px solid var(--pink); }
+  .scene-title { font-size:1.5rem; font-weight:800; margin-bottom:0.25rem; }
+  .scene-subtitle { font-size:0.85rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:1rem; }
+  .scene-text { font-size:1.05rem; line-height:1.8; color:#cbd5e1; margin-bottom:1.5rem; }
+  .voice-btn { background:var(--bg3); border:1px solid var(--border); border-radius:0.5rem; padding:0.5rem 1rem; color:var(--teal); font-size:0.85rem; cursor:pointer; margin-bottom:1.5rem; transition:background 0.2s; }
+  .voice-btn:hover { background:var(--border); }
+  .choices-label { font-size:0.75rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:0.75rem; }
+  .choices { display:flex; flex-direction:column; gap:0.75rem; }
+  .choice-btn { background:var(--bg2); border:1px solid var(--border); border-radius:0.75rem; padding:1rem 1.25rem; text-align:left; color:var(--text); font-size:0.95rem; cursor:pointer; transition:all 0.2s; display:flex; align-items:flex-start; gap:0.75rem; }
+  .choice-btn:hover { border-color:var(--teal); background:rgba(0,229,204,0.05); transform:translateX(4px); }
+  .choice-letter { font-weight:900; color:var(--teal); font-size:1rem; min-width:1.5rem; }
 
-  /* Main game area */
-  .game-main {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 2rem 1rem;
-    max-width: 900px;
-    margin: 0 auto;
-    width: 100%;
-  }
+  /* CONSEQUENCE PANEL */
+  .consequence { border-radius:0.75rem; padding:1.25rem; margin-bottom:1.5rem; border-left:4px solid; }
+  .consequence.klein { background:rgba(249,115,22,0.1); border-color:var(--orange); }
+  .consequence.groot { background:rgba(239,68,68,0.1); border-color:var(--red); }
+  .consequence.mentor { background:rgba(16,185,129,0.1); border-color:var(--green); }
+  .consequence-title { font-weight:700; margin-bottom:0.5rem; font-size:0.9rem; letter-spacing:0.05em; }
+  .consequence.klein .consequence-title { color:var(--orange); }
+  .consequence.groot .consequence-title { color:var(--red); }
+  .consequence.mentor .consequence-title { color:var(--green); }
+  .consequence-text { font-size:0.9rem; line-height:1.6; color:#94a3b8; }
+  .btn-continue { background:linear-gradient(135deg,var(--teal),var(--purple)); border:none; border-radius:0.5rem; padding:0.75rem 2rem; color:#fff; font-weight:700; cursor:pointer; font-size:0.95rem; margin-top:0.75rem; transition:opacity 0.2s; }
+  .btn-continue:hover { opacity:0.85; }
 
-  /* Scene counter */
-  .scene-counter {
-    font-size: 0.75rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
-    margin-bottom: 1rem;
-  }
+  /* GAME OVER */
+  #gameover { display:none; min-height:100vh; align-items:center; justify-content:center; flex-direction:column; padding:2rem; background:radial-gradient(ellipse at center, #2d0a0a 0%, var(--bg) 70%); }
+  .go-img { width:100%; max-width:600px; border-radius:1rem; margin-bottom:2rem; }
+  .go-title { font-size:3rem; font-weight:900; color:var(--red); text-shadow:0 0 40px var(--red); margin-bottom:1rem; text-align:center; }
+  .go-stats { background:var(--bg2); border:1px solid var(--border); border-radius:1rem; padding:1.5rem; max-width:400px; width:100%; margin-bottom:1.5rem; }
+  .go-stat { display:flex; justify-content:space-between; padding:0.5rem 0; border-bottom:1px solid var(--border); font-size:0.9rem; }
+  .go-stat:last-child { border-bottom:none; }
+  .btn-restart { background:var(--red); border:none; border-radius:0.5rem; padding:0.75rem 2rem; color:#fff; font-weight:700; cursor:pointer; font-size:1rem; }
 
-  /* Scene image */
-  .scene-image-wrap {
-    width: 100%;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    margin-bottom: 1.5rem;
-    position: relative;
-    box-shadow: 0 0 40px rgba(0,0,0,0.5);
-    max-height: 380px;
-  }
-  .scene-image-wrap img {
-    width: 100%;
-    height: 380px;
-    object-fit: cover;
-    display: block;
-    transition: opacity 0.4s;
-  }
-  .scene-label {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    background: rgba(0,0,0,0.7);
-    border: 1px solid var(--teal);
-    border-radius: 6px;
-    padding: 0.3rem 0.7rem;
-    font-size: 0.75rem;
-    color: var(--teal);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
-  .scene-label.danger { border-color: var(--red); color: var(--red); }
-  .scene-label.warning { border-color: var(--orange); color: var(--orange); }
+  /* WIN */
+  #winscreen { display:none; min-height:100vh; align-items:center; justify-content:center; flex-direction:column; padding:2rem; background:radial-gradient(ellipse at center, #0a2d1a 0%, var(--bg) 70%); }
+  .win-img { width:100%; max-width:600px; border-radius:1rem; margin-bottom:2rem; }
+  .win-title { font-size:3rem; font-weight:900; color:var(--teal); text-shadow:0 0 40px var(--teal); margin-bottom:0.5rem; text-align:center; }
+  .win-score { font-size:4rem; font-weight:900; color:var(--gold); margin:1rem 0; }
+  .win-stats { background:var(--bg2); border:1px solid var(--border); border-radius:1rem; padding:1.5rem; max-width:400px; width:100%; margin-bottom:1.5rem; }
+  .win-stat { display:flex; justify-content:space-between; padding:0.5rem 0; border-bottom:1px solid var(--border); font-size:0.9rem; }
+  .win-stat:last-child { border-bottom:none; }
+  .btn-replay { background:linear-gradient(135deg,var(--teal),var(--purple)); border:none; border-radius:0.5rem; padding:0.75rem 2rem; color:#fff; font-weight:700; cursor:pointer; font-size:1rem; }
 
-  /* Scene card */
-  .scene-card {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 2rem;
-    width: 100%;
-    margin-bottom: 1.5rem;
-  }
-  .scene-title {
-    font-size: 1.4rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-    color: var(--text);
-  }
-  .scene-text {
-    font-size: 1rem;
-    line-height: 1.7;
-    color: #a0aec0;
-    margin-bottom: 1.5rem;
-  }
-  .voice-btn {
-    background: none;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
-    color: var(--muted);
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-  .voice-btn:hover { border-color: var(--teal); color: var(--teal); }
-  .voice-btn.speaking { border-color: var(--teal); color: var(--teal); background: rgba(0,212,200,0.1); }
+  /* PROGRESS BAR */
+  .progress-bar-wrap { background:var(--bg3); border-radius:2rem; height:6px; margin-bottom:1.5rem; overflow:hidden; }
+  .progress-bar { height:100%; background:linear-gradient(90deg,var(--teal),var(--purple)); border-radius:2rem; transition:width 0.5s ease; }
 
-  /* Choices */
-  .choices-label {
-    font-size: 0.75rem;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-    margin-bottom: 1rem;
-    font-weight: 600;
-  }
-  .choices { display: flex; flex-direction: column; gap: 0.8rem; width: 100%; }
-  .choice-btn {
-    background: #1a2332;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 1.1rem 1.5rem;
-    color: var(--text);
-    font-size: 1rem;
-    text-align: left;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-  .choice-btn:hover { border-color: var(--teal); background: rgba(0,212,200,0.05); transform: translateX(4px); }
-  .choice-btn .choice-letter {
-    background: var(--border);
-    border-radius: 6px;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 0.9rem;
-    flex-shrink: 0;
-    color: var(--teal);
-  }
-  .choice-btn:hover .choice-letter { background: var(--teal); color: #000; }
-  .choice-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  /* MILAN QUOTE */
+  .milan-quote { background:rgba(124,58,237,0.1); border:1px solid var(--purple); border-radius:0.75rem; padding:1rem 1.25rem; margin-bottom:1rem; font-style:italic; color:#a78bfa; font-size:0.95rem; }
+  .milan-quote::before { content:'"'; font-size:1.5rem; line-height:0; vertical-align:-0.4em; margin-right:0.25rem; }
+  .milan-quote::after { content:'"'; font-size:1.5rem; line-height:0; vertical-align:-0.4em; margin-left:0.25rem; }
+  .milan-name { font-size:0.75rem; color:var(--muted); margin-top:0.5rem; font-style:normal; letter-spacing:0.1em; text-transform:uppercase; }
 
-  /* Consequence panel */
-  .consequence-panel {
-    display: none;
-    border-radius: 16px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    width: 100%;
-    animation: slideIn 0.3s ease;
-  }
-  .consequence-panel.small { background: rgba(255,140,0,0.1); border: 1px solid var(--orange); }
-  .consequence-panel.big { background: rgba(255,59,59,0.1); border: 1px solid var(--red); }
-  .consequence-panel.good { background: rgba(0,200,83,0.1); border: 1px solid var(--good); }
-  .consequence-panel .con-title {
-    font-size: 1rem;
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-  }
-  .consequence-panel.small .con-title { color: var(--orange); }
-  .consequence-panel.big .con-title { color: var(--red); }
-  .consequence-panel.good .con-title { color: var(--good); }
-  .consequence-panel .con-text { font-size: 0.9rem; line-height: 1.6; color: #a0aec0; }
-  .consequence-panel .con-continue {
-    margin-top: 1rem;
-    background: none;
-    border: 1px solid currentColor;
-    border-radius: 8px;
-    padding: 0.5rem 1.2rem;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 600;
-    transition: all 0.2s;
-  }
-  .consequence-panel.small .con-continue { color: var(--orange); }
-  .consequence-panel.big .con-continue { color: var(--red); }
-  .consequence-panel.good .con-continue { color: var(--good); }
-  .consequence-panel .con-continue:hover { background: rgba(255,255,255,0.05); }
-
-  /* ===== GAME OVER SCREEN ===== */
-  #gameover {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: radial-gradient(ellipse at center, #1a0000 0%, #0a0e1a 70%);
-    padding: 2rem;
-    text-align: center;
-  }
-  #gameover .go-img {
-    width: 100%;
-    max-width: 600px;
-    border-radius: 16px;
-    margin-bottom: 2rem;
-    border: 1px solid var(--red);
-    box-shadow: 0 0 40px rgba(255,59,59,0.3);
-  }
-  #gameover h1 { font-size: 3rem; color: var(--red); font-weight: 900; text-shadow: 0 0 30px rgba(255,59,59,0.5); margin-bottom: 0.5rem; }
-  #gameover p { color: var(--muted); margin-bottom: 2rem; font-size: 1.1rem; }
-  #gameover .go-stats { display: flex; gap: 2rem; justify-content: center; margin-bottom: 2rem; }
-  #gameover .go-stat { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.5rem; }
-  #gameover .go-stat .val { font-size: 2rem; font-weight: 800; color: var(--teal); }
-  #gameover .go-stat .lbl { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; }
-  #gameover .btn-retry {
-    background: linear-gradient(135deg, var(--red), #ff6b6b);
-    border: none;
-    border-radius: 10px;
-    padding: 1rem 2.5rem;
-    color: #fff;
-    font-size: 1.1rem;
-    font-weight: 800;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    transition: transform 0.1s;
-  }
-  #gameover .btn-retry:hover { transform: scale(1.05); }
-
-  /* ===== WIN SCREEN ===== */
-  #winscreen {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: radial-gradient(ellipse at center, #001a10 0%, #0a0e1a 70%);
-    padding: 2rem;
-    text-align: center;
-  }
-  #winscreen .win-img {
-    width: 100%;
-    max-width: 600px;
-    border-radius: 16px;
-    margin-bottom: 2rem;
-    border: 1px solid var(--good);
-    box-shadow: 0 0 40px rgba(0,200,83,0.3);
-  }
-  #winscreen h1 { font-size: 2.5rem; color: var(--gold); font-weight: 900; text-shadow: 0 0 30px rgba(255,215,0,0.5); margin-bottom: 0.5rem; }
-  #winscreen .win-sub { color: var(--good); font-size: 1.1rem; margin-bottom: 2rem; }
-  #winscreen .win-stats { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
-  #winscreen .win-stat { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 1rem 1.5rem; }
-  #winscreen .win-stat .val { font-size: 2rem; font-weight: 800; color: var(--gold); }
-  #winscreen .win-stat .lbl { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; }
-  #winscreen .btn-replay {
-    background: linear-gradient(135deg, var(--good), #00e676);
-    border: none;
-    border-radius: 10px;
-    padding: 1rem 2.5rem;
-    color: #000;
-    font-size: 1.1rem;
-    font-weight: 800;
-    cursor: pointer;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    transition: transform 0.1s;
-  }
-  #winscreen .btn-replay:hover { transform: scale(1.05); }
-
-  /* Confetti */
-  .confetti-piece {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    border-radius: 2px;
-    animation: confettiFall linear forwards;
-    pointer-events: none;
-    z-index: 9999;
-  }
-  @keyframes confettiFall {
-    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-  }
-
-  /* Flash overlay */
-  .flash-overlay {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 200;
-    opacity: 0;
-    transition: opacity 0.1s;
-  }
-  .flash-overlay.red { background: rgba(255,59,59,0.3); }
-  .flash-overlay.green { background: rgba(0,200,83,0.2); }
-
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes heartShake {
-    0%, 100% { transform: scale(1); }
-    25% { transform: scale(1.3) rotate(-10deg); }
-    75% { transform: scale(0.8) rotate(10deg); }
-  }
-  .heart-shake { animation: heartShake 0.4s ease; }
-
-  @media (max-width: 600px) {
-    .game-header { flex-wrap: wrap; gap: 0.5rem; }
-    .scene-image-wrap img { height: 220px; }
-    #gameover h1, #winscreen h1 { font-size: 2rem; }
-    #gameover .go-stats, #winscreen .win-stats { gap: 1rem; }
+  @media(max-width:600px) {
+    .splash-logo { font-size:2rem; }
+    .scene-title { font-size:1.2rem; }
+    .hud { padding:0.5rem 1rem; }
   }
 </style>
 </head>
 <body>
 
-<!-- Flash overlay for feedback -->
-<div class="flash-overlay" id="flash"></div>
-
-<!-- ===== SPLASH ===== -->
+<!-- SPLASH -->
 <div id="splash">
-  <div class="logo">⚡ DrillMaster</div>
-  <div class="subtitle">Veilig aan de Kolomboormachine · Logic Connections</div>
-  <div class="card">
-    <h2>🎮 Start het avontuur</h2>
-    <label for="input-naam">Jouw naam</label>
-    <input type="text" id="input-naam" placeholder="Voornaam Achternaam" autocomplete="off">
-    <label for="input-klas">Jouw klas</label>
-    <input type="text" id="input-klas" placeholder="bv. 2B, 3ME..." autocomplete="off">
-    <button class="btn-start" onclick="startGame()">⚡ Start het Avontuur</button>
-    <div class="info-row">
-      <span>❤️❤️❤️ 3 hartjes</span>
-      <span>📍 12 scenes</span>
-      <span>⚠️ Echte gevolgen</span>
+  <div class="splash-logo">⚡ DrillMaster</div>
+  <div class="splash-sub">De Werkplaats Missie · Logic Connections</div>
+  <div class="splash-card">
+    <h2>🎮 Start de Missie</h2>
+    <div class="form-group">
+      <label>Jouw naam</label>
+      <input type="text" id="input-naam" placeholder="Voornaam Achternaam" autocomplete="off">
     </div>
+    <div class="form-group">
+      <label>Jouw klas</label>
+      <input type="text" id="input-klas" placeholder="bv. 2B, 3ME..." autocomplete="off">
+    </div>
+    <button class="btn-start" onclick="startGame()">⚡ Start de Missie</button>
+  </div>
+  <div class="splash-stats">
+    <span>❤️❤️❤️ 3 hartjes</span>
+    <span>📋 17 stappen</span>
+    <span>⚠️ Echte gevolgen</span>
   </div>
 </div>
 
-<!-- ===== GAME ===== -->
+<!-- GAME -->
 <div id="game">
-  <div class="game-header">
-    <div class="brand">⚡ DrillMaster <span>Kolomboormachine</span></div>
-    <div class="hearts" id="hearts">
-      <span class="heart" id="h1">❤️</span>
-      <span class="heart" id="h2">❤️</span>
-      <span class="heart" id="h3">❤️</span>
-    </div>
-    <div class="xp-badge">⚡ <span id="xp-display">0</span> XP</div>
-    <div class="player-badge" id="player-badge">Speler</div>
+  <div class="hud">
+    <div class="hud-brand">⚡ DrillMaster</div>
+    <div class="hud-hearts" id="hud-hearts">❤️❤️❤️</div>
+    <div class="hud-xp" id="hud-xp">⚡ 0 XP</div>
+    <div class="hud-progress" id="hud-progress">Scene 1 / 17</div>
+    <div class="hud-user" id="hud-user"></div>
   </div>
-  <div class="progress-bar-wrap">
-    <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
-  </div>
-
-  <div class="game-main">
-    <div class="scene-counter" id="scene-counter">Scene 1 / 12</div>
-
-    <div class="scene-image-wrap">
-      <img id="scene-img" src="" alt="Scene afbeelding">
-      <div class="scene-label" id="scene-label">Scene 1</div>
-    </div>
-
-    <div class="scene-card">
-      <div class="scene-title" id="scene-title">Titel</div>
-      <div class="scene-text" id="scene-text">Tekst</div>
-      <button class="voice-btn" id="voice-btn" onclick="toggleVoice()">🔊 Voorlezen</button>
-    </div>
-
-    <div class="consequence-panel" id="consequence-panel">
-      <div class="con-title" id="con-title">Gevolg</div>
-      <div class="con-text" id="con-text">Tekst</div>
-      <button class="con-continue" id="con-continue" onclick="continueAfterConsequence()">→ Verder</button>
-    </div>
-
-    <div class="choices-label" id="choices-label">Wat doe jij?</div>
-    <div class="choices" id="choices"></div>
+  <div class="scene-wrap">
+    <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+    <div id="scene-content"></div>
   </div>
 </div>
 
-<!-- ===== GAME OVER ===== -->
-<div id="gameover">
-  <img class="go-img" src="images/scene_gameover.png" alt="Game Over">
-  <h1>💀 GAME OVER</h1>
-  <p id="go-reason">Je hebt te veel gevaarlijke fouten gemaakt.</p>
-  <div class="go-stats">
-    <div class="go-stat"><div class="val" id="go-scenes">0</div><div class="lbl">Scenes</div></div>
-    <div class="go-stat"><div class="val" id="go-xp">0</div><div class="lbl">XP</div></div>
-    <div class="go-stat"><div class="val" id="go-fouten">0</div><div class="lbl">Fouten</div></div>
-  </div>
-  <button class="btn-retry" onclick="resetGame()">🔄 Opnieuw proberen</button>
+<!-- GAME OVER -->
+<div id="gameover" style="display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem;background:radial-gradient(ellipse at center,#2d0a0a 0%,#0a0a0f 70%);">
+  <img src="images/gameover_screen.png" class="go-img" alt="Game Over">
+  <div class="go-title">GAME OVER</div>
+  <div class="go-stats" id="go-stats"></div>
+  <button class="btn-restart" onclick="restartGame()">🔄 Opnieuw proberen</button>
 </div>
 
-<!-- ===== WIN ===== -->
-<div id="winscreen">
-  <img class="win-img" src="images/scene_win.png" alt="Gewonnen!">
-  <h1>🏆 MEESTER!</h1>
-  <div class="win-sub">Je hebt de kolomboormachine veilig bediend. Respect!</div>
-  <div class="win-stats">
-    <div class="win-stat"><div class="val" id="win-xp">0</div><div class="lbl">Totaal XP</div></div>
-    <div class="win-stat"><div class="val" id="win-hartjes">0</div><div class="lbl">Hartjes over</div></div>
-    <div class="win-stat"><div class="val" id="win-fouten">0</div><div class="lbl">Fouten</div></div>
-    <div class="win-stat"><div class="val" id="win-score">A</div><div class="lbl">Score</div></div>
-  </div>
-  <button class="btn-replay" onclick="resetGame()">🔄 Opnieuw spelen</button>
+<!-- WIN -->
+<div id="winscreen" style="display:none;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:2rem;background:radial-gradient(ellipse at center,#0a2d1a 0%,#0a0a0f 70%);">
+  <img src="images/win_screen.png" class="win-img" alt="Victory">
+  <div class="win-title">MISSIE VOLTOOID!</div>
+  <div class="win-score" id="win-grade"></div>
+  <div class="win-stats" id="win-stats"></div>
+  <button class="btn-replay" onclick="restartGame()">🔄 Opnieuw spelen</button>
 </div>
 
 <script>
-// ===== SCENE DATA =====
-const SCENES = {
-  s1: {
-    id: 's1',
-    type: 'good',
-    label: 'Scene 1 — Aankomst',
-    title: 'De eerste dag in de werkplaats',
-    text: 'Je stapt de werkplaats binnen. De leerkracht geeft uitleg over de kolomboormachine. Aan het einde zegt hij: "Zorg dat je volledig uitgerust bent voor je begint." Je kijkt naar je werkbank. Je veiligheidsbril en gehoorbescherming liggen er nog naast — je hebt ze nog niet opgezet.',
-    image: 'images/scene_s1_aankomst.png',
-    sceneNum: 1,
+// ============================================================
+// GAME STATE
+// ============================================================
+let STATE = {
+  naam: '', klas: '',
+  hearts: 3, xp: 0,
+  sceneIndex: 0,
+  fouten: 0, grootFouten: 0, consecutiveGroot: 0,
+  totalScenes: 17,
+  showingConsequence: false,
+  pendingScene: null
+};
+
+// ============================================================
+// SCENE DATA — 17 stappen, volledige workflow
+// ============================================================
+const SCENES = [
+  // SCENE 1 — Opdracht begrijpen
+  {
+    id: 1,
+    title: "Opdracht begrijpen",
+    subtitle: "Stap 1 van 17 — De briefing",
+    badge: "intro_scene",
+    img: "images/s01_opdracht_intro.png",
+    text: `Juan staat aan de instructietafel. De leerkracht deelt de werkbonnen uit en wijst naar het bord: <strong>S235 platstaal, lengte 120 mm, gat Ø10 mm op 60 mm van de rand.</strong> Er hangt een technische tekening aan het bord. Milan pakt zijn bon al op en loopt weg. "Ik snap het al, laten we gaan," zegt hij.`,
+    milanQuote: null,
+    vraag: "Wat doet Juan?",
     choices: [
-      { letter: 'A', text: 'Je zet meteen je veiligheidsbril op en je gehoorbescherming.', correct: true, next: 's2' },
-      { letter: 'B', text: 'Je denkt: "Ik boor maar één gaatje, dat gaat wel." Je begint zonder bril.', correct: false, faultType: 'small', faultScene: 'f1a', next: 's1' },
-      { letter: 'C', text: 'Je wacht tot de leerkracht het zegt en doet ondertussen niets.', correct: false, faultType: 'small', faultScene: 'f1b', next: 's1' }
+      { letter:"A", text:"Juan leest de werkbon grondig, bekijkt de tekening en noteert de maten.", correct:true },
+      { letter:"B", text:"Juan volgt Milan en gaat direct naar het materiaalrek zonder de bon te lezen.", correct:false, type:"klein", consequence:"Juan staat aan het materiaalrek maar weet niet welk materiaal hij nodig heeft. De leerkracht stuurt hem terug. \"Lees eerst je werkbon. Altijd.\"" },
+      { letter:"C", text:"Juan leest alleen de maten maar bekijkt de tekening niet.", correct:false, type:"klein", consequence:"Juan kiest het juiste materiaal maar zaagt het op de verkeerde lengte omdat hij de tekening niet bekeek. Het stuk is afgekeurd." }
     ]
   },
-  s2: {
-    id: 's2', type: 'good', label: 'Scene 2 — Werkbon', title: 'De juiste boor kiezen',
-    text: 'Je krijgt een werkbon. Daarop staat: boor een gat van 8mm in een stalen plaat. Je kijkt naar de boorkoppen op de tafel. Er liggen er drie: een 6mm, een 8mm en een 10mm boor.',
-    image: 'images/scene_s2_werkbon.png', sceneNum: 2,
+  // SCENE 2 — PBM-check
+  {
+    id: 2,
+    title: "PBM-check",
+    subtitle: "Stap 2 van 17 — Persoonlijke beschermingsmiddelen",
+    badge: "choice_scene",
+    img: "images/s02_pbm_choice.png",
+    text: `Juan staat aan de deur van de werkplaats. Zijn overall heeft hij aan. Zijn <strong>veiligheidsbril en oordoppen</strong> liggen nog in zijn locker. Milan roept vanuit de werkplaats: <em>"Kom op Juan, we hebben maar een uur! Ik ben al begonnen."</em>`,
+    milanQuote: "Kom op Juan, we hebben maar een uur! Ik ben al begonnen.",
+    vraag: "Wat doet Juan?",
     choices: [
-      { letter: 'A', text: 'Je kiest de 8mm boor, zoals op de werkbon staat.', correct: true, next: 's3' },
-      { letter: 'B', text: 'Je pakt de 10mm want "groter is beter".', correct: false, faultType: 'small', faultScene: 'f2a', next: 's2' },
-      { letter: 'C', text: 'Je pakt de eerste de beste boor die je ziet zonder te kijken.', correct: false, faultType: 'small', faultScene: 'f2b', next: 's2' }
+      { letter:"A", text:"Juan haalt zijn bril en oordoppen, zet ze op en stapt dan de werkplaats in.", correct:true },
+      { letter:"B", text:"Juan rent naar binnen zonder bril. \"Het is maar even.\"", correct:false, type:"groot", consequence:"Een metaalspaander springt recht op Juan af. Zonder bril raakt hij zijn oog. De leerkracht schakelt alles uit. EHBO. Dit had permanent oogletsel kunnen zijn. 2 hartjes weg." },
+      { letter:"C", text:"Juan doet alleen zijn bril op maar vergeet de oordoppen. \"De zaagmachine maakt toch niet veel lawaai.\"", correct:false, type:"klein", consequence:"Na 10 minuten zagen heeft Juan oorsuizen. De leerkracht stuurt hem naar buiten. \"Gehoorbescherming is niet optioneel.\"" }
     ]
   },
-  s3: {
-    id: 's3', type: 'good', label: 'Scene 3 — Boor vastzetten', title: 'De boor in de boorkop zetten',
-    text: 'Je hebt de juiste boor. Nu moet je hem vastzetten in de boorkop. Je pakt de boorkopsleutel en begint de boor vast te draaien.',
-    image: 'images/scene_s3_boor_vastzetten.png', sceneNum: 3,
+  // SCENE 3 — Plan lezen
+  {
+    id: 3,
+    title: "Plan lezen",
+    subtitle: "Stap 3 van 17 — Technische tekening",
+    badge: "choice_scene",
+    img: "images/s03_plan_lezen.png",
+    text: `Juan staat aan de werktafel en bekijkt de technische tekening. Op het plan staat: <strong>S235 platstaal, lengte 120 mm, gat Ø10 mm, centerpunt op 60 mm van de rand.</strong> Milan kijkt mee over zijn schouder.`,
+    milanQuote: "Dat gat zit toch gewoon in het midden? Gewoon op gevoel.",
+    vraag: "Wat doet Juan?",
     choices: [
-      { letter: 'A', text: 'Je zet de boor stevig vast en haalt de sleutel weg voor je start.', correct: true, next: 's4' },
-      { letter: 'B', text: 'Je laat de sleutel in de boorkop zitten en zet de machine aan.', correct: false, faultType: 'big', faultScene: 'f3a', next: 's3' },
-      { letter: 'C', text: 'Je zet de boor maar half vast, het lijkt stevig genoeg.', correct: false, faultType: 'small', faultScene: 'f3b', next: 's3' }
+      { letter:"A", text:"Juan leest de maten exact af en noteert: 120 mm lang, gat op 60 mm van de rand.", correct:true },
+      { letter:"B", text:"Juan vertrouwt Milan en schat \"het midden\" zonder te meten.", correct:false, type:"klein", consequence:"Het gat zit 5 mm naast het midden. Het werkstuk is afgekeurd. Opnieuw beginnen." },
+      { letter:"C", text:"Juan leest de lengte maar vergeet de positie van het gat te noteren.", correct:false, type:"klein", consequence:"Juan vergeet de positie en moet later opnieuw het plan raadplegen. Tijdverlies en verwarring." }
     ]
   },
-  s4: {
-    id: 's4', type: 'good', label: 'Scene 4 — Klemmen', title: 'Het werkstuk vastklemmen',
-    text: 'Je legt de stalen plaat op de boorstafel. Nu moet je hem vastzetten zodat hij niet kan bewegen tijdens het boren.',
-    image: 'images/scene_s4_klemmen.png', sceneNum: 4,
+  // SCENE 4 — Materiaal zoeken
+  {
+    id: 4,
+    title: "Materiaal zoeken",
+    subtitle: "Stap 4 van 17 — Het materiaalrek",
+    badge: "choice_scene",
+    img: "images/s04_materiaal_choice.png",
+    text: `Juan staat aan het materiaalrek. Op het plan staat: <strong>S235 platstaal</strong>. In het rek liggen S235 platstaal, een aluminium strip, een inox plaat, en een oud stuk zonder label. Milan wijst naar het oude stuk.`,
+    milanQuote: "Pak gewoon dat stuk. Dat ligt dichterbij en zagen gaat sneller.",
+    vraag: "Wat doet Juan?",
     choices: [
-      { letter: 'A', text: 'Je klempt de plaat stevig vast met de machine-klem.', correct: true, next: 's5' },
-      { letter: 'B', text: 'Je houdt de plaat vast met je hand terwijl je boort.', correct: false, faultType: 'big', faultScene: 'f4a', next: 's4' },
-      { letter: 'C', text: 'Je legt de plaat gewoon neer zonder te klemmen, hij lijkt stabiel.', correct: false, faultType: 'small', faultScene: 'f4b', next: 's4' }
+      { letter:"A", text:"Juan neemt S235 platstaal en controleert het label.", correct:true },
+      { letter:"B", text:"Juan neemt het oude stuk zonder label.", correct:false, type:"klein", consequence:"Het stuk blijkt hardox staal — veel te hard voor de boor. De boor breekt af bij het boren. Nieuw materiaal nodig." },
+      { letter:"C", text:"Juan neemt aluminium omdat dat makkelijker zaagt.", correct:false, type:"klein", consequence:"Aluminium heeft andere eigenschappen dan S235. De opdracht vraagt staal. Het werkstuk is afgekeurd." }
     ]
   },
-  s5: {
-    id: 's5', type: 'good', label: 'Scene 5 — Snelheid', title: 'De juiste boorsnelheid instellen',
-    text: 'Voor je begint moet je de juiste boorsnelheid instellen. Op de machine hangt een tabel. Voor staal met een 8mm boor staat er: 500 toeren per minuut.',
-    image: 'images/scene_s5_snelheid.png', sceneNum: 5,
+  // SCENE 5 — Materiaal controleren
+  {
+    id: 5,
+    title: "Materiaal controleren",
+    subtitle: "Stap 5 van 17 — Visuele inspectie",
+    badge: "choice_scene",
+    img: "images/s05_materiaal_check.png",
+    text: `Juan heeft het S235 platstaal. Voor hij gaat zagen, inspecteert hij het materiaal. Hij ziet een <strong>kleine barst aan de rand</strong>. Milan kijkt toe.`,
+    milanQuote: "Dat is maar een krasje, dat merk je niet.",
+    vraag: "Wat doet Juan?",
     choices: [
-      { letter: 'A', text: 'Je kijkt in de tabel en stelt 500 t/min in.', correct: true, next: 's6' },
-      { letter: 'B', text: 'Je laat de snelheid op de hoogste stand staan van de vorige leerling.', correct: false, faultType: 'small', faultScene: 'f5a', next: 's5' },
-      { letter: 'C', text: 'Je stelt op goed geluk een snelheid in zonder de tabel te raadplegen.', correct: false, faultType: 'small', faultScene: 'f5b', next: 's5' }
+      { letter:"A", text:"Juan meldt de barst aan de leerkracht en vraagt een nieuw stuk.", correct:true },
+      { letter:"B", text:"Juan zaagt het stuk toch, de barst zit aan de rand die hij toch wegzaagt.", correct:false, type:"klein", consequence:"De barst zit net iets verder dan verwacht. Het stuk breekt tijdens het zagen. Nieuw materiaal nodig." },
+      { letter:"C", text:"Juan negeert de barst volledig.", correct:false, type:"groot", consequence:"Het stuk breekt tijdens het boren. Een scherp stuk staal schiet weg. Gevaarlijk voor Juan en omstaanders." }
     ]
   },
-  s6: {
-    id: 's6', type: 'good', label: 'Scene 6 — Beschermkap', title: 'De beschermkap controleren',
-    text: 'Je bent bijna klaar om te starten. Je kijkt naar de beschermkap van de boorkop — die staat nog open van de vorige leerling.',
-    image: 'images/scene_s6_beschermkap.png', sceneNum: 6,
+  // SCENE 6 — Zaagmachine instellen
+  {
+    id: 6,
+    title: "Zaagmachine instellen",
+    subtitle: "Stap 6 van 17 — Lintzaagmachine",
+    badge: "danger_closeup",
+    img: "images/s06_zaag_instellen.png",
+    text: `Juan staat bij de lintzaagmachine. Hij moet het S235 platstaal op <strong>120 mm</strong> zagen. De vorige leerling liet de machine op de <strong>hoogste snelheid</strong> staan (instelling voor aluminium) en de aanslag staat op <strong>100 mm</strong>. Een leerling loopt weg van de machine.`,
+    milanQuote: "Laat die instellingen maar staan, dat zaagt sneller.",
+    vraag: "Wat doet Juan?",
     choices: [
-      { letter: 'A', text: 'Je sluit de beschermkap voor je de machine start.', correct: true, next: 's7' },
-      { letter: 'B', text: 'Je start de machine met de beschermkap open.', correct: false, faultType: 'big', faultScene: 'f6a', next: 's6' },
-      { letter: 'C', text: 'Je laat hem open maar belooft jezelf "voorzichtig" te zijn.', correct: false, faultType: 'small', faultScene: 'f6b', next: 's6' }
+      { letter:"A", text:"Juan past de snelheid aan voor staal en stelt de aanslag correct in op 120 mm.", correct:true },
+      { letter:"B", text:"Juan laat de snelheid hoog staan maar past de aanslag aan.", correct:false, type:"klein", consequence:"De zaagband slijt snel door de te hoge snelheid op staal. De band breekt. Machine stilgelegd." },
+      { letter:"C", text:"Juan zaagt direct zonder iets aan te passen.", correct:false, type:"groot", consequence:"De zaagband breekt bij de eerste aanraking. Een stuk band schiet weg. Gevaar voor omstaanders. Machine stilgelegd." }
     ]
   },
-  s7: {
-    id: 's7', type: 'good', label: 'Scene 7 — Boren', title: 'Het boren starten',
-    text: 'Alles is klaar. Je zet de machine aan. De boor draait. Je brengt de boor langzaam naar het werkstuk toe.',
-    image: 'images/scene_s7_boren.png', sceneNum: 7,
+  // SCENE 7 — Zagen
+  {
+    id: 7,
+    title: "Zagen",
+    subtitle: "Stap 7 van 17 — Lintzaagmachine in werking",
+    badge: "danger_closeup",
+    img: "images/s07_zagen_danger.png",
+    text: `De zaagmachine is correct ingesteld. Juan legt het S235 platstaal in de klem. Milan loopt langs en tikt op zijn schouder. Juan is afgeleid. <strong>De klem is nog niet vastgedraaid.</strong>`,
+    milanQuote: "Hé, heb je die nieuwe game al gezien?",
+    vraag: "Wat doet Juan?",
     choices: [
-      { letter: 'A', text: 'Je boort rustig, met regelmatige druk, en koelt af als het warm wordt.', correct: true, next: 's8' },
-      { letter: 'B', text: 'Je duwt hard om sneller klaar te zijn.', correct: false, faultType: 'small', faultScene: 'f7a', next: 's7' },
-      { letter: 'C', text: 'Je laat de boor te snel zakken zonder controle.', correct: false, faultType: 'small', faultScene: 'f7b', next: 's7' }
+      { letter:"A", text:"Juan negeert Milan, draait de klem stevig vast en start dan de zaag.", correct:true },
+      { letter:"B", text:"Juan start de zaag terwijl hij half naar Milan luistert, klem niet vast.", correct:false, type:"groot", consequence:"Het materiaal draait mee met de zaagband. Het schiet van de tafel. Bijna-ongeluk. Machine stilgelegd." },
+      { letter:"C", text:"Juan houdt het materiaal met de hand vast. \"Het is maar een klein stukje.\"", correct:false, type:"groot", consequence:"De zaag grijpt het materiaal. Juan trekt zijn hand terug maar de zaag raakt zijn vingers. Ambulance gebeld." }
     ]
   },
-  s8: {
-    id: 's8', type: 'good', label: 'Scene 8 — Spaanders', title: 'Metaalspaanders verwijderen',
-    text: 'Het boren gaat goed. Er komen lange metaalspaanders vrij die zich oprollen rond de boor. Je moet ze verwijderen.',
-    image: 'images/scene_s8_spaanders.png', sceneNum: 8,
+  // SCENE 8 — Ontbramen
+  {
+    id: 8,
+    title: "Ontbramen",
+    subtitle: "Stap 8 van 17 — Bramen verwijderen",
+    badge: "impact_scene",
+    img: "images/s08_ontbramen_impact.png",
+    text: `Juan houdt het gezaagde stuk van 120 mm vast. De randen zijn <strong>scherp en vol bramen</strong>. Een leerling naast hem trekt snel een braam weg met zijn blote vingers.`,
+    milanQuote: "Zie je, gaat veel sneller dan vijlen.",
+    vraag: "Wat doet Juan?",
     choices: [
-      { letter: 'A', text: 'Je stopt de machine, wacht tot alles stilstaat en verwijdert de spaanders met een haak.', correct: true, next: 's9' },
-      { letter: 'B', text: 'Je probeert de spaanders weg te vegen met je blote hand terwijl de machine draait.', correct: false, faultType: 'big', faultScene: 'f8a', next: 's8' },
-      { letter: 'C', text: 'Je blaast de spaanders weg met je mond.', correct: false, faultType: 'small', faultScene: 'f8b', next: 's8' }
+      { letter:"A", text:"Juan spant het stuk in de bankschroef en gebruikt een vijl om veilig te ontbramen.", correct:true },
+      { letter:"B", text:"Juan trekt de braam ook met zijn vingers weg.", correct:false, type:"klein", consequence:"Een braam snijdt diep in Juan's vinger. EHBO nodig. Tijdverlies en pijn." },
+      { letter:"C", text:"Juan laat de bramen zitten. \"De kolomboor vijlt dat wel weg.\"", correct:false, type:"klein", consequence:"De leerkracht keurt het stuk af. \"Ontbramen is verplicht voor je verder gaat.\" Opnieuw beginnen." }
     ]
   },
-  s9: {
-    id: 's9', type: 'good', label: 'Scene 9 — Controle', title: 'Het gat controleren',
-    text: 'Het gat is geboord. Je wil controleren of het de juiste maat heeft. Je pakt de schuifmaat.',
-    image: 'images/scene_s9_controle.png', sceneNum: 9,
+  // SCENE 9 — Schuren/vijlen
+  {
+    id: 9,
+    title: "Schuren en vijlen",
+    subtitle: "Stap 9 van 17 — Maatnauwkeurigheid",
+    badge: "success_scene",
+    img: "images/s09_vijlen_success.png",
+    text: `Juan heeft het stuk ontbraamd. Nu moet hij de zijkanten <strong>glad vijlen</strong> zodat het stuk maatnauwkeurig is en veilig te hanteren. Milan kijkt toe.`,
+    milanQuote: "Dat is toch niet nodig? Het gaat toch in een machine?",
+    vraag: "Wat doet Juan?",
     choices: [
-      { letter: 'A', text: 'Je stopt de machine volledig, wacht tot de boor stilstaat en meet dan.', correct: true, next: 's10' },
-      { letter: 'B', text: 'Je steekt je vinger in het gat terwijl de boor nog uitloopt.', correct: false, faultType: 'big', faultScene: 'f9a', next: 's9' },
-      { letter: 'C', text: 'Je meet terwijl de machine aanstaat maar de boor niet beweegt.', correct: false, faultType: 'small', faultScene: 'f9b', next: 's9' }
+      { letter:"A", text:"Juan vijlt de zijkanten glad en controleert de maat met de schuifmaat.", correct:true },
+      { letter:"B", text:"Juan slaat het vijlen over. \"Milan heeft gelijk, het gaat in een machine.\"", correct:false, type:"klein", consequence:"Het stuk is 1 mm te breed door de bramen. Het past niet in de mal. Opnieuw vijlen." },
+      { letter:"C", text:"Juan vijlt maar één kant. \"De andere kant ziet toch niemand.\"", correct:false, type:"klein", consequence:"De leerkracht keurt het stuk af bij de eindcontrole. \"Beide kanten moeten maatnauwkeurig zijn.\"" }
     ]
   },
-  s10: {
-    id: 's10', type: 'good', label: 'Scene 10 — Opruimen', title: 'De werkplaats opruimen',
-    text: 'Het gat is perfect 8mm. Je bent klaar met het werkstuk. Nu moet je de werkplaats opruimen voor de volgende leerling.',
-    image: 'images/scene_s10_opruimen.png', sceneNum: 10,
+  // SCENE 10 — Meten en aftekenen
+  {
+    id: 10,
+    title: "Meten en aftekenen",
+    subtitle: "Stap 10 van 17 — Schuifmaat en kraspen",
+    badge: "choice_scene",
+    img: "images/s10_meten_choice.png",
+    text: `Juan moet het midden aftekenen voor het gat van Ø10 mm. Volgens het plan: <strong>60 mm van de rand</strong>. Hij meet en zet een kras met de kraspen. Milan staat naast hem en praat.`,
+    milanQuote: "Ik denk dat het 65 mm moet zijn, ik heb het ook gedaan.",
+    vraag: "Wat doet Juan?",
     choices: [
-      { letter: 'A', text: 'Je verwijdert de boor, ruimt spaanders op met een borstel en legt alles terug op zijn plaats.', correct: true, next: 's11' },
-      { letter: 'B', text: 'Je laat de boor in de machine zitten en gaat weg.', correct: false, faultType: 'small', faultScene: 'f10a', next: 's10' },
-      { letter: 'C', text: 'Je veegt de spaanders op de grond en gaat weg.', correct: false, faultType: 'small', faultScene: 'f10b', next: 's10' }
+      { letter:"A", text:"Juan vertrouwt zijn eigen meting (60 mm) en zet een duidelijke kras op de juiste plek.", correct:true },
+      { letter:"B", text:"Juan vertrouwt Milan en tekent af op 65 mm.", correct:false, type:"klein", consequence:"Het gat zit 5 mm naast de correcte positie. Afgekeurd. Nieuw stuk nodig." },
+      { letter:"C", text:"Juan tekent af met een dikke stift in plaats van een kraspen.", correct:false, type:"klein", consequence:"De stift is niet nauwkeurig genoeg. Het gat zit op de verkeerde plek. Afgekeurd." }
     ]
   },
-  s11: {
-    id: 's11', type: 'good', label: 'Scene 11 — Overdracht', title: 'De volgende leerling',
-    text: 'De volgende leerling komt naar de machine. Hij vraagt: "Is de machine klaar voor gebruik?"',
-    image: 'images/scene_s11_volgende.png', sceneNum: 11,
+  // SCENE 11 — Centerpunten
+  {
+    id: 11,
+    title: "Centerpunten",
+    subtitle: "Stap 11 van 17 — Centerpons en hamer",
+    badge: "danger_closeup",
+    img: "images/s11_centerpons_danger.png",
+    text: `Juan pakt de <strong>centerpons en de hamer</strong>. Hij plaatst de pons op de afgetekende plek op 60 mm. Milan staat op de achtergrond.`,
+    milanQuote: "Centeren is tijdverlies. Een scherpe boor glijdt toch niet.",
+    vraag: "Wat doet Juan?",
     choices: [
-      { letter: 'A', text: '"Ja, alles is opgeruimd, de boor is weg en de beschermkap is dicht."', correct: true, next: 's12' },
-      { letter: 'B', text: 'Je zegt "ja" maar je weet eigenlijk niet zeker of je alles gedaan hebt.', correct: false, faultType: 'small', faultScene: 'f11a', next: 's11' },
-      { letter: 'C', text: 'Je zegt niets en loopt gewoon weg.', correct: false, faultType: 'small', faultScene: 'f11b', next: 's11' }
+      { letter:"A", text:"Juan slaat een duidelijke centerpunt op de afgetekende plek.", correct:true },
+      { letter:"B", text:"Juan slaat de centerpons over en gaat direct naar de kolomboor.", correct:false, type:"klein", consequence:"De boor glijdt weg bij de eerste aanraking. Het gat zit op de verkeerde plek. Opnieuw aftekenen." },
+      { letter:"C", text:"Juan slaat de pons maar half in. \"Dat is genoeg.\"", correct:false, type:"klein", consequence:"De centerpunt is te ondiep. De boor glijdt nog steeds weg. Gat op verkeerde plek." }
     ]
   },
-  s12: {
-    id: 's12', type: 'good', label: 'Scene 12 — Evaluatie', title: 'De leerkracht evalueert',
-    text: 'De leerkracht heeft je de hele tijd geobserveerd. Hij komt naar je toe en vraagt: "Kan je uitleggen wat je gedaan hebt en waarom?"',
-    image: 'images/scene_s12_evaluatie.png', sceneNum: 12,
+  // SCENE 12 — Kolomboor instellen
+  {
+    id: 12,
+    title: "Kolomboor instellen",
+    subtitle: "Stap 12 van 17 — Kolomboormachine",
+    badge: "choice_scene",
+    img: "images/s12_kolomboor_instellen.png",
+    text: `Juan staat aan de kolomboormachine. Hij moet een gat van <strong>Ø10 mm</strong> boren. Hij ziet: de <strong>boor van de vorige leerling (Ø6 mm)</strong> zit er nog in, de tafel staat te laag, en de machineklem ligt los op tafel.`,
+    milanQuote: null,
+    vraag: "Wat doet Juan?",
     choices: [
-      { letter: 'A', text: 'Je legt alle stappen uit: PBM, juiste boor, klemmen, snelheid, kap, boren, opruimen.', correct: true, next: 'WIN' },
-      { letter: 'B', text: 'Je kan de helft uitleggen maar vergeet de veiligheidsregels te noemen.', correct: false, faultType: 'small', faultScene: 'f12a', next: 's12' },
-      { letter: 'C', text: '"Ik heb gewoon gedaan wat er stond."', correct: false, faultType: 'small', faultScene: 'f12b', next: 's12' }
+      { letter:"A", text:"Juan vervangt de boor door Ø10 mm, stelt de tafel correct in en controleert de klem.", correct:true },
+      { letter:"B", text:"Juan gebruikt de Ø6 mm boor. \"Ik boor dan twee keer.\"", correct:false, type:"klein", consequence:"Het gat is te klein. Afgekeurd. Opnieuw instellen en boren." },
+      { letter:"C", text:"Juan vervangt de boor maar vergeet de tafel in te stellen.", correct:false, type:"klein", consequence:"De tafel staat te laag. De boor bereikt het materiaal niet correct. Instelling aanpassen." }
+    ]
+  },
+  // SCENE 13 — Werkstuk opspannen
+  {
+    id: 13,
+    title: "Werkstuk opspannen",
+    subtitle: "Stap 13 van 17 — Machineklem",
+    badge: "danger_closeup",
+    img: "images/s13_opspannen_danger.png",
+    text: `Juan legt het S235 platstaal op de kolomboortafel. De machineklem ligt ernaast. Milan staat naast hem.`,
+    milanQuote: "Houd het gewoon vast met je hand, dat gaat sneller.",
+    vraag: "Wat doet Juan?",
+    choices: [
+      { letter:"A", text:"Juan spant het werkstuk stevig in met de machineklem.", correct:true },
+      { letter:"B", text:"Juan houdt het werkstuk vast met zijn hand tijdens het boren.", correct:false, type:"groot", consequence:"De boor grijpt het staal. Het werkstuk draait mee en snijdt in Juan's hand. Ambulance. Ernstige snijwonde." },
+      { letter:"C", text:"Juan legt het werkstuk los op tafel zonder klem. \"Het is zwaar genoeg.\"", correct:false, type:"groot", consequence:"Het werkstuk draait mee met de boor en schiet van de tafel. Gevaar voor omstaanders. Machine stilgelegd." }
+    ]
+  },
+  // SCENE 14 — Boren
+  {
+    id: 14,
+    title: "Boren",
+    subtitle: "Stap 14 van 17 — Kolomboormachine in werking",
+    badge: "danger_closeup",
+    img: "images/s14_boren_danger.png",
+    text: `Juan is klaar om te boren. Hij start de machine. De boor draait. Hij ziet dat de <strong>beschermkap nog open staat</strong>. Milan staat ernaast te kijken zonder bril.`,
+    milanQuote: null,
+    vraag: "Wat doet Juan?",
+    choices: [
+      { letter:"A", text:"Juan sluit de beschermkap, stuurt Milan weg en boort rustig met snijolie.", correct:true },
+      { letter:"B", text:"Juan laat de kap open en boort snel door.", correct:false, type:"groot", consequence:"Een stuk van de boor breekt af aan hoge snelheid. Het projectiel raakt Juan in het gezicht. Spoed." },
+      { letter:"C", text:"Juan boort zonder snijolie. \"Het is maar één gat.\"", correct:false, type:"klein", consequence:"De boor oververhit en breekt. Nieuwe boor nodig. Tijdverlies." }
+    ]
+  },
+  // SCENE 15 — Controleren
+  {
+    id: 15,
+    title: "Controleren",
+    subtitle: "Stap 15 van 17 — Meting en inspectie",
+    badge: "choice_scene",
+    img: "images/s15_controleren_choice.png",
+    text: `Juan stopt de machine. Er liggen <strong>lange, scherpe spanen</strong> rond de boor. Hij moet het gat controleren met de schuifmaat. De boor loopt nog langzaam uit.`,
+    milanQuote: null,
+    vraag: "Wat doet Juan?",
+    choices: [
+      { letter:"A", text:"Juan verwijdert de spanen met een spanenhaak, wacht tot alles stilstaat en meet dan het gat.", correct:true },
+      { letter:"B", text:"Juan veegt de spanen weg met zijn blote hand.", correct:false, type:"klein", consequence:"Een spaander snijdt in Juan's hand. EHBO nodig. Altijd een spanenhaak gebruiken." },
+      { letter:"C", text:"Juan meet het gat terwijl de boor nog langzaam uitloopt.", correct:false, type:"groot", consequence:"De uitlopende boor grijpt Juan's vinger. Ernstige snijwonde. Spoed." }
+    ]
+  },
+  // SCENE 16 — Afgeven
+  {
+    id: 16,
+    title: "Afgeven",
+    subtitle: "Stap 16 van 17 — Overdracht aan leerkracht",
+    badge: "success_scene",
+    img: "images/s16_afgeven_success.png",
+    text: `Het gat is correct: <strong>Ø10 mm, op 60 mm van de rand</strong>. Juan ruimt de machine op: spanen weg, boor verwijderd, klem terug op zijn plaats. Hij gaat naar de leerkracht.`,
+    milanQuote: null,
+    vraag: "Wat doet Juan?",
+    choices: [
+      { letter:"A", text:"Juan geeft het stuk af, meldt dat de machine opgeruimd is en beschrijft wat hij gedaan heeft.", correct:true },
+      { letter:"B", text:"Juan geeft het stuk af maar laat de machine vies achter.", correct:false, type:"klein", consequence:"De volgende leerling glijdt uit op de spanen. Jij bent verantwoordelijk. Terug opruimen." },
+      { letter:"C", text:"Juan legt het stuk op de tafel van de leerkracht zonder iets te zeggen en gaat weg.", correct:false, type:"mentor", consequence:"De leerkracht roept Juan terug. \"In een werkplaats communiceer je altijd bij overdracht.\"" }
+    ]
+  },
+  // SCENE 17 — Simulatiepoort (Boss Gate)
+  {
+    id: 17,
+    title: "Simulatiepoort",
+    subtitle: "Stap 17 van 17 — Boss Gate",
+    badge: "boss_gate_scene",
+    img: "images/s17_boss_gate.png",
+    text: `De leerkracht bekijkt het stuk. Het is perfect: <strong>120 mm lang, netjes ontbraamd, gat Ø10 mm op exact 60 mm van de rand.</strong> "Goed werk, Juan. Maar voor je mag doorgaan: wat was de meest kritieke veiligheidsstap bij het boren vandaag?"`,
+    milanQuote: null,
+    vraag: "Juan antwoordt:",
+    choices: [
+      { letter:"A", text:"\"Snel werken zodat we op tijd klaar zijn.\"", correct:false, type:"mentor", consequence:"De leerkracht schudt zijn hoofd. \"Snelheid is nooit een veiligheidsprioriteit. Probeer opnieuw.\"" },
+      { letter:"B", text:"\"Het werkstuk stevig opspannen, de beschermkap sluiten en wachten tot de machine volledig stilstaat voor ik meet.\"", correct:true },
+      { letter:"C", text:"\"Altijd doen wat Milan zegt, die heeft meer ervaring.\"", correct:false, type:"mentor", consequence:"De leerkracht: \"Milan is ook een leerling. Jij bent verantwoordelijk voor jouw eigen veiligheid.\"" }
     ]
   }
-};
+];
 
-const FAULT_SCENES = {
-  f1a: { type: 'small', title: '⚠️ Kleine fout — Geen PBM', text: 'Een metaalspaander springt recht in jouw richting. Je knippert net op tijd met je ogen. Dat was op het nippertje. De leerkracht zegt streng: "Bril op. Nu. Altijd." Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f1b: { type: 'small', title: '⚠️ Kleine fout — Passief gedrag', text: 'De leerkracht kijkt je aan: "Je PBM zijn jouw verantwoordelijkheid, niet de mijne. Zet ze op." Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f2a: { type: 'small', title: '⚠️ Kleine fout — Verkeerde boor', text: 'Het gat is te groot. Het werkstuk is onbruikbaar. Je moet opnieuw beginnen met nieuw materiaal. Dat kost tijd en geld. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f2b: { type: 'small', title: '⚠️ Kleine fout — Willekeurige boor', text: 'De boor past niet bij het materiaal. Hij breekt af bij de eerste aanraking. Je moet een nieuwe boor halen. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f3a: { type: 'big', title: '💀 GEVAAR — Sleutel in boorkop!', text: 'Je zet de machine aan. De sleutel vliegt met enorme kracht weg en raakt je in het gezicht. Je valt achteruit. De leerkracht roept: "STOP!" Je wordt naar de spoedafdeling gebracht. Dit had je oog kunnen kosten. Dit is een klassiek dodelijk werkplaatsongeluk.', image: 'images/scene_f_sleutel_groot.png' },
-  f3b: { type: 'small', title: '⚠️ Kleine fout — Half vastgezet', text: 'De boor begint te trillen en valt eruit. Je moet hem opnieuw stevig vastzetten. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f4a: { type: 'big', title: '💀 GEVAAR — Hand vasthouden!', text: 'De boor grijpt de plaat. De plaat draait met kracht mee en snijdt in je hand. Je schreeuwt het uit. De leerkracht schakelt de machine uit. Je hand bloedt hevig. Ambulance gebeld. Dit had je vingers kunnen kosten.', image: 'images/scene_f_hand_groot.png' },
-  f4b: { type: 'small', title: '⚠️ Kleine fout — Niet geklemd', text: 'De plaat schuift weg tijdens het boren. Het gat zit op de verkeerde plek. Je moet opnieuw beginnen. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f5a: { type: 'small', title: '⚠️ Kleine fout — Te hoge snelheid', text: 'De boor draait te snel voor staal. Hij wordt roodgloeiend heet en breekt. Je moet een nieuwe boor halen en de snelheid correct instellen. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f5b: { type: 'small', title: '⚠️ Kleine fout — Gok snelheid', text: 'De snelheid is verkeerd. Het staal brandt aan. Je moet stoppen en opnieuw instellen. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f6a: { type: 'big', title: '💀 GEVAAR — Beschermkap open!', text: 'Een stuk van de boor breekt af aan hoge snelheid. Het projectiel schiet recht op je af. Je wordt geraakt in de schouder. De leerkracht schakelt alles uit. Dit had je hoofd kunnen zijn. Beschermkappen redden levens.', image: 'images/scene_f_kap_groot.png' },
-  f6b: { type: 'small', title: '⚠️ Kleine fout — Kap open', text: 'De leerkracht ziet het en stopt je: "Beschermkap dicht. Altijd. Geen uitzonderingen." Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f7a: { type: 'small', title: '⚠️ Kleine fout — Te hard geduwd', text: 'De boor breekt af door te veel druk. Je moet een nieuwe boor halen. Geduld is een vereiste bij boren. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f7b: { type: 'small', title: '⚠️ Kleine fout — Te snel gezakt', text: 'De boor slaat hard in het materiaal. Het werkstuk verschuift. Je moet opnieuw beginnen. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f8a: { type: 'big', title: '💀 GEVAAR — Hand bij draaiende machine!', text: 'De draaiende spaander wikkelt zich om je vingers. Je trekt terug maar de machine trekt mee. Je verliest twee vingertoppen. Ambulance. Dit is een klassiek werkplaatsongeluk dat elk jaar mensen treft.', image: 'images/scene_f_spaander_groot.png' },
-  f8b: { type: 'small', title: '⚠️ Kleine fout — Blazen', text: 'Een spaander vliegt in je oog. Je moet naar de EHBO. Bril op, altijd. Je verliest een hartje.', image: 'images/scene_f_spoed.png' },
-  f9a: { type: 'big', title: '💀 GEVAAR — Vinger in uitlopende boor!', text: 'De boor loopt nog uit. Hij grijpt je vinger. Je schreeuwt. Ernstige snijwonde. Naar de spoed. Wacht altijd tot de machine volledig stilstaat.', image: 'images/scene_f_spoed.png' },
-  f9b: { type: 'small', title: '⚠️ Kleine fout — Meten bij aanstaande machine', text: 'De leerkracht stopt je: "Machine volledig uit voor je meet. Altijd." Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f10a: { type: 'small', title: '⚠️ Kleine fout — Boor laten zitten', text: 'De volgende leerling start de machine zonder te weten dat er een boor in zit. Bijna-ongeluk. Jij bent verantwoordelijk. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f10b: { type: 'small', title: '⚠️ Kleine fout — Spaanders op grond', text: 'Een andere leerling glijdt uit op de spaanders en valt. Jij hebt dit veroorzaakt. Opruimen is ook veiligheid. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f11a: { type: 'small', title: '⚠️ Kleine fout — Onzeker "ja" zeggen', text: 'De volgende leerling vindt de boor nog in de machine. Jij had "ja" gezegd. De leerkracht spreekt je aan. Communiceer eerlijk. Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f11b: { type: 'small', title: '⚠️ Kleine fout — Weglopen zonder communicatie', text: 'De leerkracht ziet je weglopen zonder communicatie: "In een werkplaats communiceer je altijd. Altijd." Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f12a: { type: 'small', title: '⚠️ Kleine fout — Halve uitleg', text: 'De leerkracht zegt: "Je hebt de stappen gevolgd maar je begrijpt nog niet waarom. Dat is gevaarlijk. Begrijpen is belangrijker dan doen." Je verliest een hartje.', image: 'images/scene_f_klein.png' },
-  f12b: { type: 'small', title: '⚠️ Kleine fout — Geen begrip', text: 'De leerkracht schudt zijn hoofd: "Begrijpen is belangrijker dan uitvoeren. Probeer opnieuw." Je verliest een hartje.', image: 'images/scene_f_klein.png' }
-};
-
-// ===== GAME STATE =====
-let STATE = {
-  naam: '',
-  klas: '',
-  hearts: 3,
-  xp: 0,
-  currentScene: 's1',
-  fouten: 0,
-  consecutiveBig: 0,
-  pendingNext: null,
-  speaking: false
-};
-
-let synth = window.speechSynthesis;
-let utterance = null;
-
-// ===== FUNCTIONS =====
+// ============================================================
+// GAME LOGIC
+// ============================================================
 function startGame() {
   const naam = document.getElementById('input-naam').value.trim();
   const klas = document.getElementById('input-klas').value.trim();
   if (!naam) { document.getElementById('input-naam').focus(); return; }
   STATE.naam = naam;
   STATE.klas = klas || '—';
-  document.getElementById('player-badge').textContent = naam + ' · ' + (klas || '—');
+  STATE.hearts = 3; STATE.xp = 0; STATE.sceneIndex = 0;
+  STATE.fouten = 0; STATE.grootFouten = 0; STATE.consecutiveGroot = 0;
   document.getElementById('splash').style.display = 'none';
-  document.getElementById('game').style.display = 'flex';
-  loadScene('s1');
+  document.getElementById('game').style.display = 'block';
+  document.getElementById('hud-user').textContent = naam + ' · ' + STATE.klas;
+  renderScene();
 }
 
-function loadScene(sceneId) {
-  STATE.currentScene = sceneId;
-  const scene = SCENES[sceneId];
-  if (!scene) return;
+function renderScene() {
+  const scene = SCENES[STATE.sceneIndex];
+  updateHUD();
+  const badgeLabels = {
+    intro_scene:'🎬 Intro', choice_scene:'🎯 Keuze', danger_closeup:'⚠️ Gevaar',
+    impact_scene:'💥 Impact', recovery_scene:'🔄 Herstel', mentor_scene:'👨‍🏫 Mentor',
+    success_scene:'✅ Succes', boss_gate_scene:'🔒 Boss Gate'
+  };
+  const badgeClasses = {
+    intro_scene:'badge-intro', choice_scene:'badge-choice', danger_closeup:'badge-danger',
+    impact_scene:'badge-impact', recovery_scene:'badge-recovery', mentor_scene:'badge-mentor',
+    success_scene:'badge-success', boss_gate_scene:'badge-boss'
+  };
 
-  // Update header
-  const progress = ((scene.sceneNum - 1) / 12) * 100;
-  document.getElementById('progress-fill').style.width = progress + '%';
-  document.getElementById('scene-counter').textContent = 'Scene ' + scene.sceneNum + ' / 12';
+  let milanHTML = '';
+  if (scene.milanQuote) {
+    milanHTML = `<div class="milan-quote">${scene.milanQuote}<div class="milan-name">— Milan</div></div>`;
+  }
 
-  // Update image
-  const img = document.getElementById('scene-img');
-  img.style.opacity = 0;
-  img.src = scene.image;
-  img.onload = () => { img.style.opacity = 1; };
+  let choicesHTML = scene.choices.map(c => `
+    <button class="choice-btn" onclick="handleChoice(${scene.choices.indexOf(c)})">
+      <span class="choice-letter">${c.letter}</span>
+      <span>${c.text}</span>
+    </button>`).join('');
 
-  // Update label
-  const lbl = document.getElementById('scene-label');
-  lbl.textContent = scene.label;
-  lbl.className = 'scene-label';
-
-  // Update text
-  document.getElementById('scene-title').textContent = scene.title;
-  document.getElementById('scene-text').textContent = scene.text;
-
-  // Hide consequence panel
-  document.getElementById('consequence-panel').style.display = 'none';
-  document.getElementById('choices-label').style.display = 'block';
-
-  // Render choices
-  renderChoices(scene.choices);
-
-  // Stop voice
-  stopVoice();
+  document.getElementById('scene-content').innerHTML = `
+    <img src="${scene.img}" class="scene-img" alt="${scene.title}" onerror="this.style.display='none'">
+    <span class="scene-badge ${badgeClasses[scene.badge]}">${badgeLabels[scene.badge]}</span>
+    <div class="scene-title">${scene.title}</div>
+    <div class="scene-subtitle">${scene.subtitle}</div>
+    <div class="scene-text">${scene.text}</div>
+    ${milanHTML}
+    <button class="voice-btn" onclick="speakScene()">🔊 Voorlezen</button>
+    <div class="choices-label">Wat kiest hij nu?</div>
+    <div class="choices">${choicesHTML}</div>
+  `;
+  window.scrollTo(0,0);
 }
 
-function renderChoices(choices) {
-  const container = document.getElementById('choices');
-  container.innerHTML = '';
-  choices.forEach((c, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'choice-btn';
-    btn.innerHTML = '<span class="choice-letter">' + c.letter + '</span><span>' + c.text + '</span>';
-    btn.onclick = () => makeChoice(i);
-    container.appendChild(btn);
-  });
-}
-
-function makeChoice(index) {
-  const scene = SCENES[STATE.currentScene];
-  const choice = scene.choices[index];
-
-  // Disable all buttons
-  document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
-  document.getElementById('choices-label').style.display = 'none';
-  stopVoice();
+function handleChoice(idx) {
+  const scene = SCENES[STATE.sceneIndex];
+  const choice = scene.choices[idx];
 
   if (choice.correct) {
-    // Correct!
     STATE.xp += 50;
-    STATE.consecutiveBig = 0;
-    document.getElementById('xp-display').textContent = STATE.xp;
-    flashScreen('green');
-    showConsequence('good', '✅ Juiste keuze! +50 XP', 'Goed gedaan. Je hebt de juiste beslissing genomen.', choice.next);
+    STATE.consecutiveGroot = 0;
+    // Show brief success flash then advance
+    const content = document.getElementById('scene-content');
+    const successDiv = document.createElement('div');
+    successDiv.className = 'consequence mentor';
+    successDiv.innerHTML = `<div class="consequence-title">✅ Juiste keuze! +50 XP</div><div class="consequence-text">Goed gedaan. Juan doet het correct.</div><button class="btn-continue" onclick="advanceScene()">→ Volgende stap</button>`;
+    // Disable choice buttons
+    document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+    content.appendChild(successDiv);
+    successDiv.scrollIntoView({behavior:'smooth', block:'nearest'});
   } else {
-    // Wrong
-    STATE.fouten++;
-    STATE.xp = Math.max(0, STATE.xp - 10);
-    document.getElementById('xp-display').textContent = STATE.xp;
-
-    const fault = FAULT_SCENES[choice.faultScene];
-    const isBig = choice.faultType === 'big';
-
-    if (isBig) {
-      STATE.consecutiveBig++;
-    } else {
-      STATE.consecutiveBig = 0;
+    // Wrong choice
+    const type = choice.type || 'klein';
+    if (type === 'groot') {
+      STATE.hearts = Math.max(0, STATE.hearts - 2);
+      STATE.grootFouten++;
+      STATE.consecutiveGroot++;
+    } else if (type === 'klein') {
+      STATE.hearts = Math.max(0, STATE.hearts - 1);
+      STATE.consecutiveGroot = 0;
+    } else if (type === 'mentor') {
+      // mentor: no heart lost, retry same scene
+      STATE.consecutiveGroot = 0;
     }
+    STATE.fouten++;
+    updateHUD();
 
-    loseHeart();
-    flashScreen('red');
+    const content = document.getElementById('scene-content');
+    const typeLabel = type === 'groot' ? '🚨 Grote fout — Levensgevaar' : type === 'mentor' ? '👨‍🏫 Leerkracht grijpt in' : '⚠️ Kleine fout';
+    const consDiv = document.createElement('div');
+    consDiv.className = `consequence ${type}`;
+    consDiv.innerHTML = `<div class="consequence-title">${typeLabel}</div><div class="consequence-text">${choice.consequence}</div><button class="btn-continue" onclick="afterConsequence('${type}')">→ Verder</button>`;
+    document.querySelectorAll('.choice-btn').forEach(b => b.disabled = true);
+    content.appendChild(consDiv);
+    consDiv.scrollIntoView({behavior:'smooth', block:'nearest'});
 
     // Check game over conditions
-    if (STATE.hearts <= 0 || STATE.consecutiveBig >= 2) {
-      STATE.pendingNext = 'GAMEOVER';
-    } else {
-      STATE.pendingNext = choice.next;
+    if (STATE.hearts <= 0 || STATE.consecutiveGroot >= 2) {
+      setTimeout(() => showGameOver(), 2000);
     }
-
-    showConsequence(isBig ? 'big' : 'small', fault.title, fault.text, STATE.pendingNext, fault.image);
   }
 }
 
-function showConsequence(type, title, text, next, image) {
-  const panel = document.getElementById('consequence-panel');
-  panel.className = 'consequence-panel ' + type;
-  panel.style.display = 'block';
-  document.getElementById('con-title').textContent = title;
-  document.getElementById('con-text').textContent = text;
-  STATE.pendingNext = next;
-
-  // Update scene image to fault image if provided
-  if (image && type !== 'good') {
-    const img = document.getElementById('scene-img');
-    img.style.opacity = 0;
-    img.src = image;
-    img.onload = () => { img.style.opacity = 1; };
+function afterConsequence(type) {
+  if (type === 'mentor') {
+    // Retry same scene
+    renderScene();
+  } else {
+    advanceScene();
   }
-
-  panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-function continueAfterConsequence() {
-  const next = STATE.pendingNext;
-  document.getElementById('consequence-panel').style.display = 'none';
-
-  if (next === 'WIN') {
+function advanceScene() {
+  STATE.sceneIndex++;
+  if (STATE.sceneIndex >= SCENES.length) {
     showWin();
-  } else if (next === 'GAMEOVER' || STATE.hearts <= 0) {
-    showGameOver();
   } else {
-    loadScene(next);
+    renderScene();
   }
 }
 
-function loseHeart() {
-  const hearts = ['h3', 'h2', 'h1'];
-  const idx = 3 - STATE.hearts;
-  if (idx < 3) {
-    const el = document.getElementById(hearts[idx]);
-    el.classList.add('lost', 'heart-shake');
-    setTimeout(() => el.classList.remove('heart-shake'), 400);
+function updateHUD() {
+  // Hearts
+  let heartsHTML = '';
+  for (let i = 0; i < 3; i++) {
+    heartsHTML += `<span class="heart ${i < STATE.hearts ? '' : 'lost'}">❤️</span>`;
   }
-  STATE.hearts--;
-}
-
-function flashScreen(color) {
-  const flash = document.getElementById('flash');
-  flash.className = 'flash-overlay ' + color;
-  flash.style.opacity = 1;
-  setTimeout(() => { flash.style.opacity = 0; }, 300);
-}
-
-function toggleVoice() {
-  if (STATE.speaking) {
-    stopVoice();
-  } else {
-    startVoice();
-  }
-}
-
-function startVoice() {
-  if (!synth) return;
-  stopVoice();
-  const scene = SCENES[STATE.currentScene];
-  if (!scene) return;
-  const text = scene.title + '. ' + scene.text;
-  utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'nl-NL';
-  utterance.rate = 0.95;
-  utterance.onend = () => {
-    STATE.speaking = false;
-    document.getElementById('voice-btn').className = 'voice-btn';
-    document.getElementById('voice-btn').textContent = '🔊 Voorlezen';
-  };
-  synth.speak(utterance);
-  STATE.speaking = true;
-  document.getElementById('voice-btn').className = 'voice-btn speaking';
-  document.getElementById('voice-btn').textContent = '⏹ Stop';
-}
-
-function stopVoice() {
-  if (synth) synth.cancel();
-  STATE.speaking = false;
-  const btn = document.getElementById('voice-btn');
-  if (btn) { btn.className = 'voice-btn'; btn.textContent = '🔊 Voorlezen'; }
+  document.getElementById('hud-hearts').innerHTML = heartsHTML;
+  document.getElementById('hud-xp').textContent = '⚡ ' + STATE.xp + ' XP';
+  const sceneNum = Math.min(STATE.sceneIndex + 1, 17);
+  document.getElementById('hud-progress').textContent = 'Scene ' + sceneNum + ' / 17';
+  const pct = (STATE.sceneIndex / 17) * 100;
+  document.getElementById('progress-bar').style.width = pct + '%';
 }
 
 function showGameOver() {
-  stopVoice();
   document.getElementById('game').style.display = 'none';
   const go = document.getElementById('gameover');
   go.style.display = 'flex';
-  document.getElementById('go-scenes').textContent = SCENES[STATE.currentScene]?.sceneNum || '?';
-  document.getElementById('go-xp').textContent = STATE.xp;
-  document.getElementById('go-fouten').textContent = STATE.fouten;
+  document.getElementById('go-stats').innerHTML = `
+    <div class="go-stat"><span>Naam</span><span>${STATE.naam}</span></div>
+    <div class="go-stat"><span>Klas</span><span>${STATE.klas}</span></div>
+    <div class="go-stat"><span>Stap bereikt</span><span>${STATE.sceneIndex + 1} / 17</span></div>
+    <div class="go-stat"><span>XP verdiend</span><span>${STATE.xp}</span></div>
+    <div class="go-stat"><span>Fouten</span><span>${STATE.fouten}</span></div>
+  `;
 }
 
 function showWin() {
-  stopVoice();
   document.getElementById('game').style.display = 'none';
-  const win = document.getElementById('winscreen');
-  win.style.display = 'flex';
-  document.getElementById('win-xp').textContent = STATE.xp;
-  document.getElementById('win-hartjes').textContent = STATE.hearts;
-  document.getElementById('win-fouten').textContent = STATE.fouten;
-  const score = STATE.fouten === 0 ? 'S' : STATE.fouten <= 2 ? 'A' : STATE.fouten <= 5 ? 'B' : 'C';
-  document.getElementById('win-score').textContent = score;
-  spawnConfetti();
+  const ws = document.getElementById('winscreen');
+  ws.style.display = 'flex';
+  const pct = Math.round((1 - STATE.fouten / (STATE.totalScenes * 1.5)) * 100);
+  let grade = 'S';
+  if (STATE.fouten === 0) grade = 'S+';
+  else if (STATE.fouten <= 2) grade = 'S';
+  else if (STATE.fouten <= 5) grade = 'A';
+  else if (STATE.fouten <= 8) grade = 'B';
+  else grade = 'C';
+  document.getElementById('win-grade').textContent = grade;
+  document.getElementById('win-stats').innerHTML = `
+    <div class="win-stat"><span>Naam</span><span>${STATE.naam}</span></div>
+    <div class="win-stat"><span>Klas</span><span>${STATE.klas}</span></div>
+    <div class="win-stat"><span>Totaal XP</span><span>⚡ ${STATE.xp}</span></div>
+    <div class="win-stat"><span>Fouten</span><span>${STATE.fouten}</span></div>
+    <div class="win-stat"><span>Grote fouten</span><span>${STATE.grootFouten}</span></div>
+    <div class="win-stat"><span>Score</span><span>${grade}</span></div>
+  `;
 }
 
-function spawnConfetti() {
-  const colors = ['#00d4c8', '#ffd700', '#e040fb', '#00c853', '#ff6b6b'];
-  for (let i = 0; i < 80; i++) {
-    setTimeout(() => {
-      const el = document.createElement('div');
-      el.className = 'confetti-piece';
-      el.style.left = Math.random() * 100 + 'vw';
-      el.style.top = '-20px';
-      el.style.background = colors[Math.floor(Math.random() * colors.length)];
-      el.style.width = (Math.random() * 10 + 5) + 'px';
-      el.style.height = (Math.random() * 10 + 5) + 'px';
-      el.style.animationDuration = (Math.random() * 2 + 2) + 's';
-      el.style.animationDelay = Math.random() * 0.5 + 's';
-      document.body.appendChild(el);
-      setTimeout(() => el.remove(), 4000);
-    }, i * 30);
-  }
-}
-
-function resetGame() {
-  stopVoice();
-  STATE = { naam: STATE.naam, klas: STATE.klas, hearts: 3, xp: 0, currentScene: 's1', fouten: 0, consecutiveBig: 0, pendingNext: null, speaking: false };
-  // Reset hearts display
-  ['h1','h2','h3'].forEach(id => {
-    const el = document.getElementById(id);
-    el.classList.remove('lost');
-    el.textContent = '❤️';
-  });
-  document.getElementById('xp-display').textContent = '0';
-  document.getElementById('progress-fill').style.width = '0%';
+function restartGame() {
   document.getElementById('gameover').style.display = 'none';
   document.getElementById('winscreen').style.display = 'none';
-  document.getElementById('game').style.display = 'flex';
-  loadScene('s1');
+  document.getElementById('game').style.display = 'none';
+  document.getElementById('splash').style.display = 'flex';
 }
 
-// Enter key on inputs
-document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('input-naam').addEventListener('keydown', e => { if (e.key === 'Enter') startGame(); });
-  document.getElementById('input-klas').addEventListener('keydown', e => { if (e.key === 'Enter') startGame(); });
-});
+// Voice
+let speaking = false;
+function speakScene() {
+  if (speaking) { speechSynthesis.cancel(); speaking = false; return; }
+  const scene = SCENES[STATE.sceneIndex];
+  const text = scene.text.replace(/<[^>]+>/g,'') + ' ' + (scene.milanQuote ? 'Milan zegt: ' + scene.milanQuote : '') + ' ' + scene.vraag;
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'nl-NL'; utt.rate = 0.95;
+  const voices = speechSynthesis.getVoices();
+  const nl = voices.find(v => v.lang.startsWith('nl'));
+  if (nl) utt.voice = nl;
+  utt.onend = () => { speaking = false; };
+  speaking = true;
+  speechSynthesis.speak(utt);
+}
 </script>
 </body>
 </html>
