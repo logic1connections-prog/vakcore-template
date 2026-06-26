@@ -207,8 +207,8 @@ const SCENES = [
     vraag: "Wat doet Juan?",
     choices: [
       { letter:"A", text:"Juan leest de werkbon grondig, bekijkt de tekening en noteert de maten.", correct:true },
-      { letter:"B", text:"Juan volgt Milan en gaat direct naar het materiaalrek zonder de bon te lezen.", correct:false, type:"klein", consequence:"Juan staat aan het materiaalrek maar weet niet welk materiaal hij nodig heeft. De leerkracht stuurt hem terug. \"Lees eerst je werkbon. Altijd.\"" },
-      { letter:"C", text:"Juan leest alleen de maten maar bekijkt de tekening niet.", correct:false, type:"klein", consequence:"Juan kiest het juiste materiaal maar zaagt het op de verkeerde lengte omdat hij de tekening niet bekeek. Het stuk is afgekeurd." }
+      { letter:"B", text:"Juan volgt Milan en gaat direct naar het materiaalrek zonder de bon te lezen.", correct:false, type:"klein", consequenceImg:"images/s01_B_materiaalrek_verward.png", consequence:"Juan staat aan het materiaalrek maar weet niet welk materiaal hij nodig heeft. De leerkracht stuurt hem terug. \"Lees eerst je werkbon. Altijd.\"" },
+      { letter:"C", text:"Juan leest alleen de maten maar bekijkt de tekening niet.", correct:false, type:"klein", consequenceImg:"images/s01_C_tekening_gemist.png", consequence:"Juan kiest het juiste materiaal maar zaagt het op de verkeerde lengte omdat hij de tekening niet bekeek. Het stuk is afgekeurd." }
     ]
   },
   // SCENE 2 — PBM-check
@@ -223,8 +223,8 @@ const SCENES = [
     vraag: "Wat doet Juan?",
     choices: [
       { letter:"A", text:"Juan haalt zijn bril en oordoppen, zet ze op en stapt dan de werkplaats in.", correct:true },
-      { letter:"B", text:"Juan rent naar binnen zonder bril. \"Het is maar even.\"", correct:false, type:"groot", consequence:"Een metaalspaander springt recht op Juan af. Zonder bril raakt hij zijn oog. De leerkracht schakelt alles uit. EHBO. Dit had permanent oogletsel kunnen zijn. 2 hartjes weg." },
-      { letter:"C", text:"Juan doet alleen zijn bril op maar vergeet de oordoppen. \"De zaagmachine maakt toch niet veel lawaai.\"", correct:false, type:"klein", consequence:"Na 10 minuten zagen heeft Juan oorsuizen. De leerkracht stuurt hem naar buiten. \"Gehoorbescherming is niet optioneel.\"" }
+      { letter:"B", text:"Juan rent naar binnen zonder bril. \"Het is maar even.\"", correct:false, type:"groot", consequenceImg:"images/s02_B_geen_pbm.png", consequence:"Een metaalspaander springt recht op Juan af. Zonder bril raakt hij zijn oog. De leerkracht schakelt alles uit. EHBO. Dit had permanent oogletsel kunnen zijn. 2 hartjes weg." },
+      { letter:"C", text:"Juan doet alleen zijn bril op maar vergeet de oordoppen. \"De zaagmachine maakt toch niet veel lawaai.\"", correct:false, type:"klein", consequenceImg:"images/s02_C_gedeeltelijk_pbm.png", consequence:"Na 10 minuten zagen heeft Juan oorsuizen. De leerkracht stuurt hem naar buiten. \"Gehoorbescherming is niet optioneel.\"" }
     ]
   },
   // SCENE 3 — Plan lezen
@@ -239,8 +239,8 @@ const SCENES = [
     vraag: "Wat doet Juan?",
     choices: [
       { letter:"A", text:"Juan leest de maten exact af en noteert: 120 mm lang, gat op 60 mm van de rand.", correct:true },
-      { letter:"B", text:"Juan vertrouwt Milan en schat \"het midden\" zonder te meten.", correct:false, type:"klein", consequence:"Het gat zit 5 mm naast het midden. Het werkstuk is afgekeurd. Opnieuw beginnen." },
-      { letter:"C", text:"Juan leest de lengte maar vergeet de positie van het gat te noteren.", correct:false, type:"klein", consequence:"Juan vergeet de positie en moet later opnieuw het plan raadplegen. Tijdverlies en verwarring." }
+      { letter:"B", text:"Juan vertrouwt Milan en schat \"het midden\" zonder te meten.", correct:false, type:"klein", consequenceImg:"images/s03_B_plan_overgeslagen.png", consequence:"Het gat zit 5 mm naast het midden. Het werkstuk is afgekeurd. Opnieuw beginnen." },
+      { letter:"C", text:"Juan leest de lengte maar vergeet de positie van het gat te noteren.", correct:false, type:"klein", consequenceImg:"images/s03_C_milan_volgen.png", consequence:"Juan vergeet de positie en moet later opnieuw het plan raadplegen. Tijdverlies en verwarring." }
     ]
   },
   // SCENE 4 — Materiaal zoeken
@@ -255,8 +255,8 @@ const SCENES = [
     vraag: "Wat doet Juan?",
     choices: [
       { letter:"A", text:"Juan neemt S235 platstaal en controleert het label.", correct:true },
-      { letter:"B", text:"Juan neemt het oude stuk zonder label.", correct:false, type:"klein", consequence:"Het stuk blijkt hardox staal — veel te hard voor de boor. De boor breekt af bij het boren. Nieuw materiaal nodig." },
-      { letter:"C", text:"Juan neemt aluminium omdat dat makkelijker zaagt.", correct:false, type:"klein", consequence:"Aluminium heeft andere eigenschappen dan S235. De opdracht vraagt staal. Het werkstuk is afgekeurd." }
+      { letter:"B", text:"Juan neemt het oude stuk zonder label.", correct:false, type:"klein", consequenceImg:"images/s04_B_verkeerd_staal.png", consequence:"Het stuk blijkt hardox staal — veel te hard voor de boor. De boor breekt af bij het boren. Nieuw materiaal nodig." },
+      { letter:"C", text:"Juan neemt aluminium omdat dat makkelijker zaagt.", correct:false, type:"klein", consequenceImg:"images/s04_C_milan_raad.png", consequence:"Aluminium heeft andere eigenschappen dan S235. De opdracht vraagt staal. Het werkstuk is afgekeurd." }
     ]
   },
   // SCENE 5 — Materiaal controleren
@@ -271,8 +271,8 @@ const SCENES = [
     vraag: "Wat doet Juan?",
     choices: [
       { letter:"A", text:"Juan meldt de barst aan de leerkracht en vraagt een nieuw stuk.", correct:true },
-      { letter:"B", text:"Juan zaagt het stuk toch, de barst zit aan de rand die hij toch wegzaagt.", correct:false, type:"klein", consequence:"De barst zit net iets verder dan verwacht. Het stuk breekt tijdens het zagen. Nieuw materiaal nodig." },
-      { letter:"C", text:"Juan negeert de barst volledig.", correct:false, type:"groot", consequence:"Het stuk breekt tijdens het boren. Een scherp stuk staal schiet weg. Gevaarlijk voor Juan en omstaanders." }
+      { letter:"B", text:"Juan zaagt het stuk toch, de barst zit aan de rand die hij toch wegzaagt.", correct:false, type:"klein", consequenceImg:"images/s05_B_materiaal_niet_gemeten.png", consequence:"De barst zit net iets verder dan verwacht. Het stuk breekt tijdens het zagen. Nieuw materiaal nodig." },
+      { letter:"C", text:"Juan negeert de barst volledig.", correct:false, type:"groot", consequenceImg:"images/s05_C_roestig_materiaal.png", consequence:"Het stuk breekt tijdens het boren. Een scherp stuk staal schiet weg. Gevaarlijk voor Juan en omstaanders." }
     ]
   },
   // SCENE 6 — Zaagmachine instellen
@@ -287,8 +287,8 @@ const SCENES = [
     vraag: "Wat doet Juan?",
     choices: [
       { letter:"A", text:"Juan past de snelheid aan voor staal en stelt de aanslag correct in op 120 mm.", correct:true },
-      { letter:"B", text:"Juan laat de snelheid hoog staan maar past de aanslag aan.", correct:false, type:"klein", consequence:"De zaagband slijt snel door de te hoge snelheid op staal. De band breekt. Machine stilgelegd." },
-      { letter:"C", text:"Juan zaagt direct zonder iets aan te passen.", correct:false, type:"groot", consequence:"De zaagband breekt bij de eerste aanraking. Een stuk band schiet weg. Gevaar voor omstaanders. Machine stilgelegd." }
+      { letter:"B", text:"Juan laat de snelheid hoog staan maar past de aanslag aan.", correct:false, type:"klein", consequenceImg:"images/s06_B_zaag_verkeerd_ingesteld.png", consequence:"De zaagband slijt snel door de te hoge snelheid op staal. De band breekt. Machine stilgelegd." },
+      { letter:"C", text:"Juan zaagt direct zonder iets aan te passen.", correct:false, type:"groot", consequenceImg:"images/s06_C_snelheid_fout.png", consequence:"De zaagband breekt bij de eerste aanraking. Een stuk band schiet weg. Gevaar voor omstaanders. Machine stilgelegd." }
     ]
   },
   // SCENE 7 — Zagen
@@ -303,8 +303,8 @@ const SCENES = [
     vraag: "Wat doet Juan?",
     choices: [
       { letter:"A", text:"Juan negeert Milan, draait de klem stevig vast en start dan de zaag.", correct:true },
-      { letter:"B", text:"Juan start de zaag terwijl hij half naar Milan luistert, klem niet vast.", correct:false, type:"groot", consequence:"Het materiaal draait mee met de zaagband. Het schiet van de tafel. Bijna-ongeluk. Machine stilgelegd." },
-      { letter:"C", text:"Juan houdt het materiaal met de hand vast. \"Het is maar een klein stukje.\"", correct:false, type:"groot", consequence:"De zaag grijpt het materiaal. Juan trekt zijn hand terug maar de zaag raakt zijn vingers. Ambulance gebeld." }
+      { letter:"B", text:"Juan start de zaag terwijl hij half naar Milan luistert, klem niet vast.", correct:false, type:"groot", consequenceImg:"images/s07_B_te_snel_zagen.png", consequence:"Het materiaal draait mee met de zaagband. Het schiet van de tafel. Bijna-ongeluk. Machine stilgelegd." },
+      { letter:"C", text:"Juan houdt het materiaal met de hand vast. \"Het is maar een klein stukje.\"", correct:false, type:"groot", consequenceImg:"images/s07_C_niet_vasthouden.png", consequence:"De zaag grijpt het materiaal. Juan trekt zijn hand terug maar de zaag raakt zijn vingers. Ambulance gebeld." }
     ]
   },
   // SCENE 8 — Ontbramen
@@ -319,8 +319,8 @@ const SCENES = [
     vraag: "Wat doet Juan?",
     choices: [
       { letter:"A", text:"Juan spant het stuk in de bankschroef en gebruikt een vijl om veilig te ontbramen.", correct:true },
-      { letter:"B", text:"Juan trekt de braam ook met zijn vingers weg.", correct:false, type:"klein", consequence:"Een braam snijdt diep in Juan's vinger. EHBO nodig. Tijdverlies en pijn." },
-      { letter:"C", text:"Juan laat de bramen zitten. \"De kolomboor vijlt dat wel weg.\"", correct:false, type:"klein", consequence:"De leerkracht keurt het stuk af. \"Ontbramen is verplicht voor je verder gaat.\" Opnieuw beginnen." }
+      { letter:"B", text:"Juan trekt de braam ook met zijn vingers weg.", correct:false, type:"klein", consequenceImg:"images/s08_B_hand_ontbramen.png", consequence:"Een braam snijdt diep in Juan's vinger. EHBO nodig. Tijdverlies en pijn." },
+      { letter:"C", text:"Juan laat de bramen zitten. \"De kolomboor vijlt dat wel weg.\"", correct:false, type:"klein", consequenceImg:"images/s08_C_geen_ontbramen.png", consequence:"De leerkracht keurt het stuk af. \"Ontbramen is verplicht voor je verder gaat.\" Opnieuw beginnen." }
     ]
   },
   // SCENE 9 — Schuren/vijlen
@@ -335,8 +335,8 @@ const SCENES = [
     vraag: "Wat doet Juan?",
     choices: [
       { letter:"A", text:"Juan vijlt de zijkanten glad en controleert de maat met de schuifmaat.", correct:true },
-      { letter:"B", text:"Juan slaat het vijlen over. \"Milan heeft gelijk, het gaat in een machine.\"", correct:false, type:"klein", consequence:"Het stuk is 1 mm te breed door de bramen. Het past niet in de mal. Opnieuw vijlen." },
-      { letter:"C", text:"Juan vijlt maar één kant. \"De andere kant ziet toch niemand.\"", correct:false, type:"klein", consequence:"De leerkracht keurt het stuk af bij de eindcontrole. \"Beide kanten moeten maatnauwkeurig zijn.\"" }
+      { letter:"B", text:"Juan slaat het vijlen over. \"Milan heeft gelijk, het gaat in een machine.\"", correct:false, type:"klein", consequenceImg:"images/s09_B_te_grof_vijlen.png", consequence:"Het stuk is 1 mm te breed door de bramen. Het past niet in de mal. Opnieuw vijlen." },
+      { letter:"C", text:"Juan vijlt maar één kant. \"De andere kant ziet toch niemand.\"", correct:false, type:"klein", consequenceImg:"images/s09_C_overgeslagen.png", consequence:"De leerkracht keurt het stuk af bij de eindcontrole. \"Beide kanten moeten maatnauwkeurig zijn.\"" }
     ]
   },
   // SCENE 10 — Meten en aftekenen
@@ -351,8 +351,8 @@ const SCENES = [
     vraag: "Wat doet Juan?",
     choices: [
       { letter:"A", text:"Juan vertrouwt zijn eigen meting (60 mm) en zet een duidelijke kras op de juiste plek.", correct:true },
-      { letter:"B", text:"Juan vertrouwt Milan en tekent af op 65 mm.", correct:false, type:"klein", consequence:"Het gat zit 5 mm naast de correcte positie. Afgekeurd. Nieuw stuk nodig." },
-      { letter:"C", text:"Juan tekent af met een dikke stift in plaats van een kraspen.", correct:false, type:"klein", consequence:"De stift is niet nauwkeurig genoeg. Het gat zit op de verkeerde plek. Afgekeurd." }
+      { letter:"B", text:"Juan vertrouwt Milan en tekent af op 65 mm.", correct:false, type:"klein", consequenceImg:"images/s10_B_verkeerd_meten.png", consequence:"Het gat zit 5 mm naast de correcte positie. Afgekeurd. Nieuw stuk nodig." },
+      { letter:"C", text:"Juan tekent af met een dikke stift in plaats van een kraspen.", correct:false, type:"klein", consequenceImg:"images/s10_C_aftekenen_overgeslagen.png", consequence:"De stift is niet nauwkeurig genoeg. Het gat zit op de verkeerde plek. Afgekeurd." }
     ]
   },
   // SCENE 11 — Centerpunten
@@ -367,8 +367,8 @@ const SCENES = [
     vraag: "Wat doet Juan?",
     choices: [
       { letter:"A", text:"Juan slaat een duidelijke centerpunt op de afgetekende plek.", correct:true },
-      { letter:"B", text:"Juan slaat de centerpons over en gaat direct naar de kolomboor.", correct:false, type:"klein", consequence:"De boor glijdt weg bij de eerste aanraking. Het gat zit op de verkeerde plek. Opnieuw aftekenen." },
-      { letter:"C", text:"Juan slaat de pons maar half in. \"Dat is genoeg.\"", correct:false, type:"klein", consequence:"De centerpunt is te ondiep. De boor glijdt nog steeds weg. Gat op verkeerde plek." }
+      { letter:"B", text:"Juan slaat de centerpons over en gaat direct naar de kolomboor.", correct:false, type:"klein", consequenceImg:"images/s11_B_geen_centerpons.png", consequence:"De boor glijdt weg bij de eerste aanraking. Het gat zit op de verkeerde plek. Opnieuw aftekenen." },
+      { letter:"C", text:"Juan slaat de pons maar half in. \"Dat is genoeg.\"", correct:false, type:"klein", consequenceImg:"images/s11_C_verkeerde_plek.png", consequence:"De centerpunt is te ondiep. De boor glijdt nog steeds weg. Gat op verkeerde plek." }
     ]
   },
   // SCENE 12 — Kolomboor instellen
@@ -383,8 +383,8 @@ const SCENES = [
     vraag: "Wat doet Juan?",
     choices: [
       { letter:"A", text:"Juan vervangt de boor door Ø10 mm, stelt de tafel correct in en controleert de klem.", correct:true },
-      { letter:"B", text:"Juan gebruikt de Ø6 mm boor. \"Ik boor dan twee keer.\"", correct:false, type:"klein", consequence:"Het gat is te klein. Afgekeurd. Opnieuw instellen en boren." },
-      { letter:"C", text:"Juan vervangt de boor maar vergeet de tafel in te stellen.", correct:false, type:"klein", consequence:"De tafel staat te laag. De boor bereikt het materiaal niet correct. Instelling aanpassen." }
+      { letter:"B", text:"Juan gebruikt de Ø6 mm boor. \"Ik boor dan twee keer.\"", correct:false, type:"klein", consequenceImg:"images/s12_B_sleutel_in_boorkop.png", consequence:"Het gat is te klein. Afgekeurd. Opnieuw instellen en boren." },
+      { letter:"C", text:"Juan vervangt de boor maar vergeet de tafel in te stellen.", correct:false, type:"klein", consequenceImg:"images/s12_C_verkeerde_boor.png", consequence:"De tafel staat te laag. De boor bereikt het materiaal niet correct. Instelling aanpassen." }
     ]
   },
   // SCENE 13 — Werkstuk opspannen
@@ -399,8 +399,8 @@ const SCENES = [
     vraag: "Wat doet Juan?",
     choices: [
       { letter:"A", text:"Juan spant het werkstuk stevig in met de machineklem.", correct:true },
-      { letter:"B", text:"Juan houdt het werkstuk vast met zijn hand tijdens het boren.", correct:false, type:"groot", consequence:"De boor grijpt het staal. Het werkstuk draait mee en snijdt in Juan's hand. Ambulance. Ernstige snijwonde." },
-      { letter:"C", text:"Juan legt het werkstuk los op tafel zonder klem. \"Het is zwaar genoeg.\"", correct:false, type:"groot", consequence:"Het werkstuk draait mee met de boor en schiet van de tafel. Gevaar voor omstaanders. Machine stilgelegd." }
+      { letter:"B", text:"Juan houdt het werkstuk vast met zijn hand tijdens het boren.", correct:false, type:"groot", consequenceImg:"images/s13_B_met_hand_vasthouden.png", consequence:"De boor grijpt het staal. Het werkstuk draait mee en snijdt in Juan's hand. Ambulance. Ernstige snijwonde." },
+      { letter:"C", text:"Juan legt het werkstuk los op tafel zonder klem. \"Het is zwaar genoeg.\"", correct:false, type:"groot", consequenceImg:"images/s13_C_klem_niet_vast.png", consequence:"Het werkstuk draait mee met de boor en schiet van de tafel. Gevaar voor omstaanders. Machine stilgelegd." }
     ]
   },
   // SCENE 14 — Boren
@@ -415,8 +415,11 @@ const SCENES = [
     vraag: "Wat doet Juan?",
     choices: [
       { letter:"A", text:"Juan sluit de beschermkap, stuurt Milan weg en boort rustig met snijolie.", correct:true },
-      { letter:"B", text:"Juan laat de kap open en boort snel door.", correct:false, type:"groot", consequence:"Een stuk van de boor breekt af aan hoge snelheid. Het projectiel raakt Juan in het gezicht. Spoed." },
-      { letter:"C", text:"Juan boort zonder snijolie. \"Het is maar één gat.\"", correct:false, type:"klein", consequence:"De boor oververhit en breekt. Nieuwe boor nodig. Tijdverlies." }
+      { letter:"B", text:"Juan laat de kap open en boort snel door.", correct:false, type:"groot", consequenceImg:"images/s14_B_kap_open.png", consequence:"Een stuk van de boor breekt af aan hoge snelheid. Het projectiel raakt Juan in het gezicht. Spoed." },
+      { letter:"C", text:"Juan boort terwijl Milan zonder bril toekijkt.", correct:false, type:"mentor", consequenceImg:"images/s14_C_meten_tijdens_draaien.png", consequence:"De leerkracht grijpt in. \"Milan heeft geen bril. Iedereen in de buurt van machines draagt bescherming.\"" }
+    ]
+  },
+  // PLACEHOLDER_SCENE14_ENDt zonder snijolie. \"Het is maar één gat.\"", correct:false, type:"klein", consequence:"De boor oververhit en breekt. Nieuwe boor nodig. Tijdverlies." }
     ]
   },
   // SCENE 15 — Controleren
@@ -431,8 +434,8 @@ const SCENES = [
     vraag: "Wat doet Juan?",
     choices: [
       { letter:"A", text:"Juan verwijdert de spanen met een spanenhaak, wacht tot alles stilstaat en meet dan het gat.", correct:true },
-      { letter:"B", text:"Juan veegt de spanen weg met zijn blote hand.", correct:false, type:"klein", consequence:"Een spaander snijdt in Juan's hand. EHBO nodig. Altijd een spanenhaak gebruiken." },
-      { letter:"C", text:"Juan meet het gat terwijl de boor nog langzaam uitloopt.", correct:false, type:"groot", consequence:"De uitlopende boor grijpt Juan's vinger. Ernstige snijwonde. Spoed." }
+      { letter:"B", text:"Juan veegt de spanen weg met zijn blote hand.", correct:false, type:"klein", consequenceImg:"images/s15_B_niet_controleren.png", consequence:"Een spaander snijdt in Juan's hand. EHBO nodig. Altijd een spanenhaak gebruiken." },
+      { letter:"C", text:"Juan meet het gat terwijl de boor nog langzaam uitloopt.", correct:false, type:"groot", consequenceImg:"images/s15_C_fout_gemeten.png", consequence:"De uitlopende boor grijpt Juan's vinger. Ernstige snijwonde. Spoed." }
     ]
   },
   // SCENE 16 — Afgeven
@@ -447,8 +450,8 @@ const SCENES = [
     vraag: "Wat doet Juan?",
     choices: [
       { letter:"A", text:"Juan geeft het stuk af, meldt dat de machine opgeruimd is en beschrijft wat hij gedaan heeft.", correct:true },
-      { letter:"B", text:"Juan geeft het stuk af maar laat de machine vies achter.", correct:false, type:"klein", consequence:"De volgende leerling glijdt uit op de spanen. Jij bent verantwoordelijk. Terug opruimen." },
-      { letter:"C", text:"Juan legt het stuk op de tafel van de leerkracht zonder iets te zeggen en gaat weg.", correct:false, type:"mentor", consequence:"De leerkracht roept Juan terug. \"In een werkplaats communiceer je altijd bij overdracht.\"" }
+      { letter:"B", text:"Juan geeft het stuk af maar laat de machine vies achter.", correct:false, type:"klein", consequenceImg:"images/s16_B_zonder_communiceren.png", consequence:"De volgende leerling glijdt uit op de spanen. Jij bent verantwoordelijk. Terug opruimen." },
+      { letter:"C", text:"Juan legt het stuk op de tafel van de leerkracht zonder iets te zeggen en gaat weg.", correct:false, type:"mentor", consequenceImg:"images/s16_C_te_vroeg_afgeven.png", consequence:"De leerkracht roept Juan terug. \"In een werkplaats communiceer je altijd bij overdracht.\"" }
     ]
   },
   // SCENE 17 — Simulatiepoort (Boss Gate)
@@ -462,9 +465,9 @@ const SCENES = [
     milanQuote: null,
     vraag: "Juan antwoordt:",
     choices: [
-      { letter:"A", text:"\"Snel werken zodat we op tijd klaar zijn.\"", correct:false, type:"mentor", consequence:"De leerkracht schudt zijn hoofd. \"Snelheid is nooit een veiligheidsprioriteit. Probeer opnieuw.\"" },
+      { letter:"A", text:"\"Snel werken zodat we op tijd klaar zijn.\"", correct:false, type:"mentor", consequenceImg:"images/s17_B_boss_fail.png", consequence:"De leerkracht schudt zijn hoofd. \"Snelheid is nooit een veiligheidsprioriteit. Probeer opnieuw.\"" },
       { letter:"B", text:"\"Het werkstuk stevig opspannen, de beschermkap sluiten en wachten tot de machine volledig stilstaat voor ik meet.\"", correct:true },
-      { letter:"C", text:"\"Altijd doen wat Milan zegt, die heeft meer ervaring.\"", correct:false, type:"mentor", consequence:"De leerkracht: \"Milan is ook een leerling. Jij bent verantwoordelijk voor jouw eigen veiligheid.\"" }
+      { letter:"C", text:"\"Altijd doen wat Milan zegt, die heeft meer ervaring.\"", correct:false, type:"mentor", consequenceImg:"images/s17_C_boss_partial.png", consequence:"De leerkracht: \"Milan is ook een leerling. Jij bent verantwoordelijk voor jouw eigen veiligheid.\"" }
     ]
   }
 ];
@@ -559,6 +562,18 @@ function handleChoice(idx) {
     updateHUD();
 
     const content = document.getElementById('scene-content');
+    // Swap scene image to consequence image if available
+    if (choice.consequenceImg) {
+      const sceneImg = content.querySelector('.scene-img');
+      if (sceneImg) {
+        sceneImg.style.transition = 'opacity 0.4s';
+        sceneImg.style.opacity = '0';
+        setTimeout(() => {
+          sceneImg.src = choice.consequenceImg;
+          sceneImg.style.opacity = '1';
+        }, 400);
+      }
+    }
     const typeLabel = type === 'groot' ? '🚨 Grote fout — Levensgevaar' : type === 'mentor' ? '👨‍🏫 Leerkracht grijpt in' : '⚠️ Kleine fout';
     const consDiv = document.createElement('div');
     consDiv.className = `consequence ${type}`;
