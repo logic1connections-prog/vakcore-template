@@ -1,1591 +1,1247 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VakCore — Leerpad Template</title>
-    <style>
-        /* ===== RESET & BASE ===== */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: #080b14;
-            color: #e2e8f0;
-            min-height: 100vh;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        button { cursor: pointer; font-family: inherit; }
-        input, select, textarea { font-family: inherit; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VakCore — Leerpad</title>
+<style>
+:root {
+  --bg: #0a0e1a;
+  --bg2: #111827;
+  --bg3: #1a2235;
+  --cyan: #00e5ff;
+  --purple: #a855f7;
+  --pink: #ec4899;
+  --gold: #f59e0b;
+  --green: #10b981;
+  --red: #ef4444;
+  --orange: #f97316;
+  --text: #e2e8f0;
+  --muted: #64748b;
+  --border: #1e293b;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
 
-        /* ===== UTILITY CLASSES (vervangen Tailwind) ===== */
-        .hidden { display: none !important; }
-        .flex { display: flex; }
-        .flex-col { flex-direction: column; }
-        .flex-1 { flex: 1; }
-        .flex-wrap { flex-wrap: wrap; }
-        .items-center { align-items: center; }
-        .items-start { align-items: flex-start; }
-        .justify-center { justify-content: center; }
-        .justify-between { justify-content: space-between; }
-        .gap-1 { gap: 4px; }
-        .gap-2 { gap: 8px; }
-        .gap-3 { gap: 12px; }
-        .gap-4 { gap: 16px; }
-        .gap-6 { gap: 24px; }
-        .grid { display: grid; }
-        .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
-        .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
-        .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
-        .space-y-2 > * + * { margin-top: 8px; }
-        .space-y-4 > * + * { margin-top: 16px; }
-        .w-full { width: 100%; }
-        .w-8 { width: 32px; }
-        .w-9 { width: 36px; }
-        .w-10 { width: 40px; }
-        .w-20 { width: 80px; }
-        .w-52 { width: 208px; }
-        .h-full { height: 100%; }
-        .h-8 { height: 32px; }
-        .h-9 { height: 36px; }
-        .h-10 { height: 40px; }
-        .h-20 { height: 80px; }
-        .min-w-0 { min-width: 0; }
-        .shrink-0 { flex-shrink: 0; }
-        .mx-auto { margin-left: auto; margin-right: auto; }
-        .ml-auto { margin-left: auto; }
-        .ml-3 { margin-left: 12px; }
-        .ml-4 { margin-left: 16px; }
-        .mr-2 { margin-right: 8px; }
-        .mt-1 { margin-top: 4px; }
-        .mt-2 { margin-top: 8px; }
-        .mt-3 { margin-top: 12px; }
-        .mt-4 { margin-top: 16px; }
-        .mt-6 { margin-top: 24px; }
-        .mb-1 { margin-bottom: 4px; }
-        .mb-2 { margin-bottom: 8px; }
-        .mb-3 { margin-bottom: 12px; }
-        .mb-4 { margin-bottom: 16px; }
-        .mb-5 { margin-bottom: 20px; }
-        .mb-6 { margin-bottom: 24px; }
-        .p-3 { padding: 12px; }
-        .p-4 { padding: 16px; }
-        .p-5 { padding: 20px; }
-        .p-6 { padding: 24px; }
-        .p-8 { padding: 32px; }
-        .px-2 { padding-left: 8px; padding-right: 8px; }
-        .px-3 { padding-left: 12px; padding-right: 12px; }
-        .px-4 { padding-left: 16px; padding-right: 16px; }
-        .py-1 { padding-top: 4px; padding-bottom: 4px; }
-        .py-3 { padding-top: 12px; padding-bottom: 12px; }
-        .py-6 { padding-top: 24px; padding-bottom: 24px; }
-        .text-center { text-align: center; }
-        .text-right { text-align: right; }
-        .text-xs { font-size: 11px; }
-        .text-sm { font-size: 13px; }
-        .text-lg { font-size: 18px; }
-        .text-xl { font-size: 20px; }
-        .text-2xl { font-size: 24px; }
-        .text-3xl { font-size: 30px; }
-        .text-4xl { font-size: 36px; }
-        .text-5xl { font-size: 48px; }
-        .text-6xl { font-size: 60px; }
-        .font-semibold { font-weight: 600; }
-        .font-bold { font-weight: 700; }
-        .font-black { font-weight: 900; }
-        .leading-tight { line-height: 1.25; }
-        .uppercase { text-transform: uppercase; }
-        .tracking-wide { letter-spacing: 0.05em; }
-        .rounded { border-radius: 4px; }
-        .rounded-lg { border-radius: 8px; }
-        .rounded-xl { border-radius: 12px; }
-        .rounded-2xl { border-radius: 16px; }
-        .rounded-full { border-radius: 9999px; }
-        .border { border: 1px solid; }
-        .border-none { border: none; }
-        .outline-none { outline: none; }
-        .overflow-y-auto { overflow-y: auto; }
-        .overflow-hidden { overflow: hidden; }
-        .sticky { position: sticky; }
-        .fixed { position: fixed; }
-        .relative { position: relative; }
-        .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
-        .top-0 { top: 0; }
-        .top-24 { top: 96px; }
-        .z-40 { z-index: 40; }
-        .z-50 { z-index: 50; }
-        .block { display: block; }
-        .inline-block { display: inline-block; }
-        .text-white { color: #ffffff; }
-        .text-gray-400 { color: #94a3b8; }
-        .text-gray-500 { color: #64748b; }
-        .text-gray-600 { color: #475569; }
-        .sm-flex { display: flex; } /* simplified - always show */
-        .sm-grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
-        .sm-grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
-        .max-w-sm { max-width: 384px; }
-        .max-w-7xl { max-width: 1280px; }
+/* SPLASH */
+#splash {
+  position: fixed; inset: 0; z-index: 100;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column;
+}
+.splash-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  width: 100%; max-width: 400px;
+  text-align: center;
+  box-shadow: 0 0 60px rgba(168,85,247,0.15);
+}
+.splash-logo {
+  width: 72px; height: 72px;
+  background: linear-gradient(135deg, var(--purple), var(--cyan));
+  border-radius: 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem; margin: 0 auto 1.25rem;
+  box-shadow: 0 0 30px rgba(168,85,247,0.4);
+}
+.splash-title { font-size: 2rem; font-weight: 900; color: var(--cyan); letter-spacing: -0.02em; }
+.splash-sub { font-size: 0.8rem; color: var(--purple); font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.25rem; }
+.splash-org { font-size: 0.75rem; color: var(--muted); margin-bottom: 2rem; }
+.splash-input {
+  width: 100%; background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text); font-size: 0.95rem;
+  padding: 0.75rem 1rem; margin-bottom: 0.75rem; outline: none;
+  transition: border-color 0.2s;
+}
+.splash-input:focus { border-color: var(--cyan); }
+.splash-btn {
+  width: 100%; background: linear-gradient(135deg, var(--purple), var(--cyan));
+  border: none; border-radius: 8px; color: #fff; font-size: 1rem;
+  font-weight: 700; padding: 0.85rem; cursor: pointer;
+  transition: opacity 0.2s, transform 0.1s;
+  letter-spacing: 0.02em;
+}
+.splash-btn:hover { opacity: 0.9; transform: translateY(-1px); }
 
-        /* ===== NEON GLOW ===== */
-        .glow-cyan { box-shadow: 0 0 12px rgba(0, 229, 255, 0.4); }
-        .glow-purple { box-shadow: 0 0 12px rgba(177, 0, 255, 0.4); }
-        .glow-pink { box-shadow: 0 0 12px rgba(255, 46, 179, 0.4); }
-        .glow-green { box-shadow: 0 0 12px rgba(0, 255, 136, 0.4); }
+/* APP */
+#app { display: none; min-height: 100vh; }
 
-        /* ===== PROGRESS BAR ===== */
-        .progress-bar {
-            background: linear-gradient(90deg, #00e5ff, #b100ff);
-            transition: width 0.6s ease;
-            border-radius: 4px;
-        }
+/* HEADER */
+.app-header {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 1.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 50;
+}
+.header-brand { display: flex; align-items: center; gap: 0.75rem; }
+.header-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--purple), var(--cyan));
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+}
+.header-name { font-size: 1rem; font-weight: 800; color: var(--cyan); }
+.header-sub-title { font-size: 0.7rem; color: var(--muted); }
+.header-user { display: flex; align-items: center; gap: 0.75rem; }
+.user-avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 0.85rem;
+}
+.user-info { text-align: right; }
+.user-name { font-size: 0.85rem; font-weight: 700; }
+.user-klas { font-size: 0.7rem; color: var(--muted); }
+.header-ronde {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 20px; padding: 0.25rem 0.75rem;
+  font-size: 0.7rem; font-weight: 700; color: var(--gold);
+  text-transform: uppercase; letter-spacing: 0.05em;
+}
+.logout-btn {
+  background: none; border: none; color: var(--muted);
+  cursor: pointer; font-size: 1.1rem; padding: 0.25rem;
+  transition: color 0.2s;
+}
+.logout-btn:hover { color: var(--red); }
 
-        /* ===== LEVEL CARD ===== */
-        .level-card {
-            background: #0f1628;
-            border: 1px solid #1e2d4a;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            margin-bottom: 16px;
-        }
-        .level-card:hover { border-color: rgba(0,229,255,0.27); }
-        .level-card.locked { opacity: 0.5; pointer-events: none; }
-        .level-card.active { border-color: #00e5ff; box-shadow: 0 0 20px rgba(0, 229, 255, 0.15); }
-        .level-card.completed { border-color: #00ff88; box-shadow: 0 0 20px rgba(0, 255, 136, 0.15); }
-        .level-card.boss { border-color: #ff2eb3; box-shadow: 0 0 20px rgba(255, 46, 179, 0.2); }
+/* STATS BAR */
+.stats-bar {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1rem; padding: 1rem 1.5rem;
+  background: var(--bg2); border-bottom: 1px solid var(--border);
+}
+.stat-card {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1rem 1.25rem;
+}
+.stat-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.4rem; }
+.stat-value { font-size: 1.6rem; font-weight: 900; }
+.stat-value.cyan { color: var(--cyan); }
+.stat-value.purple { color: var(--purple); }
+.stat-value.green { color: var(--green); }
+.stat-bar { height: 4px; background: var(--border); border-radius: 2px; margin-top: 0.5rem; overflow: hidden; }
+.stat-bar-fill { height: 100%; border-radius: 2px; background: linear-gradient(90deg, var(--purple), var(--cyan)); transition: width 0.5s ease; }
 
-        /* ===== LESSON SLOT ===== */
-        .lesson-slot {
-            background: #0a1020;
-            border: 1px solid #1e2d4a;
-            border-radius: 8px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            padding: 16px;
-        }
-        .lesson-slot:hover { border-color: rgba(0,229,255,0.33); background: #0d1530; }
-        .lesson-slot.done { border-color: #00ff88; background: #001a0d; }
+/* MAIN CONTENT */
+.main-content { padding: 1.5rem; max-width: 1100px; margin: 0 auto; }
 
-        /* ===== QUIZ ===== */
-        .quiz-option {
-            background: #0f1628;
-            border: 2px solid #1e2d4a;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            padding: 12px 16px;
-            margin-bottom: 8px;
-        }
-        .quiz-option:hover { border-color: #00e5ff; background: #0d1a30; }
-        .quiz-option.selected { border-color: #00e5ff; background: #001a2d; }
-        .quiz-option.correct { border-color: #00ff88; background: #001a0d; }
-        .quiz-option.wrong { border-color: #ff4444; background: #1a0000; }
+/* TABS */
+.tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+.tab-btn {
+  background: none; border: none; color: var(--muted);
+  font-size: 0.85rem; font-weight: 600; padding: 0.6rem 1rem;
+  cursor: pointer; border-bottom: 2px solid transparent;
+  margin-bottom: -1px; transition: all 0.2s;
+}
+.tab-btn.active { color: var(--cyan); border-bottom-color: var(--cyan); }
+.tab-btn:hover:not(.active) { color: var(--text); }
 
-        /* ===== GATEKEEPER ===== */
-        .gatekeeper-bar {
-            background: #0f1628;
-            border: 2px solid #b100ff;
-            border-radius: 12px;
-            box-shadow: 0 0 20px rgba(177, 0, 255, 0.2);
-        }
+/* SIDEBAR + CONTENT GRID */
+.content-grid { display: grid; grid-template-columns: 220px 1fr; gap: 1.5rem; }
+@media(max-width: 768px) { .content-grid { grid-template-columns: 1fr; } }
 
-        /* ===== MODAL ===== */
-        .modal-overlay {
-            position: fixed;
-            top: 0; right: 0; bottom: 0; left: 0;
-            background: rgba(0,0,0,0.85);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-        }
-        .modal-box {
-            background: #0f1628;
-            border: 2px solid #00e5ff;
-            border-radius: 16px;
-            max-width: 640px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 0 40px rgba(0, 229, 255, 0.2);
-        }
-        .modal-box.boss-modal { border-color: #ff2eb3; box-shadow: 0 0 40px rgba(255, 46, 179, 0.3); }
-        .modal-box.wide { max-width: 720px; }
+/* PROGRESS SIDEBAR */
+.progress-sidebar { }
+.sidebar-section { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
+.sidebar-section-title { font-size: 0.75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 1rem; }
+.xp-bar-wrap { margin-bottom: 0.5rem; }
+.xp-bar-label { display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 0.4rem; }
+.xp-bar-label span:first-child { color: var(--text); font-weight: 600; }
+.xp-bar-label span:last-child { color: var(--cyan); font-weight: 700; }
+.xp-bar { height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.xp-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--purple), var(--cyan)); transition: width 0.5s; }
+.pct-label { font-size: 0.7rem; color: var(--muted); text-align: right; margin-top: 0.2rem; }
 
-        /* ===== BADGE ===== */
-        .badge-card {
-            background: #0f1628;
-            border: 1px solid #1e2d4a;
-            border-radius: 10px;
-            text-align: center;
-            padding: 16px 8px;
-            transition: all 0.3s ease;
-        }
-        .badge-card.earned { border-color: #ffd700; box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); }
-        .badge-card.locked-badge { opacity: 0.35; filter: grayscale(1); }
+/* LEVEL DOTS */
+.level-dots { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.level-dot-wrap { display: flex; flex-direction: column; align-items: center; }
+.level-dot {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 900; cursor: pointer;
+  border: 2px solid var(--border); background: var(--bg3);
+  color: var(--muted); transition: all 0.2s; position: relative;
+}
+.level-dot.done { background: var(--green); border-color: var(--green); color: #fff; }
+.level-dot.active { background: var(--purple); border-color: var(--purple); color: #fff; box-shadow: 0 0 12px rgba(168,85,247,0.5); }
+.level-dot.boss { background: linear-gradient(135deg, var(--red), var(--orange)); border-color: var(--red); color: #fff; }
+.level-dot.boss.active { box-shadow: 0 0 16px rgba(239,68,68,0.6); }
+.level-connector { width: 2px; height: 16px; background: var(--border); }
+.level-connector.done { background: var(--green); }
+.level-dot-label { font-size: 0.6rem; color: var(--muted); margin: 2px 0 4px; }
 
-        /* ===== SIDEBAR NAV DOT ===== */
-        .nav-dot {
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            border: 2px solid #1e2d4a;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 11px; font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            background: #0a1020;
-            color: #64748b;
-        }
-        .nav-dot.active { border-color: #00e5ff; color: #00e5ff; box-shadow: 0 0 8px rgba(0,229,255,0.5); }
-        .nav-dot.done { border-color: #00ff88; background: #001a0d; color: #00ff88; }
-        .nav-dot.boss-dot { border-color: #ff2eb3; color: #ff2eb3; }
+/* LEVELS LIST */
+.levels-list { display: flex; flex-direction: column; gap: 1rem; }
 
-        /* ===== DIFFICULTY BADGE ===== */
-        .diff-easy { background: #003322; color: #00ff88; border: 1px solid rgba(0,255,136,0.33); border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; }
-        .diff-medium { background: #332200; color: #ffaa00; border: 1px solid rgba(255,170,0,0.33); border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; }
-        .diff-hard { background: #330011; color: #ff2eb3; border: 1px solid rgba(255,46,179,0.33); border-radius: 20px; padding: 3px 10px; font-size: 11px; font-weight: 700; }
+/* LEVEL CARD */
+.level-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden; transition: border-color 0.2s;
+}
+.level-card.active-level { border-color: var(--purple); box-shadow: 0 0 20px rgba(168,85,247,0.1); }
+.level-card.locked-level { opacity: 0.5; }
+.level-card.boss-level { border-color: var(--red); }
+.level-card.boss-level.active-level { box-shadow: 0 0 20px rgba(239,68,68,0.2); }
 
-        /* ===== SCROLLBAR ===== */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #080b14; }
-        ::-webkit-scrollbar-thumb { background: #1e2d4a; border-radius: 3px; }
+.level-header {
+  padding: 1rem 1.25rem;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; user-select: none;
+}
+.level-header:hover { background: rgba(255,255,255,0.02); }
+.level-header-left { display: flex; align-items: center; gap: 0.75rem; }
+.level-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; font-weight: 900; flex-shrink: 0;
+}
+.level-icon.normal { background: rgba(168,85,247,0.15); color: var(--purple); border: 1px solid rgba(168,85,247,0.3); }
+.level-icon.done { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+.level-icon.boss { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+.level-title { font-size: 0.95rem; font-weight: 700; }
+.level-desc { font-size: 0.75rem; color: var(--muted); margin-top: 0.15rem; }
+.level-header-right { display: flex; align-items: center; gap: 0.75rem; }
+.level-badge {
+  font-size: 0.65rem; font-weight: 700; padding: 0.2rem 0.6rem;
+  border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em;
+}
+.level-badge.easy { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+.level-badge.medium { background: rgba(245,158,11,0.15); color: var(--gold); border: 1px solid rgba(245,158,11,0.3); }
+.level-badge.hard { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+.level-xp { font-size: 0.75rem; font-weight: 700; color: var(--cyan); }
+.level-chevron { color: var(--muted); font-size: 0.8rem; transition: transform 0.2s; }
+.level-chevron.open { transform: rotate(90deg); }
 
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in { animation: fadeIn 0.3s ease; }
-        @keyframes pulse-glow { 0%,100% { box-shadow: 0 0 8px rgba(0,229,255,0.3); } 50% { box-shadow: 0 0 20px rgba(0,229,255,0.7); } }
-        .pulse-glow { animation: pulse-glow 2s infinite; }
-        @keyframes boss-pulse { 0%,100% { box-shadow: 0 0 15px rgba(255,46,179,0.4); } 50% { box-shadow: 0 0 35px rgba(255,46,179,0.8); } }
-        .boss-pulse { animation: boss-pulse 1.5s infinite; }
+.level-body { display: none; border-top: 1px solid var(--border); }
+.level-body.open { display: block; }
 
-        /* ===== TAB BUTTON ===== */
-        .tab-btn {
-            border-bottom: 2px solid transparent;
-            transition: all 0.2s;
-            padding: 10px 18px;
-            font-weight: 600;
-            font-size: 14px;
-            color: #64748b;
-            background: none;
-            border-top: none;
-            border-left: none;
-            border-right: none;
-        }
-        .tab-btn.active { border-bottom-color: #00e5ff; color: #00e5ff; }
-        .tab-btn:hover { color: #94a3b8; }
+/* LESSONS */
+.lessons-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.lesson-item {
+  padding: 1rem 1.25rem;
+  border-right: 1px solid var(--border);
+  cursor: pointer; transition: background 0.15s;
+  position: relative;
+}
+.lesson-item:nth-child(2) { border-right: none; }
+.lesson-item:hover { background: rgba(255,255,255,0.03); }
+.lesson-item.done-lesson { background: rgba(16,185,129,0.05); }
+.lesson-label {
+  font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; margin-bottom: 0.4rem;
+}
+.lesson-label.a { color: var(--cyan); }
+.lesson-label.b { color: var(--pink); }
+.lesson-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 0.3rem; }
+.lesson-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.4; margin-bottom: 0.6rem; }
+.lesson-meta { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.lesson-tag {
+  font-size: 0.65rem; padding: 0.15rem 0.5rem; border-radius: 20px;
+  font-weight: 600;
+}
+.lesson-tag.beginner { background: rgba(16,185,129,0.15); color: var(--green); }
+.lesson-tag.medium { background: rgba(245,158,11,0.15); color: var(--gold); }
+.lesson-tag.hard { background: rgba(239,68,68,0.15); color: var(--red); }
+.lesson-xp { font-size: 0.7rem; color: var(--cyan); font-weight: 700; }
+.lesson-time { font-size: 0.7rem; color: var(--muted); }
+.lesson-check {
+  position: absolute; top: 1rem; right: 1rem;
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid var(--border); background: var(--bg3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.7rem;
+}
+.lesson-check.done { background: var(--green); border-color: var(--green); color: #fff; }
+.lesson-play-btn {
+  position: absolute; top: 1rem; right: 1rem;
+  color: var(--cyan); font-size: 1rem;
+}
 
-        /* ===== INPUT / SELECT ===== */
-        input[type="text"], input[type="number"], textarea, select {
-            background: #0a1020;
-            border: 1px solid #1e2d4a;
-            border-radius: 8px;
-            color: #e2e8f0;
-            padding: 10px 14px;
-            width: 100%;
-            outline: none;
-            transition: border-color 0.2s;
-            font-size: 13px;
-        }
-        input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
-            border-color: #00e5ff;
-        }
-        select option { background: #0f1628; }
-        input[type="radio"] { width: auto; margin: 0; }
+/* GATEKEEPER */
+.gatekeeper-bar {
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(0,0,0,0.2);
+}
+.gatekeeper-info { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; }
+.gatekeeper-info.locked { color: var(--muted); }
+.gatekeeper-info.ready { color: var(--gold); }
+.gatekeeper-info.passed { color: var(--green); }
+.gatekeeper-btn {
+  background: var(--gold); border: none; border-radius: 8px;
+  color: #000; font-weight: 700; font-size: 0.8rem;
+  padding: 0.4rem 1rem; cursor: pointer; transition: opacity 0.2s;
+}
+.gatekeeper-btn:hover { opacity: 0.85; }
+.gatekeeper-score { font-size: 0.75rem; font-weight: 700; color: var(--green); }
 
-        /* ===== BUTTONS ===== */
-        .btn-primary {
-            background: linear-gradient(135deg, #00e5ff, #0099cc);
-            color: #000;
-            font-weight: 700;
-            border-radius: 8px;
-            padding: 10px 20px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 14px;
-            display: inline-block;
-        }
-        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn-secondary {
-            background: #0f1628;
-            color: #00e5ff;
-            border: 1px solid rgba(0,229,255,0.33);
-            font-weight: 600;
-            border-radius: 8px;
-            padding: 10px 20px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 14px;
-        }
-        .btn-secondary:hover { border-color: #00e5ff; background: #0d1a30; }
-        .btn-danger {
-            background: #1a0000;
-            color: #ff4444;
-            border: 1px solid rgba(255,68,68,0.33);
-            font-weight: 600;
-            border-radius: 8px;
-            padding: 8px 16px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 12px;
-        }
-        .btn-danger:hover { border-color: #ff4444; }
-        .btn-boss {
-            background: linear-gradient(135deg, #ff2eb3, #b100ff);
-            color: #fff;
-            font-weight: 700;
-            border-radius: 8px;
-            padding: 12px 24px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 14px;
-        }
-        .btn-boss:hover { opacity: 0.9; transform: translateY(-1px); }
-        .btn-icon {
-            background: #0f1628;
-            border: 1px solid #1e2d4a;
-            color: #94a3b8;
-            border-radius: 8px;
-            padding: 6px 12px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-        .btn-icon:hover { color: #e2e8f0; border-color: #2e3d5a; }
+/* MODAL */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.8); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+}
+.modal-overlay.hidden { display: none; }
+.modal {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 16px; width: 100%; max-width: 560px;
+  max-height: 90vh; overflow-y: auto;
+  box-shadow: 0 0 60px rgba(0,0,0,0.5);
+}
+.modal-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-title { font-size: 1.1rem; font-weight: 800; }
+.modal-close {
+  background: none; border: none; color: var(--muted);
+  font-size: 1.3rem; cursor: pointer; padding: 0.2rem;
+  transition: color 0.2s; line-height: 1;
+}
+.modal-close:hover { color: var(--text); }
+.modal-body { padding: 1.5rem; }
 
-        /* ===== XP CHIP ===== */
-        .xp-chip { background: #0d1a30; color: #00e5ff; border: 1px solid rgba(0,229,255,0.27); border-radius: 20px; padding: 3px 10px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+/* LESSON MODAL */
+.lesson-modal-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.3rem; }
+.lesson-modal-title { font-size: 1.4rem; font-weight: 900; margin-bottom: 0.5rem; }
+.lesson-modal-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.25rem; }
+.activity-box {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1rem; margin-bottom: 1.25rem;
+}
+.activity-box-title { font-size: 0.75rem; font-weight: 700; color: var(--purple); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 0.5rem; }
+.activity-name { font-size: 1rem; font-weight: 700; }
+.activity-sub { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
 
-        /* ===== ROUND INDICATOR ===== */
-        .round-dot { width: 12px; height: 12px; border-radius: 50%; border: 2px solid; display: inline-block; }
+/* QUIZ */
+.quiz-section { margin-top: 1.25rem; }
+.quiz-title { font-size: 0.85rem; font-weight: 700; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+.quiz-question { margin-bottom: 1.25rem; }
+.quiz-q-text { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.75rem; line-height: 1.4; }
+.quiz-options { display: flex; flex-direction: column; gap: 0.4rem; }
+.quiz-option {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; padding: 0.65rem 1rem;
+  font-size: 0.85rem; cursor: pointer; transition: all 0.15s;
+  text-align: left; color: var(--text); font-family: inherit;
+}
+.quiz-option:hover:not(:disabled) { border-color: var(--cyan); background: rgba(0,229,255,0.05); }
+.quiz-option.correct { border-color: var(--green); background: rgba(16,185,129,0.1); color: var(--green); }
+.quiz-option.wrong { border-color: var(--red); background: rgba(239,68,68,0.1); color: var(--red); }
+.quiz-option:disabled { cursor: default; }
 
-        /* ===== SPLASH SCREEN ===== */
-        #splash-screen {
-            position: fixed;
-            top: 0; right: 0; bottom: 0; left: 0;
-            z-index: 50;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background: #080b14;
-        }
+.modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: flex-end; gap: 0.75rem;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--purple), var(--cyan));
+  border: none; border-radius: 8px; color: #fff;
+  font-weight: 700; font-size: 0.9rem; padding: 0.65rem 1.5rem;
+  cursor: pointer; transition: opacity 0.2s;
+}
+.btn-primary:hover { opacity: 0.85; }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-secondary {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text);
+  font-weight: 600; font-size: 0.9rem; padding: 0.65rem 1.25rem;
+  cursor: pointer; transition: background 0.2s;
+}
+.btn-secondary:hover { background: #2d3748; }
 
-        /* ===== LAYOUT ===== */
-        .main-layout {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 24px 16px;
-            display: flex;
-            gap: 24px;
-        }
-        .sidebar {
-            width: 208px;
-            flex-shrink: 0;
-        }
-        .sidebar-inner {
-            background: #0f1628;
-            border: 1px solid #1e2d4a;
-            border-radius: 12px;
-            padding: 16px;
-            position: sticky;
-            top: 96px;
-        }
-        .content-area { flex: 1; min-width: 0; }
+/* GATEKEEPER MODAL */
+.gate-score-big { font-size: 3rem; font-weight: 900; text-align: center; margin: 1rem 0; }
+.gate-score-big.pass { color: var(--green); }
+.gate-score-big.fail { color: var(--red); }
+.gate-result-text { text-align: center; font-size: 0.9rem; color: var(--muted); margin-bottom: 1.5rem; }
 
-        /* ===== LESSONS GRID ===== */
-        .lessons-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 12px;
-        }
+/* BADGES */
+.badges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1rem; }
+.badge-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.25rem; text-align: center;
+  transition: border-color 0.2s;
+}
+.badge-card.earned { border-color: var(--gold); box-shadow: 0 0 15px rgba(245,158,11,0.15); }
+.badge-card.locked-badge { opacity: 0.4; }
+.badge-emoji { font-size: 2rem; margin-bottom: 0.5rem; }
+.badge-name { font-size: 0.8rem; font-weight: 700; margin-bottom: 0.25rem; }
+.badge-desc { font-size: 0.7rem; color: var(--muted); line-height: 1.3; }
 
-        /* ===== BADGES GRID ===== */
-        .badges-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-        }
+/* LEADERBOARD */
+.leaderboard-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.lb-item {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 0.75rem 1rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.lb-item.me { border-color: var(--purple); background: rgba(168,85,247,0.05); }
+.lb-rank { font-size: 1rem; font-weight: 900; width: 28px; text-align: center; }
+.lb-rank.gold { color: var(--gold); }
+.lb-rank.silver { color: #94a3b8; }
+.lb-rank.bronze { color: #b45309; }
+.lb-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), var(--pink));
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: 0.8rem; flex-shrink: 0;
+}
+.lb-name { flex: 1; font-weight: 600; font-size: 0.9rem; }
+.lb-xp { font-weight: 700; color: var(--cyan); font-size: 0.85rem; }
 
-        /* ===== STATS BAR ===== */
-        .stats-bar {
-            background: #0a0f1e;
-            border-bottom: 1px solid #1e2d4a;
-        }
-        .stats-grid {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 12px 16px;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-        }
-        .stat-card {
-            background: #0f1628;
-            border: 1px solid #1e2d4a;
-            border-radius: 10px;
-            padding: 12px 16px;
-        }
+/* RONDE BANNER */
+.ronde-banner {
+  background: linear-gradient(135deg, rgba(168,85,247,0.1), rgba(0,229,255,0.05));
+  border: 1px solid rgba(168,85,247,0.3);
+  border-radius: 10px; padding: 0.75rem 1.25rem;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+.ronde-info { font-size: 0.85rem; }
+.ronde-info strong { color: var(--purple); }
+.ronde-mult { font-size: 0.75rem; color: var(--cyan); font-weight: 700; }
 
-        /* ===== HEADER ===== */
-        header {
-            background: #0a0f1e;
-            border-bottom: 1px solid #1e2d4a;
-            position: sticky;
-            top: 0;
-            z-index: 40;
-        }
-        .header-inner {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+/* TOAST */
+.toast {
+  position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 300;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 0.75rem 1.25rem;
+  font-size: 0.85rem; font-weight: 600;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  transform: translateY(100px); opacity: 0;
+  transition: all 0.3s; pointer-events: none;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.success { border-color: var(--green); color: var(--green); }
+.toast.info { border-color: var(--cyan); color: var(--cyan); }
+.toast.warning { border-color: var(--gold); color: var(--gold); }
 
-        /* ===== TABS ===== */
-        .tabs-bar {
-            border-bottom: 1px solid #1e2d4a;
-            display: flex;
-            gap: 0;
-            margin-bottom: 24px;
-        }
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 3rem 1rem; color: var(--muted); }
+.empty-state-icon { font-size: 3rem; margin-bottom: 1rem; }
+.empty-state-text { font-size: 0.9rem; }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            .sidebar { display: none; }
-            .lessons-grid { grid-template-columns: 1fr; }
-            .badges-grid { grid-template-columns: repeat(2, 1fr); }
-            .stats-grid { grid-template-columns: 1fr; gap: 8px; }
-            .grid-cols-2 { grid-template-columns: 1fr; }
-        }
-    </style>
+@media(max-width: 600px) {
+  .stats-bar { grid-template-columns: 1fr; }
+  .lessons-grid { grid-template-columns: 1fr; }
+  .lesson-item:nth-child(2) { border-right: none; border-top: 1px solid var(--border); }
+}
+</style>
 </head>
 <body>
 
-<!-- ==================== SPLASH SCREEN ==================== -->
-<div id="splash-screen">
-    <div class="text-center fade-in">
-        <div style="margin-bottom: 24px;">
-            <div style="width:80px;height:80px;margin:0 auto;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;background:linear-gradient(135deg,rgba(0,229,255,0.13),rgba(177,0,255,0.13));border:2px solid rgba(0,229,255,0.27);">
-                <span style="font-size:36px;">⚡</span>
+<div class="toast" id="toast"></div>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="splash-card">
+    <div class="splash-logo">⚡</div>
+    <div class="splash-sub">Logic Connections · VTI Oostende</div>
+    <div class="splash-title" id="splash-title">VakCore</div>
+    <div class="splash-org" id="splash-org">Leerpad Template</div>
+    <input class="splash-input" id="input-naam" type="text" placeholder="Jouw naam" autocomplete="off">
+    <input class="splash-input" id="input-klas" type="text" placeholder="Jouw klas (bv. 2B)" autocomplete="off">
+    <button class="splash-btn" onclick="startLeerpad()">⚡ Start het Leerpad</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-brand">
+      <div class="header-icon">⚡</div>
+      <div>
+        <div class="header-name" id="header-title">VakCore</div>
+        <div class="header-sub-title" id="header-subtitle">Leerpad</div>
+      </div>
+    </div>
+    <div class="header-user">
+      <div class="header-ronde" id="header-ronde">EASY</div>
+      <div class="user-info">
+        <div class="user-name" id="header-naam"></div>
+        <div class="user-klas" id="header-klas"></div>
+      </div>
+      <div class="user-avatar" id="header-avatar">?</div>
+      <button class="logout-btn" onclick="logout()" title="Uitloggen">↩</button>
+    </div>
+  </header>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-label">⊙ Voortgang</div>
+      <div class="stat-value cyan" id="stat-pct">0%</div>
+      <div class="stat-bar"><div class="stat-bar-fill" id="stat-bar" style="width:0%"></div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">⚡ Totaal XP</div>
+      <div class="stat-value purple" id="stat-xp">0 / 0</div>
+      <div class="stat-bar"><div class="stat-bar-fill" id="stat-xp-bar" style="width:0%"></div></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">✓ Voltooid</div>
+      <div class="stat-value green" id="stat-done">0 / 0</div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main-content">
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab('lessen')" id="tab-lessen">📚 Levels</button>
+      <button class="tab-btn" onclick="switchTab('badges')" id="tab-badges">🏅 Badges</button>
+      <button class="tab-btn" onclick="switchTab('leaderboard')" id="tab-leaderboard">🏆 Leaderboard</button>
+    </div>
+
+    <div id="view-lessen">
+      <div class="content-grid">
+        <div class="progress-sidebar">
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">Voortgang</div>
+            <div class="xp-bar-wrap">
+              <div class="xp-bar-label">
+                <span>Voortgang</span>
+                <span id="sidebar-xp">0 / 0 XP</span>
+              </div>
+              <div class="xp-bar"><div class="xp-bar-fill" id="sidebar-xp-bar" style="width:0%"></div></div>
+              <div class="pct-label" id="sidebar-pct">0% voltooid</div>
             </div>
-            <h1 style="font-size:36px;font-weight:900;color:#00e5ff;" id="splash-title">VakCore</h1>
-            <p style="color:#64748b;margin-top:4px;font-size:13px;" id="splash-subtitle">Leerpad Template</p>
-            <p style="color:#475569;font-size:11px;margin-top:4px;">Logic Connections · VTI Oostende</p>
+          </div>
+          <div class="sidebar-section">
+            <div class="sidebar-section-title">Levels</div>
+            <div class="level-dots" id="level-dots"></div>
+          </div>
         </div>
-        <div style="max-width:360px;margin:0 auto;background:#0f1628;border:1px solid #1e2d4a;border-radius:16px;padding:28px;">
-            <h2 style="font-size:18px;font-weight:700;margin-bottom:16px;color:#fff;">Welkom!</h2>
-            <div style="margin-bottom:12px;">
-                <label style="font-size:11px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:6px;">Jouw naam</label>
-                <input type="text" id="input-naam" placeholder="Voornaam Achternaam" />
-            </div>
-            <div style="margin-bottom:16px;">
-                <label style="font-size:11px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:6px;">Jouw klas</label>
-                <input type="text" id="input-klas" placeholder="bv. 2B, 3ME..." />
-            </div>
-            <button class="btn-primary w-full" onclick="startLeerpad()">⚡ Start het Leerpad</button>
-            <p style="text-align:center;color:#475569;font-size:11px;margin-top:12px;">Voortgang wordt lokaal opgeslagen.</p>
+        <div>
+          <div class="ronde-banner" id="ronde-banner">
+            <div class="ronde-info">Ronde: <strong id="ronde-naam">EASY</strong></div>
+            <div class="ronde-mult" id="ronde-mult">XP ×1</div>
+          </div>
+          <div class="levels-list" id="levels-list"></div>
         </div>
+      </div>
     </div>
+
+    <div id="view-badges" style="display:none">
+      <div class="badges-grid" id="badges-grid"></div>
+    </div>
+
+    <div id="view-leaderboard" style="display:none">
+      <div class="leaderboard-list" id="leaderboard-list"></div>
+    </div>
+  </div>
 </div>
 
-<!-- ==================== MAIN APP ==================== -->
-<div id="main-app" style="display:none;">
-
-    <!-- HEADER -->
-    <header>
-        <div class="header-inner">
-            <div class="flex items-center gap-3">
-                <div style="width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(0,229,255,0.2),rgba(177,0,255,0.2));border:1px solid rgba(0,229,255,0.27);">
-                    <span style="font-size:18px;">⚡</span>
-                </div>
-                <div>
-                    <div style="font-weight:900;color:#fff;font-size:13px;line-height:1.2;" id="header-title">VakCore</div>
-                    <div style="color:#64748b;font-size:11px;" id="header-subtitle">Leerpad</div>
-                </div>
-            </div>
-            <div class="flex items-center gap-3">
-                <div class="flex items-center gap-2" style="padding:4px 12px;border-radius:9999px;background:#0f1628;border:1px solid #1e2d4a;">
-                    <span style="font-size:11px;color:#94a3b8;font-weight:600;">Ronde:</span>
-                    <div class="flex gap-1" id="round-dots"></div>
-                    <span style="font-size:11px;font-weight:700;" id="round-label" style="color:#00e5ff;">EASY</span>
-                </div>
-                <div style="text-align:right;">
-                    <div style="font-weight:700;font-size:13px;color:#fff;" id="header-naam">—</div>
-                    <div style="font-size:11px;color:#64748b;" id="header-klas">—</div>
-                </div>
-                <div style="width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;background:linear-gradient(135deg,#b100ff,#ff2eb3);color:white;" id="header-avatar">?</div>
-                <button onclick="showLeerkrachtPanel()" class="btn-icon">⚙️</button>
-                <button onclick="resetApp()" style="background:#0f1628;border:1px solid rgba(255,68,68,0.2);color:#ff4444;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;">↩</button>
-            </div>
-        </div>
-    </header>
-
-    <!-- STATS BAR -->
-    <div class="stats-bar">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div style="font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">⊙ Voortgang</div>
-                <div style="font-size:20px;font-weight:900;color:#fff;" id="stat-voortgang">0%</div>
-            </div>
-            <div class="stat-card">
-                <div style="font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">⚡ Totaal XP</div>
-                <div style="font-size:20px;font-weight:900;color:#fff;" id="stat-xp">0 / 0</div>
-            </div>
-            <div class="stat-card">
-                <div style="font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;">✓ Voltooid</div>
-                <div style="font-size:20px;font-weight:900;color:#fff;" id="stat-voltooid">0 / 0</div>
-            </div>
-        </div>
+<!-- LES MODAL -->
+<div class="modal-overlay hidden" id="les-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-les-title">Les</div>
+      <button class="modal-close" onclick="closeModal('les-modal')">✕</button>
     </div>
-
-    <!-- MAIN LAYOUT -->
-    <div class="main-layout">
-
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-            <div class="sidebar-inner">
-                <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">Voortgang</div>
-                <div style="font-size:11px;color:#64748b;margin-bottom:4px;" id="sidebar-xp-text">0 / 0 XP</div>
-                <div style="background:#1e2d4a;border-radius:4px;height:6px;margin-bottom:4px;">
-                    <div class="progress-bar" id="sidebar-progress-bar" style="width:0%;height:100%;"></div>
-                </div>
-                <div style="font-size:11px;color:#475569;margin-bottom:16px;" id="sidebar-pct">0% voltooid</div>
-                <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">Levels</div>
-                <div style="display:flex;flex-direction:column;align-items:center;" id="sidebar-nav"></div>
-            </div>
-        </aside>
-
-        <!-- CONTENT -->
-        <main class="content-area">
-            <!-- TABS -->
-            <div class="tabs-bar">
-                <button class="tab-btn active" onclick="switchTab('lessen')" id="tab-lessen">📚 Levels</button>
-                <button class="tab-btn" onclick="switchTab('badges')" id="tab-badges">🏅 Badges</button>
-                <button class="tab-btn" onclick="switchTab('leaderboard')" id="tab-leaderboard">🏆 Leaderboard</button>
-            </div>
-
-            <!-- TAB: LESSEN -->
-            <div id="view-lessen" class="fade-in">
-                <div id="levels-grid"></div>
-            </div>
-
-            <!-- TAB: BADGES -->
-            <div id="view-badges" style="display:none;" class="fade-in">
-                <h2 style="font-size:18px;font-weight:900;color:#fff;margin-bottom:4px;">Badges</h2>
-                <p style="color:#64748b;font-size:13px;margin-bottom:16px;" id="badges-count">0 / 0 verdiend</p>
-                <div class="badges-grid" id="badges-grid"></div>
-            </div>
-
-            <!-- TAB: LEADERBOARD -->
-            <div id="view-leaderboard" style="display:none;" class="fade-in">
-                <h2 style="font-size:18px;font-weight:900;color:#fff;margin-bottom:4px;">Leaderboard</h2>
-                <p style="color:#64748b;font-size:13px;margin-bottom:16px;">Jouw positie op dit apparaat</p>
-                <div id="leaderboard-list"></div>
-            </div>
-        </main>
+    <div class="modal-body" id="modal-les-body"></div>
+    <div class="modal-footer">
+      <button class="btn-secondary" onclick="closeModal('les-modal')">Sluiten</button>
+      <button class="btn-primary" id="modal-done-btn" onclick="markLesVoltooid()">✅ Les voltooid</button>
     </div>
+  </div>
 </div>
 
-<!-- ==================== MODAL: LES DETAIL ==================== -->
-<div id="modal-les" class="modal-overlay" style="display:none;">
-    <div class="modal-box p-6 fade-in">
-        <div id="modal-les-content"></div>
+<!-- GATEKEEPER MODAL -->
+<div class="modal-overlay hidden" id="gate-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">🔐 Gatekeeper</div>
+      <button class="modal-close" onclick="closeModal('gate-modal')">✕</button>
     </div>
+    <div class="modal-body" id="gate-modal-body"></div>
+    <div class="modal-footer" id="gate-modal-footer"></div>
+  </div>
 </div>
 
-<!-- ==================== MODAL: GATEKEEPER ==================== -->
-<div id="modal-gatekeeper" class="modal-overlay" style="display:none;">
-    <div class="modal-box p-6 fade-in">
-        <div id="modal-gatekeeper-content"></div>
-    </div>
-</div>
-
-<!-- ==================== MODAL: BIG BOSS ==================== -->
-<div id="modal-boss" class="modal-overlay" style="display:none;">
-    <div class="modal-box boss-modal p-6 fade-in">
-        <div id="modal-boss-content"></div>
-    </div>
-</div>
-
-<!-- ==================== MODAL: LEERKRACHT PANEL ==================== -->
-<div id="modal-leerkracht" class="modal-overlay" style="display:none;">
-    <div class="modal-box wide p-6 fade-in">
-        <div id="modal-leerkracht-content"></div>
-    </div>
-</div>
-
-<!-- ==================== MODAL: RONDE VOLTOOID ==================== -->
-<div id="modal-ronde" class="modal-overlay" style="display:none;">
-    <div class="modal-box p-8 fade-in text-center">
-        <div id="modal-ronde-content"></div>
-    </div>
-</div>
-
-<!-- ==================== JAVASCRIPT ENGINE ==================== -->
 <script>
-
 // ============================================================
-// CONFIGURATIE
+// CONFIG — pas dit aan voor elk nieuw leerpad
 // ============================================================
 let CONFIG = {
-    titel: "VakCore",
-    ondertitel: "Leerpad Template",
-    school: "Logic Connections · VTI Oostende",
-    xpPerLevel: 100,
-    gatekeeperMinScore: 70,
-    levels: Array.from({length: 7}, (_, i) => ({
-        id: i + 1,
-        naam: `Level ${i + 1}`,
-        omschrijving: `Omschrijving van level ${i + 1}`,
-        lessen: [
-            { id: `${i+1}-1`, naam: `Les ${i+1}.1`, omschrijving: "Klik op bewerken om de lesinhoud in te stellen.", activiteit: null, quizVragen: [] },
-            { id: `${i+1}-2`, naam: `Les ${i+1}.2`, omschrijving: "Klik op bewerken om de lesinhoud in te stellen.", activiteit: null, quizVragen: [] }
-        ]
-    })),
-    bigBoss: {
-        id: 8,
-        naam: "⚔️ Big Boss",
-        omschrijving: "De ultieme uitdaging. Bewijs dat je alles beheerst.",
-        lessen: [
-            { id: "8-1", naam: "Boss Les 1", omschrijving: "Finale opdracht deel 1.", activiteit: null, quizVragen: [] },
-            { id: "8-2", naam: "Boss Les 2", omschrijving: "Finale opdracht deel 2.", activiteit: null, quizVragen: [] }
-        ]
-    },
-    activiteiten: [
-        "📺 Video bekijken",
-        "📄 PDF lezen",
-        "🔍 Zoek de fouten",
-        "🛠️ Praktijkopdracht",
-        "🎯 Quiz",
-        "📐 Meting uitvoeren",
-        "🛡️ Veiligheidscheck",
-        "⚙️ Machine check"
-    ],
-    badges: [
-        { id: "eerste_stap", naam: "Eerste Stap", emoji: "🚀", beschrijving: "Eerste level voltooid", trigger: "level_1" },
-        { id: "halverwege", naam: "Halverwege", emoji: "⚡", beschrijving: "Level 4 voltooid", trigger: "level_4" },
-        { id: "quiz_master", naam: "Quiz Master", emoji: "🎯", beschrijving: "3 quizzen perfect gescoord", trigger: "quiz_perfect_3" },
-        { id: "xp_hunter", naam: "XP Hunter", emoji: "💎", beschrijving: "500 XP verzameld", trigger: "xp_500" },
-        { id: "veiligheid", naam: "Veiligheid Eerst", emoji: "🦺", beschrijving: "Alle veiligheidslessen voltooid", trigger: "veiligheid" },
-        { id: "expert", naam: "Expert", emoji: "🔩", beschrijving: "Level 7 voltooid", trigger: "level_7" },
-        { id: "boss_slayer", naam: "Boss Slayer", emoji: "⚔️", beschrijving: "Big Boss verslagen", trigger: "boss" },
-        { id: "meester", naam: "Meester", emoji: "👑", beschrijving: "Alle 3 rondes voltooid", trigger: "all_rounds" }
+  titel: "VakCore",
+  ondertitel: "Leerpad Template",
+  gatekeeperMinScore: 70,
+  xpPerLes: 75,
+  levels: Array.from({length: 7}, (_, i) => ({
+    id: i + 1,
+    naam: `Level ${i + 1}`,
+    omschrijving: `Omschrijving van level ${i + 1}`,
+    lessen: [
+      {
+        id: `${i+1}-A`,
+        label: 'A',
+        naam: `Les ${i+1}.1`,
+        omschrijving: 'Klik op de les om de inhoud te bekijken.',
+        activiteit: null,
+        activiteitSub: null,
+        tijdsduur: '15 min',
+        quizVragen: []
+      },
+      {
+        id: `${i+1}-B`,
+        label: 'B',
+        naam: `Les ${i+1}.2`,
+        omschrijving: 'Klik op de les om de inhoud te bekijken.',
+        activiteit: null,
+        activiteitSub: null,
+        tijdsduur: '20 min',
+        quizVragen: []
+      }
     ]
+  })),
+  bigBoss: {
+    id: 8,
+    naam: '⚔️ Big Boss',
+    omschrijving: 'De ultieme uitdaging. Bewijs dat je alles beheerst.',
+    lessen: [
+      { id: '8-A', label: 'A', naam: 'Boss Les 1', omschrijving: 'Finale opdracht deel 1.', activiteit: null, activiteitSub: null, tijdsduur: '30 min', quizVragen: [] },
+      { id: '8-B', label: 'B', naam: 'Boss Les 2', omschrijving: 'Finale opdracht deel 2.', activiteit: null, activiteitSub: null, tijdsduur: '30 min', quizVragen: [] }
+    ]
+  },
+  badges: [
+    { id: 'eerste_les', emoji: '🎯', naam: 'Eerste Stap', beschrijving: 'Eerste les voltooid', trigger: 'les_count', waarde: 1 },
+    { id: 'level1', emoji: '⚡', naam: 'Level Up!', beschrijving: 'Level 1 gepasseerd', trigger: 'level_done', waarde: 1 },
+    { id: 'halfway', emoji: '🔥', naam: 'Halverwege', beschrijving: '4 levels voltooid', trigger: 'level_done', waarde: 4 },
+    { id: 'alle_levels', emoji: '🏆', naam: 'Meester', beschrijving: 'Alle 7 levels voltooid', trigger: 'level_done', waarde: 7 },
+    { id: 'big_boss', emoji: '👑', naam: 'Boss Slayer', beschrijving: 'Big Boss verslagen', trigger: 'boss_done' },
+    { id: 'ronde2', emoji: '🌟', naam: 'Medium Mode', beschrijving: 'Ronde 2 gestart', trigger: 'ronde', waarde: 2 },
+    { id: 'ronde3', emoji: '💎', naam: 'Hard Core', beschrijving: 'Ronde 3 gestart', trigger: 'ronde', waarde: 3 },
+    { id: 'perfectionist', emoji: '✨', naam: 'Perfectionist', beschrijving: 'Alle lessen voltooid', trigger: 'all_done' }
+  ]
 };
 
 // ============================================================
 // STATE
 // ============================================================
+const RONDE_NAMES = ['EASY', 'MEDIUM', 'HARD'];
+const RONDE_MULT = [1, 1.5, 2];
+const RONDE_TAGS = ['easy', 'medium', 'hard'];
+
 let STATE = {
-    naam: "",
-    klas: "",
-    ronde: 0,
-    xp: 0,
-    levelVoortgang: {},
-    badgesVerdiend: [],
-    perfectQuizCount: 0,
-    leaderboard: []
+  naam: '',
+  klas: '',
+  ronde: 0,
+  voltooideIds: [],
+  gatekeeperPassed: [],
+  badges: [],
+  openLevels: []
 };
 
-const RONDES = ["EASY", "MEDIUM", "HARD"];
-const RONDE_KLEUREN = ["#00ff88", "#ffaa00", "#ff2eb3"];
-const RONDE_XP_MULT = [1, 1.5, 2];
+let currentLesData = null;
+let currentQuizAnswers = {};
 
 // ============================================================
-// OPSLAG
+// PERSISTENCE
 // ============================================================
+function saveConfig() {
+  localStorage.setItem('vakcore_config', JSON.stringify(CONFIG));
+}
+function loadConfig() {
+  const c = localStorage.getItem('vakcore_config');
+  if (c) {
+    try { CONFIG = { ...CONFIG, ...JSON.parse(c) }; } catch(e) {}
+  }
+}
 function saveState() {
-    localStorage.setItem('vakcore_state', JSON.stringify(STATE));
-    localStorage.setItem('vakcore_config', JSON.stringify(CONFIG));
+  localStorage.setItem('vakcore_state', JSON.stringify(STATE));
 }
-
 function loadState() {
-    const s = localStorage.getItem('vakcore_state');
-    const c = localStorage.getItem('vakcore_config');
-    if (s) STATE = { ...STATE, ...JSON.parse(s) };
-    if (c) CONFIG = { ...CONFIG, ...JSON.parse(c) };
+  const s = localStorage.getItem('vakcore_state');
+  if (s) {
+    try { STATE = { ...STATE, ...JSON.parse(s) }; } catch(e) {}
+  }
 }
 
 // ============================================================
-// SCHERM WISSELEN (zonder Tailwind hidden)
+// HELPERS
 // ============================================================
-function showEl(id) { document.getElementById(id).style.display = ''; }
-function hideEl(id) { document.getElementById(id).style.display = 'none'; }
-function showFlex(id) { document.getElementById(id).style.display = 'flex'; }
-function showBlock(id) { document.getElementById(id).style.display = 'block'; }
+function getAllLevels() {
+  return [...CONFIG.levels, CONFIG.bigBoss];
+}
+function getAllLessen() {
+  return getAllLevels().flatMap(l => l.lessen);
+}
+function isLevelUnlocked(levelId) {
+  if (levelId === 1) return true;
+  if (levelId === 8) return STATE.gatekeeperPassed.includes(7);
+  return STATE.gatekeeperPassed.includes(levelId - 1);
+}
+function isLevelDone(levelId) {
+  return STATE.gatekeeperPassed.includes(levelId);
+}
+function getLesVoltooid(lesId) {
+  return STATE.voltooideIds.includes(lesId);
+}
+function getXpMultiplier() { return RONDE_MULT[STATE.ronde]; }
+function getTotalXP() {
+  return Math.round(STATE.voltooideIds.length * CONFIG.xpPerLes * getXpMultiplier());
+}
+function getMaxXP() {
+  return Math.round(getAllLessen().length * CONFIG.xpPerLes * getXpMultiplier() * 3);
+}
+function getVoltooideCount() { return STATE.voltooideIds.length; }
+function getTotalLessen() { return getAllLessen().length; }
 
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg, type = 'info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ============================================================
+// AUTH
+// ============================================================
 function startLeerpad() {
-    const naam = document.getElementById('input-naam').value.trim();
-    const klas = document.getElementById('input-klas').value.trim();
-    if (!naam) { alert('Vul je naam in.'); return; }
-    STATE.naam = naam;
-    STATE.klas = klas || '—';
-    saveState();
-    hideEl('splash-screen');
-    document.getElementById('main-app').style.display = 'block';
-    renderApp();
+  const naam = document.getElementById('input-naam').value.trim();
+  const klas = document.getElementById('input-klas').value.trim();
+  if (!naam) { showToast('Vul je naam in', 'warning'); return; }
+  STATE.naam = naam;
+  STATE.klas = klas;
+  saveState();
+  enterApp();
 }
-
-function resetApp() {
-    if (!confirm('Wil je opnieuw beginnen? Alle voortgang wordt gewist.')) return;
-    localStorage.removeItem('vakcore_state');
-    localStorage.removeItem('vakcore_config');
-    location.reload();
+function logout() {
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('splash').style.display = 'flex';
+}
+function enterApp() {
+  document.getElementById('splash').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('splash-title').textContent = CONFIG.titel;
+  document.getElementById('splash-org').textContent = CONFIG.ondertitel;
+  renderApp();
 }
 
 // ============================================================
-// RENDER MAIN APP
+// RENDER APP
 // ============================================================
 function renderApp() {
-    document.getElementById('header-title').textContent = CONFIG.titel;
-    document.getElementById('header-subtitle').textContent = CONFIG.ondertitel;
-    document.getElementById('header-naam').textContent = STATE.naam;
-    document.getElementById('header-klas').textContent = 'Klas ' + STATE.klas;
-    document.getElementById('header-avatar').textContent = STATE.naam.charAt(0).toUpperCase();
-    document.getElementById('splash-title').textContent = CONFIG.titel;
-    document.getElementById('splash-subtitle').textContent = CONFIG.ondertitel;
+  // Header
+  document.getElementById('header-title').textContent = CONFIG.titel;
+  document.getElementById('header-subtitle').textContent = CONFIG.ondertitel;
+  document.getElementById('header-naam').textContent = STATE.naam;
+  document.getElementById('header-klas').textContent = 'Klas ' + (STATE.klas || '—');
+  document.getElementById('header-avatar').textContent = STATE.naam[0]?.toUpperCase() || '?';
+  const rondeTag = RONDE_TAGS[STATE.ronde];
+  document.getElementById('header-ronde').textContent = RONDE_NAMES[STATE.ronde];
+  document.getElementById('header-ronde').className = `header-ronde ${rondeTag}`;
 
-    // Round dots
-    const rd = document.getElementById('round-dots');
-    rd.innerHTML = '';
-    RONDES.forEach((r, i) => {
-        const d = document.createElement('span');
-        d.className = 'round-dot';
-        d.style.borderColor = i <= STATE.ronde ? RONDE_KLEUREN[i] : '#1e2d4a';
-        d.style.background = i < STATE.ronde ? RONDE_KLEUREN[i] : 'transparent';
-        d.style.marginRight = '2px';
-        rd.appendChild(d);
-    });
-    const rl = document.getElementById('round-label');
-    rl.textContent = RONDES[STATE.ronde];
-    rl.style.color = RONDE_KLEUREN[STATE.ronde];
+  // Stats
+  const done = getVoltooideCount();
+  const total = getTotalLessen();
+  const xp = getTotalXP();
+  const maxXp = getMaxXP();
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  document.getElementById('stat-pct').textContent = pct + '%';
+  document.getElementById('stat-bar').style.width = pct + '%';
+  document.getElementById('stat-xp').textContent = xp + ' / ' + maxXp;
+  document.getElementById('stat-xp-bar').style.width = (maxXp > 0 ? Math.round(xp/maxXp*100) : 0) + '%';
+  document.getElementById('stat-done').textContent = done + ' / ' + total;
+  document.getElementById('sidebar-xp').textContent = xp + ' / ' + maxXp + ' XP';
+  document.getElementById('sidebar-xp-bar').style.width = (maxXp > 0 ? Math.round(xp/maxXp*100) : 0) + '%';
+  document.getElementById('sidebar-pct').textContent = pct + '% voltooid';
 
-    // Stats
-    const allLevels = [...CONFIG.levels, CONFIG.bigBoss];
-    const totalLessons = allLevels.reduce((s, l) => s + l.lessen.length, 0);
-    const doneLessons = Object.values(STATE.levelVoortgang).reduce((s, lv) => {
-        return s + (lv.les1?.done ? 1 : 0) + (lv.les2?.done ? 1 : 0);
-    }, 0);
-    const totalXP = Math.round(allLevels.length * CONFIG.xpPerLevel * RONDE_XP_MULT[STATE.ronde] * 8);
-    const pct = totalLessons > 0 ? Math.round((doneLessons / totalLessons) * 100) : 0;
+  // Ronde banner
+  document.getElementById('ronde-naam').textContent = RONDE_NAMES[STATE.ronde];
+  document.getElementById('ronde-mult').textContent = 'XP ×' + getXpMultiplier();
 
-    document.getElementById('stat-voortgang').textContent = pct + '%';
-    document.getElementById('stat-xp').textContent = STATE.xp + ' / ' + totalXP;
-    document.getElementById('stat-voltooid').textContent = doneLessons + ' / ' + totalLessons;
-    document.getElementById('sidebar-xp-text').textContent = STATE.xp + ' / ' + totalXP + ' XP';
-    document.getElementById('sidebar-progress-bar').style.width = pct + '%';
-    document.getElementById('sidebar-pct').textContent = pct + '% voltooid';
-
-    renderSidebarNav();
-    renderLevels();
-    renderBadges();
-    renderLeaderboard();
+  renderLevelDots();
+  renderLevels();
+  renderBadges();
+  renderLeaderboard();
+  checkBadges();
 }
 
-function renderSidebarNav() {
-    const nav = document.getElementById('sidebar-nav');
-    nav.innerHTML = '';
-    const allLevels = [...CONFIG.levels, CONFIG.bigBoss];
-    allLevels.forEach((level, idx) => {
-        const lv = STATE.levelVoortgang[level.id] || {};
-        const done = lv.gatekeeperPassed;
-        const isBoss = level.id === 8;
-        const isActive = isLevelUnlocked(level.id) && !done;
+// ============================================================
+// LEVEL DOTS
+// ============================================================
+function renderLevelDots() {
+  const container = document.getElementById('level-dots');
+  container.innerHTML = '';
+  const allLevels = getAllLevels();
+  allLevels.forEach((level, idx) => {
+    const unlocked = isLevelUnlocked(level.id);
+    const done = isLevelDone(level.id);
+    const isBoss = level.id === 8;
+    const isActive = unlocked && !done;
 
-        if (idx > 0) {
-            const line = document.createElement('div');
-            line.style.cssText = 'width:2px;height:16px;background:#1e2d4a;margin:0 auto;';
-            nav.appendChild(line);
-        }
+    const wrap = document.createElement('div');
+    wrap.className = 'level-dot-wrap';
 
-        const dot = document.createElement('div');
-        dot.className = 'nav-dot' + (done ? ' done' : isActive ? (isBoss ? ' boss-dot' : ' active') : '');
-        dot.textContent = isBoss ? '⚔' : level.id;
-        dot.title = level.naam;
-        dot.onclick = () => scrollToLevel(level.id);
-        nav.appendChild(dot);
-    });
+    if (idx > 0) {
+      const conn = document.createElement('div');
+      conn.className = 'level-connector' + (isLevelDone(allLevels[idx-1].id) ? ' done' : '');
+      wrap.appendChild(conn);
+    }
+
+    const dot = document.createElement('div');
+    dot.className = 'level-dot' + (done ? ' done' : isActive ? ' active' : '') + (isBoss ? ' boss' : '');
+    dot.textContent = done ? '✓' : isBoss ? '⚔' : level.id;
+    dot.title = level.naam;
+    dot.onclick = () => scrollToLevel(level.id);
+
+    const label = document.createElement('div');
+    label.className = 'level-dot-label';
+    label.textContent = isBoss ? 'Boss' : 'Les ' + level.id;
+
+    wrap.appendChild(dot);
+    wrap.appendChild(label);
+    container.appendChild(wrap);
+  });
 }
 
 function scrollToLevel(id) {
-    const el = document.getElementById('level-card-' + id);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  const el = document.getElementById('level-card-' + id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 // ============================================================
-// LEVEL UNLOCK LOGIC
-// ============================================================
-function isLevelUnlocked(levelId) {
-    if (levelId === 1) return true;
-    const prev = STATE.levelVoortgang[levelId - 1];
-    return prev && prev.gatekeeperPassed;
-}
-
-function getLevelStatus(levelId) {
-    const lv = STATE.levelVoortgang[levelId] || {};
-    if (lv.gatekeeperPassed) return 'completed';
-    if (isLevelUnlocked(levelId)) return 'active';
-    return 'locked';
-}
-
-// ============================================================
-// RENDER LEVELS
+// LEVELS
 // ============================================================
 function renderLevels() {
-    const grid = document.getElementById('levels-grid');
-    grid.innerHTML = '';
-    const allLevels = [...CONFIG.levels, CONFIG.bigBoss];
+  const container = document.getElementById('levels-list');
+  container.innerHTML = '';
+  const allLevels = getAllLevels();
+  const rondeTag = RONDE_TAGS[STATE.ronde];
 
-    allLevels.forEach(level => {
-        const status = getLevelStatus(level.id);
-        const isBoss = level.id === 8;
-        const lv = STATE.levelVoortgang[level.id] || {};
-        const xpWaarde = Math.round(CONFIG.xpPerLevel * RONDE_XP_MULT[STATE.ronde]);
+  allLevels.forEach(level => {
+    const unlocked = isLevelUnlocked(level.id);
+    const done = isLevelDone(level.id);
+    const isBoss = level.id === 8;
+    const isOpen = STATE.openLevels.includes(level.id);
 
-        const card = document.createElement('div');
-        card.id = 'level-card-' + level.id;
-        card.className = 'level-card p-5' +
-            (status === 'locked' ? ' locked' : '') +
-            (status === 'completed' ? ' completed' : '') +
-            (status === 'active' ? ' active' : '') +
-            (isBoss ? ' boss' : '');
-        if (isBoss && status === 'active') card.classList.add('boss-pulse');
+    const card = document.createElement('div');
+    card.id = 'level-card-' + level.id;
+    card.className = 'level-card' +
+      (unlocked && !done ? ' active-level' : '') +
+      (!unlocked ? ' locked-level' : '') +
+      (isBoss ? ' boss-level' : '');
 
-        const rondeLabel = `<span class="diff-${RONDES[STATE.ronde].toLowerCase()}">${RONDES[STATE.ronde]}</span>`;
-        const statusIcon = status === 'completed' ? '✅' : status === 'locked' ? '🔒' : isBoss ? '⚔️' : '▶';
-        const statusColor = status === 'completed' ? '#00ff88' : status === 'locked' ? '#64748b' : isBoss ? '#ff2eb3' : '#00e5ff';
+    const lessenDone = level.lessen.filter(l => getLesVoltooid(l.id)).length;
+    const allLessenDone = lessenDone === level.lessen.length;
+    const iconClass = done ? 'done' : isBoss ? 'boss' : 'normal';
+    const iconText = done ? '✓' : isBoss ? '⚔️' : level.id;
+    const xpWaarde = Math.round(CONFIG.xpPerLes * getXpMultiplier() * level.lessen.length);
 
-        // Lessen HTML
-        let lessenHTML = '<div class="lessons-grid">';
-        level.lessen.forEach((les, idx) => {
-            const lesKey = idx === 0 ? 'les1' : 'les2';
-            const lesDone = lv[lesKey]?.done;
-            const lesScore = lv[lesKey]?.score;
-            const hasActiviteit = les.activiteit;
-            const hasQuiz = les.quizVragen && les.quizVragen.length > 0;
-            const lesKleur = idx === 0 ? '#00e5ff' : '#ff2eb3';
-
-            lessenHTML += `
-            <div class="lesson-slot ${lesDone ? 'done' : ''}" onclick="openLes(${level.id}, ${idx})">
-                <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
-                    <div>
-                        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;color:${lesKleur};">${idx === 0 ? 'Les A' : 'Les B'}</div>
-                        <div style="font-weight:700;font-size:13px;color:#fff;">${les.naam}</div>
-                        <div style="color:#64748b;font-size:11px;margin-top:2px;">${les.omschrijving}</div>
-                    </div>
-                    <div style="font-size:18px;margin-left:12px;">${lesDone ? '✅' : '○'}</div>
-                </div>
-                <div style="display:flex;align-items:center;gap:6px;margin-top:10px;flex-wrap:wrap;">
-                    ${hasActiviteit ? `<span style="font-size:11px;padding:2px 8px;border-radius:9999px;background:#0d1a30;color:#94a3b8;border:1px solid #1e2d4a;">${les.activiteit}</span>` : `<span style="font-size:11px;color:#475569;">Geen activiteit ingesteld</span>`}
-                    ${hasQuiz ? `<span style="font-size:11px;padding:2px 8px;border-radius:9999px;background:#0d1a30;color:#ffd700;border:1px solid rgba(255,215,0,0.2);">📝 Quiz</span>` : ''}
-                    ${lesDone && lesScore !== undefined ? `<span style="font-size:11px;padding:2px 8px;border-radius:9999px;background:#001a0d;color:#00ff88;border:1px solid rgba(0,255,136,0.2);">Score: ${lesScore}%</span>` : ''}
-                </div>
-            </div>`;
-        });
-        lessenHTML += '</div>';
-
-        // Gatekeeper HTML
-        const bothDone = lv.les1?.done && lv.les2?.done;
-        const gatePassed = lv.gatekeeperPassed;
-        let gatekeeperHTML = '';
-        if (status !== 'locked') {
-            if (gatePassed) {
-                gatekeeperHTML = `<div style="margin-top:16px;padding:12px;border-radius:8px;display:flex;align-items:center;gap:12px;background:#001a0d;border:1px solid rgba(0,255,136,0.33);">
-                    <span>✅</span><span style="font-size:13px;font-weight:700;color:#00ff88;">Gatekeeper gepasseerd</span>
-                </div>`;
-            } else if (bothDone) {
-                gatekeeperHTML = `<div style="margin-top:16px;padding:12px;border-radius:8px;display:flex;align-items:center;justify-content:space-between;background:#0d1a30;border:1px solid rgba(177,0,255,0.33);">
-                    <div style="display:flex;align-items:center;gap:8px;">
-                        <span>🛡️</span>
-                        <div>
-                            <div style="font-size:13px;font-weight:700;color:#fff;">Gatekeeper</div>
-                            <div style="font-size:11px;color:#64748b;">Haal min. ${CONFIG.gatekeeperMinScore}% om door te gaan</div>
-                        </div>
-                    </div>
-                    <button class="btn-primary" style="font-size:12px;padding:8px 16px;" onclick="openGatekeeper(${level.id})">Starten →</button>
-                </div>`;
-            } else {
-                const done1 = lv.les1?.done ? '✅' : '○';
-                const done2 = lv.les2?.done ? '✅' : '○';
-                gatekeeperHTML = `<div style="margin-top:16px;padding:10px 12px;border-radius:8px;background:#0a1020;border:1px solid #1e2d4a;">
-                    <div style="display:flex;align-items:center;gap:8px;color:#64748b;font-size:11px;">
-                        <span>🔒</span>
-                        <span>Gatekeeper: voltooi eerst beide lessen</span>
-                        <span style="margin-left:auto;">${done1} Les A &nbsp; ${done2} Les B</span>
-                    </div>
-                </div>`;
-            }
-        }
-
-        card.innerHTML = `
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;">
-            <div style="display:flex;align-items:center;gap:12px;">
-                <div style="width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;background:${statusColor}22;border:1px solid ${statusColor}44;color:${statusColor};">
-                    ${statusIcon}
-                </div>
-                <div>
-                    <div style="font-weight:900;color:#fff;">${level.naam}</div>
-                    <div style="color:#64748b;font-size:13px;">${level.omschrijving}</div>
-                </div>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;flex-shrink:0;">
-                ${rondeLabel}
-                <span class="xp-chip">+${xpWaarde} XP</span>
-            </div>
+    card.innerHTML = `
+      <div class="level-header" onclick="toggleLevel(${level.id})">
+        <div class="level-header-left">
+          <div class="level-icon ${iconClass}">${iconText}</div>
+          <div>
+            <div class="level-title">${!unlocked ? '🔒 ' : ''}${level.naam}</div>
+            <div class="level-desc">${level.omschrijving}</div>
+          </div>
         </div>
-        ${lessenHTML}
-        ${gatekeeperHTML}`;
+        <div class="level-header-right">
+          <span class="level-badge ${rondeTag}">${RONDE_NAMES[STATE.ronde]}</span>
+          <span class="level-xp">⚡ +${xpWaarde} XP</span>
+          <span class="level-chevron ${isOpen ? 'open' : ''}">▶</span>
+        </div>
+      </div>
+      <div class="level-body ${isOpen ? 'open' : ''}" id="level-body-${level.id}">
+        <div class="lessons-grid">
+          ${level.lessen.map(les => renderLesItem(les, unlocked)).join('')}
+        </div>
+        ${renderGatekeeper(level, unlocked, allLessenDone, done)}
+      </div>
+    `;
 
-        grid.appendChild(card);
-    });
+    container.appendChild(card);
+  });
+}
+
+function renderLesItem(les, unlocked) {
+  const done = getLesVoltooid(les.id);
+  const xp = Math.round(CONFIG.xpPerLes * getXpMultiplier());
+  const rondeTag = RONDE_TAGS[STATE.ronde];
+  return `
+    <div class="lesson-item ${done ? 'done-lesson' : ''}" onclick="${unlocked ? `openLes('${les.id}')` : ''}">
+      <div class="lesson-label ${les.label.toLowerCase()}">${les.label === 'A' ? 'LES A' : 'LES B'}</div>
+      <div class="lesson-title">${les.naam}</div>
+      <div class="lesson-desc">${les.omschrijving}</div>
+      <div class="lesson-meta">
+        <span class="lesson-tag ${rondeTag}">${RONDE_NAMES[STATE.ronde]}</span>
+        <span class="lesson-xp">⚡ ${xp} XP</span>
+        <span class="lesson-time">${les.tijdsduur || '15 min'}</span>
+      </div>
+      <div class="lesson-check ${done ? 'done' : ''}">${done ? '✓' : ''}</div>
+    </div>
+  `;
+}
+
+function renderGatekeeper(level, unlocked, allLessenDone, done) {
+  if (done) {
+    return `<div class="gatekeeper-bar">
+      <div class="gatekeeper-info passed">✅ Gatekeeper gepasseerd</div>
+      <span class="gatekeeper-score">GESLAAGD</span>
+    </div>`;
+  }
+  if (!unlocked) {
+    return `<div class="gatekeeper-bar">
+      <div class="gatekeeper-info locked">🔒 Gatekeeper: voltooi eerst beide lessen</div>
+      <span style="font-size:0.7rem;color:var(--muted)">○ Les A &nbsp; ○ Les B</span>
+    </div>`;
+  }
+  if (!allLessenDone) {
+    const done1 = getLesVoltooid(level.lessen[0].id);
+    const done2 = getLesVoltooid(level.lessen[1].id);
+    return `<div class="gatekeeper-bar">
+      <div class="gatekeeper-info locked">🔒 Gatekeeper: voltooi eerst beide lessen</div>
+      <span style="font-size:0.7rem;color:var(--muted)">${done1 ? '✓' : '○'} Les A &nbsp; ${done2 ? '✓' : '○'} Les B</span>
+    </div>`;
+  }
+  return `<div class="gatekeeper-bar">
+    <div class="gatekeeper-info ready">🔐 Gatekeeper klaar — haal min. ${CONFIG.gatekeeperMinScore}%</div>
+    <button class="gatekeeper-btn" onclick="openGatekeeper(${level.id})">🔓 Gatekeeper starten</button>
+  </div>`;
+}
+
+function toggleLevel(id) {
+  const idx = STATE.openLevels.indexOf(id);
+  if (idx >= 0) STATE.openLevels.splice(idx, 1);
+  else STATE.openLevels.push(id);
+  saveState();
+  renderApp();
 }
 
 // ============================================================
 // LES MODAL
 // ============================================================
-function openLes(levelId, lesIdx) {
-    if (!isLevelUnlocked(levelId)) return;
-    const allLevels = [...CONFIG.levels, CONFIG.bigBoss];
-    const level = allLevels.find(l => l.id === levelId);
-    const les = level.lessen[lesIdx];
-    const lesKey = lesIdx === 0 ? 'les1' : 'les2';
-    const lv = STATE.levelVoortgang[levelId] || {};
-    const lesDone = lv[lesKey]?.done;
-    const hasQuiz = les.quizVragen && les.quizVragen.length > 0;
-    const lesKleur = lesIdx === 0 ? '#00e5ff' : '#ff2eb3';
+function openLes(lesId) {
+  const allLevels = getAllLevels();
+  let les = null;
+  for (const level of allLevels) {
+    les = level.lessen.find(l => l.id === lesId);
+    if (les) break;
+  }
+  if (!les) return;
 
-    let quizHTML = '';
-    if (hasQuiz && !lesDone) {
-        quizHTML = `
-        <div style="margin-top:24px;padding:16px;border-radius:10px;background:#0a1020;border:1px solid #1e2d4a;">
-            <div style="font-weight:700;color:#fff;margin-bottom:12px;">📝 Kennischeck</div>
-            <div id="quiz-vragen-${levelId}-${lesIdx}"></div>
-            <button class="btn-primary mt-4 w-full" onclick="submitQuiz(${levelId}, ${lesIdx})">✅ Indienen</button>
-        </div>`;
-    } else if (!hasQuiz && !lesDone) {
-        quizHTML = `
-        <div style="margin-top:24px;padding:16px;border-radius:10px;background:#0a1020;border:1px solid #1e2d4a;">
-            <div style="color:#64748b;font-size:13px;text-align:center;">Geen quiz ingesteld voor deze les.</div>
-        </div>`;
-    }
+  currentLesData = les;
+  currentQuizAnswers = {};
 
-    const content = `
-    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;">
-        <div>
-            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px;color:${lesKleur};">
-                Level ${levelId} — ${lesIdx===0?'Les A':'Les B'}
-            </div>
-            <h2 style="font-size:20px;font-weight:900;color:#fff;">${les.naam}</h2>
-            <p style="color:#94a3b8;font-size:13px;margin-top:4px;">${les.omschrijving}</p>
+  document.getElementById('modal-les-title').textContent = les.naam;
+
+  const done = getLesVoltooid(les.id);
+  const xp = Math.round(CONFIG.xpPerLes * getXpMultiplier());
+
+  let quizHTML = '';
+  if (les.quizVragen && les.quizVragen.length > 0) {
+    quizHTML = `<div class="quiz-section">
+      <div class="quiz-title">🎯 Snelle Check — ${les.quizVragen.length} ${les.quizVragen.length === 1 ? 'vraag' : 'vragen'}</div>
+      ${les.quizVragen.map((q, qi) => `
+        <div class="quiz-question" id="quiz-q-${qi}">
+          <div class="quiz-q-text">${qi + 1}. ${q.vraag}</div>
+          <div class="quiz-options">
+            ${q.opties.map((opt, oi) => `
+              <button class="quiz-option" onclick="answerQuiz(${qi}, ${oi}, ${q.juist})" id="quiz-opt-${qi}-${oi}">${opt}</button>
+            `).join('')}
+          </div>
         </div>
-        <button onclick="closeModal('modal-les')" style="color:#64748b;font-size:24px;background:none;border:none;margin-left:16px;line-height:1;">✕</button>
-    </div>
+      `).join('')}
+    </div>`;
+  } else {
+    quizHTML = `<div style="background:var(--bg3);border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center;color:var(--muted);font-size:0.85rem;">Geen quiz ingesteld voor deze les.</div>`;
+  }
 
+  document.getElementById('modal-les-body').innerHTML = `
+    <div class="lesson-modal-label">${les.label === 'A' ? 'LES A' : 'LES B'} · ⚡ ${xp} XP</div>
+    <div class="lesson-modal-title">${les.naam}</div>
+    <div class="lesson-modal-desc">${les.omschrijving}</div>
     ${les.activiteit ? `
-    <div style="padding:16px;border-radius:10px;margin-bottom:16px;background:#0a1020;border:1px solid #1e2d4a;">
-        <div style="font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px;">Activiteit</div>
-        <div style="font-weight:700;color:#fff;font-size:18px;">${les.activiteit}</div>
-    </div>` : `
-    <div style="padding:16px;border-radius:10px;margin-bottom:16px;text-align:center;background:#0a1020;border:1px solid #1e2d4a;">
-        <div style="color:#475569;font-size:13px;">Geen activiteit ingesteld. Gebruik het leerkrachtpaneel om dit in te stellen.</div>
-    </div>`}
+      <div class="activity-box">
+        <div class="activity-box-title">📌 Activiteit</div>
+        <div class="activity-name">${les.activiteit}</div>
+        ${les.activiteitSub ? `<div class="activity-sub">${les.activiteitSub}</div>` : ''}
+      </div>
+    ` : `
+      <div class="activity-box">
+        <div class="activity-box-title">📌 Activiteit</div>
+        <div style="color:var(--muted);font-size:0.85rem;">Geen activiteit ingesteld. Gebruik het leerkrachtpaneel.</div>
+      </div>
+    `}
+    ${quizHTML}
+  `;
 
-    ${lesDone ? `
-    <div style="padding:16px;border-radius:10px;text-align:center;background:#001a0d;border:1px solid rgba(0,255,136,0.33);">
-        <div style="font-size:32px;margin-bottom:8px;">✅</div>
-        <div style="font-weight:700;color:#fff;">Les voltooid!</div>
-        <div style="color:#94a3b8;font-size:13px;margin-top:4px;">Score: ${lv[lesKey]?.score ?? '—'}%</div>
-    </div>` : quizHTML}
+  const doneBtn = document.getElementById('modal-done-btn');
+  if (done) {
+    doneBtn.textContent = '✅ Al voltooid';
+    doneBtn.disabled = true;
+  } else {
+    doneBtn.textContent = '✅ Les markeren als voltooid';
+    doneBtn.disabled = false;
+  }
 
-    ${!lesDone && !hasQuiz ? `
-    <button class="btn-primary w-full" style="margin-top:16px;" onclick="markLesDone(${levelId}, ${lesIdx}, 100)">
-        ✅ Les markeren als voltooid
-    </button>` : ''}`;
-
-    document.getElementById('modal-les-content').innerHTML = content;
-    document.getElementById('modal-les').style.display = 'flex';
-
-    if (hasQuiz && !lesDone) {
-        renderQuizVragen(levelId, lesIdx, les.quizVragen);
-    }
+  document.getElementById('les-modal').classList.remove('hidden');
 }
 
-function renderQuizVragen(levelId, lesIdx, vragen) {
-    const container = document.getElementById(`quiz-vragen-${levelId}-${lesIdx}`);
-    if (!container) return;
-    container.innerHTML = vragen.map((v, qi) => `
-    <div style="margin-bottom:16px;">
-        <div style="font-weight:600;font-size:13px;color:#fff;margin-bottom:8px;">${qi+1}. ${v.vraag}</div>
-        <div>
-            ${v.opties.map((opt, oi) => `
-            <div class="quiz-option" id="opt-${levelId}-${lesIdx}-${qi}-${oi}" onclick="selectOptie(${levelId},${lesIdx},${qi},${oi},${v.opties.length})">
-                <span style="font-size:13px;">${opt}</span>
-            </div>`).join('')}
-        </div>
-    </div>`).join('');
+function answerQuiz(qi, oi, juist) {
+  if (currentQuizAnswers[qi] !== undefined) return;
+  currentQuizAnswers[qi] = oi;
+
+  const opts = document.querySelectorAll(`#quiz-q-${qi} .quiz-option`);
+  opts.forEach((btn, idx) => {
+    btn.disabled = true;
+    if (idx === juist) btn.classList.add('correct');
+    else if (idx === oi && oi !== juist) btn.classList.add('wrong');
+  });
 }
 
-let quizAntwoorden = {};
-
-function selectOptie(levelId, lesIdx, vraagIdx, optieIdx, aantalOpties) {
-    const key = `${levelId}-${lesIdx}-${vraagIdx}`;
-    quizAntwoorden[key] = optieIdx;
-    for (let i = 0; i < aantalOpties; i++) {
-        const el = document.getElementById(`opt-${levelId}-${lesIdx}-${vraagIdx}-${i}`);
-        if (el) el.classList.remove('selected');
-    }
-    const sel = document.getElementById(`opt-${levelId}-${lesIdx}-${vraagIdx}-${optieIdx}`);
-    if (sel) sel.classList.add('selected');
-}
-
-function submitQuiz(levelId, lesIdx) {
-    const allLevels = [...CONFIG.levels, CONFIG.bigBoss];
-    const level = allLevels.find(l => l.id === levelId);
-    const les = level.lessen[lesIdx];
-    const vragen = les.quizVragen;
-    let correct = 0;
-    vragen.forEach((v, qi) => {
-        const key = `${levelId}-${lesIdx}-${qi}`;
-        const antwoord = quizAntwoorden[key];
-        if (antwoord === undefined) return;
-        const isCorrect = antwoord === v.juist;
-        if (isCorrect) correct++;
-        for (let i = 0; i < v.opties.length; i++) {
-            const el = document.getElementById(`opt-${levelId}-${lesIdx}-${qi}-${i}`);
-            if (!el) continue;
-            if (i === v.juist) el.classList.add('correct');
-            else if (i === antwoord && !isCorrect) el.classList.add('wrong');
-        }
-    });
-    const score = vragen.length > 0 ? Math.round((correct / vragen.length) * 100) : 100;
-    setTimeout(() => { markLesDone(levelId, lesIdx, score); }, 1200);
-}
-
-function markLesDone(levelId, lesIdx, score) {
-    const lesKey = lesIdx === 0 ? 'les1' : 'les2';
-    if (!STATE.levelVoortgang[levelId]) STATE.levelVoortgang[levelId] = {};
-    STATE.levelVoortgang[levelId][lesKey] = { done: true, score };
-    const xpWaarde = Math.round(CONFIG.xpPerLevel * RONDE_XP_MULT[STATE.ronde]);
-    STATE.xp += Math.round(xpWaarde / 2);
-    if (score === 100) STATE.perfectQuizCount = (STATE.perfectQuizCount || 0) + 1;
-    checkBadges();
+function markLesVoltooid() {
+  if (!currentLesData) return;
+  if (!STATE.voltooideIds.includes(currentLesData.id)) {
+    STATE.voltooideIds.push(currentLesData.id);
+    const xp = Math.round(CONFIG.xpPerLes * getXpMultiplier());
     saveState();
-    closeModal('modal-les');
-    renderApp();
+    showToast(`+${xp} XP — Les voltooid! 🎉`, 'success');
+  }
+  closeModal('les-modal');
+  renderApp();
 }
 
 // ============================================================
 // GATEKEEPER
 // ============================================================
 function openGatekeeper(levelId) {
-    const allLevels = [...CONFIG.levels, CONFIG.bigBoss];
-    const level = allLevels.find(l => l.id === levelId);
-    const isBoss = levelId === 8;
+  const allLevels = getAllLevels();
+  const level = allLevels.find(l => l.id === levelId);
+  if (!level) return;
 
-    const content = `
-    <div style="text-align:center;margin-bottom:24px;">
-        <div style="font-size:48px;margin-bottom:12px;">${isBoss ? '⚔️' : '🛡️'}</div>
-        <h2 style="font-size:24px;font-weight:900;color:#fff;">${isBoss ? 'Big Boss Challenge' : 'Gatekeeper'}</h2>
-        <p style="color:#94a3b8;margin-top:8px;">${isBoss ? 'De ultieme test. Haal ' + CONFIG.gatekeeperMinScore + '% om de baas te verslaan.' : 'Haal minimaal ' + CONFIG.gatekeeperMinScore + '% om door te gaan naar het volgende level.'}</p>
-    </div>
-    <div id="gatekeeper-quiz-container"></div>
-    <div style="display:flex;gap:12px;margin-top:24px;">
-        <button class="btn-secondary" style="flex:1;" onclick="closeModal('modal-gatekeeper')">Annuleren</button>
-        <button class="${isBoss ? 'btn-boss' : 'btn-primary'}" style="flex:1;" onclick="submitGatekeeper(${levelId})">
-            ${isBoss ? '⚔️ Aanvallen!' : '🛡️ Indienen'}
-        </button>
-    </div>`;
+  // Collect all quiz questions from both lessons
+  const allVragen = level.lessen.flatMap(les => les.quizVragen || []);
 
-    document.getElementById('modal-gatekeeper-content').innerHTML = content;
-    const gkVragen = generateGatekeeperVragen(level);
-    renderGatekeeperVragen(gkVragen, levelId);
-    document.getElementById('modal-gatekeeper').style.display = 'flex';
-}
+  if (allVragen.length === 0) {
+    // No questions — auto pass
+    passGatekeeper(levelId);
+    return;
+  }
 
-function generateGatekeeperVragen(level) {
-    let allVragen = [];
-    level.lessen.forEach(les => {
-        if (les.quizVragen && les.quizVragen.length > 0) allVragen = allVragen.concat(les.quizVragen);
-    });
-    if (allVragen.length === 0) {
-        return [
-            { vraag: "Heb je beide lessen volledig doorlopen?", opties: ["Ja, volledig", "Grotendeels", "Deels", "Nee"], juist: 0 },
-            { vraag: "Kan je de activiteiten van dit level uitleggen?", opties: ["Ja, duidelijk", "Redelijk", "Een beetje", "Nee"], juist: 0 },
-            { vraag: "Ben je klaar voor het volgende level?", opties: ["Absoluut!", "Denk het wel", "Twijfel", "Nee"], juist: 0 }
-        ];
-    }
-    return allVragen;
-}
+  let gateAnswers = {};
 
-let gatekeeperAntwoorden = {};
-
-function renderGatekeeperVragen(vragen, levelId) {
-    const container = document.getElementById('gatekeeper-quiz-container');
-    if (!container) return;
-    gatekeeperAntwoorden = {};
-    container.innerHTML = vragen.map((v, qi) => `
-    <div style="margin-bottom:16px;">
-        <div style="font-weight:600;font-size:13px;color:#fff;margin-bottom:8px;">${qi+1}. ${v.vraag}</div>
-        <div>
-            ${v.opties.map((opt, oi) => `
-            <div class="quiz-option" id="gk-opt-${levelId}-${qi}-${oi}" onclick="selectGKOptie(${levelId},${qi},${oi},${v.opties.length})">
-                <span style="font-size:13px;">${opt}</span>
-            </div>`).join('')}
+  const body = document.getElementById('gate-modal-body');
+  body.innerHTML = `
+    <p style="font-size:0.85rem;color:var(--muted);margin-bottom:1.25rem;">Haal minimum <strong style="color:var(--gold)">${CONFIG.gatekeeperMinScore}%</strong> om door te gaan naar het volgende level.</p>
+    ${allVragen.map((q, qi) => `
+      <div class="quiz-question" id="gate-q-${qi}">
+        <div class="quiz-q-text">${qi + 1}. ${q.vraag}</div>
+        <div class="quiz-options">
+          ${q.opties.map((opt, oi) => `
+            <button class="quiz-option" onclick="answerGate(${qi}, ${oi}, ${q.juist}, ${allVragen.length}, ${levelId})" id="gate-opt-${qi}-${oi}">${opt}</button>
+          `).join('')}
         </div>
-    </div>`).join('');
+      </div>
+    `).join('')}
+  `;
+
+  document.getElementById('gate-modal-footer').innerHTML = `<button class="btn-secondary" onclick="closeModal('gate-modal')">Annuleren</button>`;
+  document.getElementById('gate-modal').classList.remove('hidden');
+
+  window._gateAnswers = {};
+  window._gateLevelId = levelId;
+  window._gateTotal = allVragen.length;
+  window._gateVragen = allVragen;
 }
 
-function selectGKOptie(levelId, vraagIdx, optieIdx, aantalOpties) {
-    gatekeeperAntwoorden[vraagIdx] = optieIdx;
-    for (let i = 0; i < aantalOpties; i++) {
-        const el = document.getElementById(`gk-opt-${levelId}-${vraagIdx}-${i}`);
-        if (el) el.classList.remove('selected');
+function answerGate(qi, oi, juist, total, levelId) {
+  if (window._gateAnswers[qi] !== undefined) return;
+  window._gateAnswers[qi] = oi;
+
+  const opts = document.querySelectorAll(`#gate-q-${qi} .quiz-option`);
+  opts.forEach((btn, idx) => {
+    btn.disabled = true;
+    if (idx === juist) btn.classList.add('correct');
+    else if (idx === oi && oi !== juist) btn.classList.add('wrong');
+  });
+
+  if (Object.keys(window._gateAnswers).length === total) {
+    // All answered — calculate score
+    setTimeout(() => showGateResult(levelId), 600);
+  }
+}
+
+function showGateResult(levelId) {
+  const vragen = window._gateVragen;
+  let correct = 0;
+  vragen.forEach((q, qi) => {
+    if (window._gateAnswers[qi] === q.juist) correct++;
+  });
+  const score = Math.round(correct / vragen.length * 100);
+  const passed = score >= CONFIG.gatekeeperMinScore;
+
+  const body = document.getElementById('gate-modal-body');
+  body.innerHTML = `
+    <div class="gate-score-big ${passed ? 'pass' : 'fail'}">${score}%</div>
+    <div class="gate-result-text">${correct} van ${vragen.length} correct</div>
+    <p style="text-align:center;font-size:0.9rem;color:${passed ? 'var(--green)' : 'var(--red)'}">
+      ${passed ? '🎉 Geslaagd! Je mag door naar het volgende level.' : `❌ Niet geslaagd. Je hebt minimum ${CONFIG.gatekeeperMinScore}% nodig.`}
+    </p>
+  `;
+
+  const footer = document.getElementById('gate-modal-footer');
+  if (passed) {
+    footer.innerHTML = `<button class="btn-primary" onclick="passGatekeeper(${levelId})">Volgende Level ▶</button>`;
+  } else {
+    footer.innerHTML = `<button class="btn-secondary" onclick="closeModal('gate-modal')">Opnieuw proberen</button>`;
+  }
+}
+
+function passGatekeeper(levelId) {
+  if (!STATE.gatekeeperPassed.includes(levelId)) {
+    STATE.gatekeeperPassed.push(levelId);
+    // Check if Big Boss passed → start new ronde
+    if (levelId === 8 && STATE.ronde < 2) {
+      STATE.ronde++;
+      STATE.voltooideIds = [];
+      STATE.gatekeeperPassed = [];
+      saveState();
+      closeModal('gate-modal');
+      showToast(`🌟 Ronde ${RONDE_NAMES[STATE.ronde]} gestart! XP ×${getXpMultiplier()}`, 'info');
+      renderApp();
+      return;
     }
-    const sel = document.getElementById(`gk-opt-${levelId}-${vraagIdx}-${optieIdx}`);
-    if (sel) sel.classList.add('selected');
+    saveState();
+  }
+  closeModal('gate-modal');
+  showToast('🎉 Level gepasseerd!', 'success');
+  renderApp();
 }
 
-function submitGatekeeper(levelId) {
-    const allLevels = [...CONFIG.levels, CONFIG.bigBoss];
-    const level = allLevels.find(l => l.id === levelId);
-    const vragen = generateGatekeeperVragen(level);
-    const isBoss = levelId === 8;
-    let correct = 0;
-    vragen.forEach((v, qi) => {
-        const antwoord = gatekeeperAntwoorden[qi];
-        if (antwoord === v.juist) correct++;
-        for (let i = 0; i < v.opties.length; i++) {
-            const el = document.getElementById(`gk-opt-${levelId}-${qi}-${i}`);
-            if (!el) continue;
-            if (i === v.juist) el.classList.add('correct');
-            else if (i === antwoord && antwoord !== v.juist) el.classList.add('wrong');
-        }
-    });
-    const score = Math.round((correct / vragen.length) * 100);
-    const passed = score >= CONFIG.gatekeeperMinScore;
-    setTimeout(() => {
-        closeModal('modal-gatekeeper');
-        if (passed) {
-            if (!STATE.levelVoortgang[levelId]) STATE.levelVoortgang[levelId] = {};
-            STATE.levelVoortgang[levelId].gatekeeperPassed = true;
-            STATE.xp += Math.round(CONFIG.xpPerLevel * RONDE_XP_MULT[STATE.ronde]);
-            if (isBoss) handleBossVerslagen(score);
-            else showSuccessModal(levelId, score);
-        } else {
-            showFailModal(score);
-        }
-        checkBadges();
-        saveState();
-        renderApp();
-    }, 1000);
+// ============================================================
+// MODAL
+// ============================================================
+function closeModal(id) {
+  document.getElementById(id).classList.add('hidden');
+  currentLesData = null;
 }
 
-function showSuccessModal(levelId, score) {
-    const content = `
-    <div style="text-align:center;">
-        <div style="font-size:60px;margin-bottom:16px;">🎉</div>
-        <h2 style="font-size:24px;font-weight:900;color:#fff;margin-bottom:8px;">Level ${levelId} voltooid!</h2>
-        <p style="color:#94a3b8;margin-bottom:16px;">Score: <span style="font-weight:900;color:#00ff88;">${score}%</span></p>
-        <p style="color:#64748b;font-size:13px;margin-bottom:24px;">Je gaat door naar het volgende level.</p>
-        <button class="btn-primary w-full" onclick="closeModal('modal-gatekeeper')">Verder →</button>
-    </div>`;
-    document.getElementById('modal-gatekeeper-content').innerHTML = content;
-    document.getElementById('modal-gatekeeper').style.display = 'flex';
-}
-
-function showFailModal(score) {
-    const content = `
-    <div style="text-align:center;">
-        <div style="font-size:60px;margin-bottom:16px;">❌</div>
-        <h2 style="font-size:24px;font-weight:900;color:#fff;margin-bottom:8px;">Niet geslaagd</h2>
-        <p style="color:#94a3b8;margin-bottom:8px;">Score: <span style="font-weight:900;color:#ff4444;">${score}%</span></p>
-        <p style="color:#64748b;font-size:13px;margin-bottom:24px;">Je hebt minimaal <strong>${CONFIG.gatekeeperMinScore}%</strong> nodig. Herhaal de lessen en probeer opnieuw.</p>
-        <button class="btn-secondary w-full" onclick="closeModal('modal-gatekeeper')">Terug naar lessen</button>
-    </div>`;
-    document.getElementById('modal-gatekeeper-content').innerHTML = content;
-    document.getElementById('modal-gatekeeper').style.display = 'flex';
-}
-
-function handleBossVerslagen(score) {
-    if (STATE.ronde < 2) {
-        const huidigeRonde = STATE.ronde;
-        STATE.ronde++;
-        STATE.levelVoortgang = {};
-        showRondeModal(huidigeRonde + 1);
-    } else {
-        showAllesVoltooidModal();
-    }
-}
-
-function showRondeModal(nieuweRonde) {
-    const content = `
-    <div style="text-align:center;">
-        <div style="font-size:60px;margin-bottom:16px;">⚔️</div>
-        <h2 style="font-size:24px;font-weight:900;color:#fff;margin-bottom:8px;">Big Boss verslagen!</h2>
-        <p style="color:#94a3b8;margin-bottom:16px;">Ronde ${RONDES[nieuweRonde - 1]} voltooid!</p>
-        <div style="padding:16px;border-radius:10px;margin-bottom:24px;background:${RONDE_KLEUREN[nieuweRonde]}22;border:1px solid ${RONDE_KLEUREN[nieuweRonde]}44;">
-            <div style="font-size:30px;font-weight:900;margin-bottom:4px;color:${RONDE_KLEUREN[nieuweRonde]};">${RONDES[nieuweRonde]}</div>
-            <div style="color:#94a3b8;font-size:13px;">Nieuwe ronde begint nu. Alles wordt moeilijker!</div>
-        </div>
-        <button class="btn-primary w-full" onclick="closeModal('modal-ronde'); renderApp();">🚀 Start ${RONDES[nieuweRonde]}!</button>
-    </div>`;
-    document.getElementById('modal-ronde-content').innerHTML = content;
-    document.getElementById('modal-ronde').style.display = 'flex';
-}
-
-function showAllesVoltooidModal() {
-    const content = `
-    <div style="text-align:center;">
-        <div style="font-size:60px;margin-bottom:16px;">👑</div>
-        <h2 style="font-size:24px;font-weight:900;color:#fff;margin-bottom:8px;">MEESTER!</h2>
-        <p style="color:#94a3b8;margin-bottom:8px;">Je hebt alle 3 rondes voltooid.</p>
-        <p style="color:#ffd700;font-weight:900;font-size:18px;margin-bottom:16px;">EASY → MEDIUM → HARD ✅</p>
-        <div class="xp-chip" style="font-size:18px;padding:8px 16px;display:inline-block;margin-bottom:24px;">Totaal XP: ${STATE.xp}</div>
-        <button class="btn-primary w-full" onclick="closeModal('modal-ronde')">🏆 Bekijk je badges</button>
-    </div>`;
-    document.getElementById('modal-ronde-content').innerHTML = content;
-    document.getElementById('modal-ronde').style.display = 'flex';
+// ============================================================
+// TABS
+// ============================================================
+function switchTab(tab) {
+  ['lessen', 'badges', 'leaderboard'].forEach(t => {
+    document.getElementById('view-' + t).style.display = t === tab ? 'block' : 'none';
+    document.getElementById('tab-' + t).classList.toggle('active', t === tab);
+  });
 }
 
 // ============================================================
 // BADGES
 // ============================================================
 function checkBadges() {
-    CONFIG.badges.forEach(badge => {
-        if (STATE.badgesVerdiend.includes(badge.id)) return;
-        let earned = false;
-        const lv = STATE.levelVoortgang;
-        if (badge.trigger === 'level_1') earned = lv[1]?.gatekeeperPassed;
-        else if (badge.trigger === 'level_4') earned = lv[4]?.gatekeeperPassed;
-        else if (badge.trigger === 'level_7') earned = lv[7]?.gatekeeperPassed;
-        else if (badge.trigger === 'boss') earned = lv[8]?.gatekeeperPassed;
-        else if (badge.trigger === 'quiz_perfect_3') earned = (STATE.perfectQuizCount || 0) >= 3;
-        else if (badge.trigger === 'xp_500') earned = STATE.xp >= 500;
-        else if (badge.trigger === 'all_rounds') earned = STATE.ronde >= 2 && lv[8]?.gatekeeperPassed;
-        if (earned) STATE.badgesVerdiend.push(badge.id);
-    });
+  const done = getVoltooideCount();
+  const levDone = STATE.gatekeeperPassed.length;
+  const allDone = done === getTotalLessen();
+
+  CONFIG.badges.forEach(badge => {
+    if (STATE.badges.includes(badge.id)) return;
+    let earned = false;
+    if (badge.trigger === 'les_count' && done >= badge.waarde) earned = true;
+    if (badge.trigger === 'level_done' && levDone >= badge.waarde) earned = true;
+    if (badge.trigger === 'boss_done' && STATE.gatekeeperPassed.includes(8)) earned = true;
+    if (badge.trigger === 'ronde' && STATE.ronde >= badge.waarde - 1) earned = true;
+    if (badge.trigger === 'all_done' && allDone) earned = true;
+    if (earned) {
+      STATE.badges.push(badge.id);
+      saveState();
+      showToast(`🏅 Badge verdiend: ${badge.naam}!`, 'info');
+    }
+  });
 }
 
 function renderBadges() {
-    const grid = document.getElementById('badges-grid');
-    const count = document.getElementById('badges-count');
-    grid.innerHTML = '';
-    const earned = STATE.badgesVerdiend.length;
-    count.textContent = `${earned} / ${CONFIG.badges.length} verdiend`;
-    CONFIG.badges.forEach(badge => {
-        const isEarned = STATE.badgesVerdiend.includes(badge.id);
-        const card = document.createElement('div');
-        card.className = 'badge-card ' + (isEarned ? 'earned' : 'locked-badge');
-        card.innerHTML = `
-        <div style="font-size:30px;margin-bottom:8px;">${badge.emoji}</div>
-        <div style="font-weight:700;font-size:13px;color:#fff;margin-bottom:4px;">${badge.naam}</div>
-        <div style="color:#64748b;font-size:11px;">${badge.beschrijving}</div>
-        ${isEarned ? '<div style="font-size:11px;margin-top:8px;color:#ffd700;">✓ Verdiend</div>' : ''}`;
-        grid.appendChild(card);
-    });
+  const grid = document.getElementById('badges-grid');
+  grid.innerHTML = CONFIG.badges.map(badge => {
+    const earned = STATE.badges.includes(badge.id);
+    return `<div class="badge-card ${earned ? 'earned' : 'locked-badge'}">
+      <div class="badge-emoji">${badge.emoji}</div>
+      <div class="badge-name">${badge.naam}</div>
+      <div class="badge-desc">${badge.beschrijving}</div>
+    </div>`;
+  }).join('');
 }
 
 // ============================================================
 // LEADERBOARD
 // ============================================================
 function renderLeaderboard() {
-    const list = document.getElementById('leaderboard-list');
-    const entry = { naam: STATE.naam, klas: STATE.klas, xp: STATE.xp, ronde: RONDES[STATE.ronde] };
-    let lb = STATE.leaderboard || [];
-    const idx = lb.findIndex(e => e.naam === STATE.naam && e.klas === STATE.klas);
-    if (idx >= 0) lb[idx] = entry;
-    else lb.push(entry);
-    lb.sort((a, b) => b.xp - a.xp);
-    STATE.leaderboard = lb;
-    list.innerHTML = lb.map((e, i) => `
-    <div style="display:flex;align-items:center;gap:16px;padding:16px;border-radius:10px;margin-bottom:8px;background:#0f1628;border:1px solid ${e.naam === STATE.naam ? 'rgba(0,229,255,0.27)' : '#1e2d4a'};">
-        <div style="font-weight:900;font-size:18px;width:32px;text-align:center;color:${i===0?'#ffd700':i===1?'#c0c0c0':i===2?'#cd7f32':'#64748b'}">${i+1}</div>
-        <div style="width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;background:linear-gradient(135deg,#b100ff,#ff2eb3);color:white;">${e.naam.charAt(0).toUpperCase()}</div>
-        <div style="flex:1;">
-            <div style="font-weight:700;color:#fff;font-size:13px;">${e.naam}</div>
-            <div style="color:#64748b;font-size:11px;">Klas ${e.klas} · ${e.ronde}</div>
-        </div>
-        <div class="xp-chip">${e.xp} XP</div>
-    </div>`).join('');
-}
+  const container = document.getElementById('leaderboard-list');
+  const myXP = getTotalXP();
+  const myEntry = { naam: STATE.naam, klas: STATE.klas, xp: myXP, isMe: true };
 
-// ============================================================
-// LEERKRACHT PANEL
-// ============================================================
-function showLeerkrachtPanel() {
-    renderLeerkrachtPanel();
-    document.getElementById('modal-leerkracht').style.display = 'flex';
-}
+  // Load others from localStorage
+  let others = [];
+  try {
+    const lb = localStorage.getItem('vakcore_leaderboard');
+    if (lb) others = JSON.parse(lb);
+  } catch(e) {}
 
-function renderLeerkrachtPanel() {
-    const allLevels = [...CONFIG.levels, CONFIG.bigBoss];
-    const content = `
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;">
-        <h2 style="font-size:20px;font-weight:900;color:#fff;">⚙️ Leerkrachtpaneel</h2>
-        <button onclick="closeModal('modal-leerkracht')" style="color:#64748b;font-size:24px;background:none;border:none;line-height:1;">✕</button>
+  // Update my entry
+  others = others.filter(e => e.naam !== STATE.naam);
+  others.push({ naam: STATE.naam, klas: STATE.klas, xp: myXP });
+  localStorage.setItem('vakcore_leaderboard', JSON.stringify(others));
+
+  const sorted = [...others].sort((a, b) => b.xp - a.xp).slice(0, 10);
+  const rankClasses = ['gold', 'silver', 'bronze'];
+
+  if (sorted.length === 0) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">🏆</div><div class="empty-state-text">Nog geen scores</div></div>`;
+    return;
+  }
+
+  container.innerHTML = sorted.map((entry, idx) => `
+    <div class="lb-item ${entry.naam === STATE.naam ? 'me' : ''}">
+      <div class="lb-rank ${rankClasses[idx] || ''}">${idx + 1}</div>
+      <div class="lb-avatar">${entry.naam[0]?.toUpperCase() || '?'}</div>
+      <div class="lb-name">${entry.naam} <span style="font-size:0.7rem;color:var(--muted)">${entry.klas ? '· ' + entry.klas : ''}</span></div>
+      <div class="lb-xp">⚡ ${entry.xp} XP</div>
     </div>
-
-    <div style="margin-bottom:24px;padding:16px;border-radius:10px;background:#0a1020;border:1px solid #1e2d4a;">
-        <div style="font-weight:700;color:#fff;margin-bottom:12px;">Algemene instellingen</div>
-        <div class="grid-cols-2" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-            <div>
-                <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Titel leerpad</label>
-                <input type="text" id="cfg-titel" value="${CONFIG.titel}" />
-            </div>
-            <div>
-                <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Ondertitel</label>
-                <input type="text" id="cfg-ondertitel" value="${CONFIG.ondertitel}" />
-            </div>
-            <div>
-                <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">XP per level (basis)</label>
-                <input type="number" id="cfg-xp" value="${CONFIG.xpPerLevel}" min="10" max="500" />
-            </div>
-            <div>
-                <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Gatekeeper minimum %</label>
-                <input type="number" id="cfg-gatekeeper" value="${CONFIG.gatekeeperMinScore}" min="50" max="100" />
-            </div>
-        </div>
-        <button class="btn-primary" style="margin-top:12px;" onclick="saveAlgemeneInstellingen()">💾 Opslaan</button>
-    </div>
-
-    <div style="margin-bottom:24px;padding:16px;border-radius:10px;background:#0a1020;border:1px solid #1e2d4a;">
-        <div style="font-weight:700;color:#fff;margin-bottom:12px;">🗂️ Activiteiten beheren</div>
-        <div id="activiteiten-lijst" style="margin-bottom:12px;">
-            ${CONFIG.activiteiten.map((act, i) => `
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <input type="text" value="${act}" id="act-${i}" style="flex:1;font-size:12px;" />
-                <button onclick="verwijderActiviteit(${i})" class="btn-danger">✕</button>
-            </div>`).join('')}
-        </div>
-        <div style="display:flex;gap:8px;margin-bottom:8px;">
-            <input type="text" id="nieuwe-activiteit" placeholder="Nieuwe activiteit..." style="flex:1;font-size:12px;" />
-            <button class="btn-primary" style="font-size:12px;padding:8px 14px;white-space:nowrap;" onclick="voegActiviteitToe()">+ Toevoegen</button>
-        </div>
-        <button class="btn-secondary" style="width:100%;font-size:12px;" onclick="slaActiviteitenOp()">💾 Activiteiten opslaan</button>
-    </div>
-
-    <div style="padding:16px;border-radius:10px;background:#0a1020;border:1px solid #1e2d4a;">
-        <div style="font-weight:700;color:#fff;margin-bottom:12px;">📚 Levels & Lessen configureren</div>
-        <div id="levels-config">
-            ${allLevels.map(level => `
-            <div style="padding:12px;border-radius:8px;margin-bottom:12px;background:#0f1628;border:1px solid #1e2d4a;">
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
-                    <span style="font-weight:700;color:#fff;font-size:13px;">${level.naam}</span>
-                    ${level.id === 8 ? '<span class="diff-hard" style="font-size:10px;">BIG BOSS</span>' : ''}
-                </div>
-                <div style="margin-bottom:8px;">
-                    <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Naam level</label>
-                    <input type="text" id="lvl-naam-${level.id}" value="${level.naam}" style="font-size:12px;" />
-                </div>
-                <div style="margin-bottom:12px;">
-                    <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Omschrijving</label>
-                    <input type="text" id="lvl-omschr-${level.id}" value="${level.omschrijving}" style="font-size:12px;" />
-                </div>
-                ${level.lessen.map((les, li) => `
-                <div style="margin-top:8px;padding:12px;border-radius:8px;background:#0a1020;border:1px solid #1e2d4a;">
-                    <div style="font-size:11px;font-weight:700;margin-bottom:8px;color:${li===0?'#00e5ff':'#ff2eb3'};">${li===0?'Les A':'Les B'}</div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
-                        <div>
-                            <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Naam les</label>
-                            <input type="text" id="les-naam-${level.id}-${li}" value="${les.naam}" style="font-size:12px;" />
-                        </div>
-                        <div>
-                            <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Activiteit</label>
-                            <select id="les-act-${level.id}-${li}" style="font-size:12px;">
-                                <option value="">— Geen activiteit —</option>
-                                ${CONFIG.activiteiten.map(act => `<option value="${act}" ${les.activiteit === act ? 'selected' : ''}>${act}</option>`).join('')}
-                            </select>
-                        </div>
-                    </div>
-                    <div style="margin-bottom:8px;">
-                        <label style="font-size:11px;color:#64748b;display:block;margin-bottom:4px;">Omschrijving</label>
-                        <input type="text" id="les-omschr-${level.id}-${li}" value="${les.omschrijving}" style="font-size:12px;" />
-                    </div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;">
-                        <label style="font-size:11px;color:#64748b;">Quizvragen (${les.quizVragen ? les.quizVragen.length : 0})</label>
-                        <button onclick="openQuizEditor(${level.id}, ${li})" style="font-size:11px;padding:4px 10px;border-radius:6px;background:#0d1a30;color:#00e5ff;border:1px solid rgba(0,229,255,0.27);">✏️ Bewerken</button>
-                    </div>
-                </div>`).join('')}
-                <button class="btn-secondary" style="margin-top:12px;font-size:12px;width:100%;" onclick="saveLevelConfig(${level.id})">💾 Level opslaan</button>
-            </div>`).join('')}
-        </div>
-    </div>`;
-
-    document.getElementById('modal-leerkracht-content').innerHTML = content;
+  `).join('');
 }
-
-function saveAlgemeneInstellingen() {
-    CONFIG.titel = document.getElementById('cfg-titel').value.trim() || CONFIG.titel;
-    CONFIG.ondertitel = document.getElementById('cfg-ondertitel').value.trim() || CONFIG.ondertitel;
-    CONFIG.xpPerLevel = parseInt(document.getElementById('cfg-xp').value) || CONFIG.xpPerLevel;
-    CONFIG.gatekeeperMinScore = parseInt(document.getElementById('cfg-gatekeeper').value) || CONFIG.gatekeeperMinScore;
-    saveState();
-    renderApp();
-    alert('✅ Instellingen opgeslagen!');
-}
-
-function voegActiviteitToe() {
-    const val = document.getElementById('nieuwe-activiteit').value.trim();
-    if (!val) return;
-    CONFIG.activiteiten.push(val);
-    document.getElementById('nieuwe-activiteit').value = '';
-    saveState();
-    renderLeerkrachtPanel();
-}
-
-function verwijderActiviteit(idx) {
-    CONFIG.activiteiten.splice(idx, 1);
-    saveState();
-    renderLeerkrachtPanel();
-}
-
-function slaActiviteitenOp() {
-    const items = document.querySelectorAll('[id^="act-"]');
-    CONFIG.activiteiten = Array.from(items).map(el => el.value.trim()).filter(v => v);
-    saveState();
-    renderLeerkrachtPanel();
-    alert('✅ Activiteiten opgeslagen!');
-}
-
-function saveLevelConfig(levelId) {
-    const allLevels = [...CONFIG.levels, CONFIG.bigBoss];
-    const level = allLevels.find(l => l.id === levelId);
-    if (!level) return;
-    level.naam = document.getElementById(`lvl-naam-${levelId}`)?.value.trim() || level.naam;
-    level.omschrijving = document.getElementById(`lvl-omschr-${levelId}`)?.value.trim() || level.omschrijving;
-    level.lessen.forEach((les, li) => {
-        les.naam = document.getElementById(`les-naam-${levelId}-${li}`)?.value.trim() || les.naam;
-        les.omschrijving = document.getElementById(`les-omschr-${levelId}-${li}`)?.value.trim() || les.omschrijving;
-        les.activiteit = document.getElementById(`les-act-${levelId}-${li}`)?.value || null;
-    });
-    saveState();
-    renderApp();
-    alert(`✅ Level ${levelId} opgeslagen!`);
-}
-
-// ============================================================
-// QUIZ EDITOR
-// ============================================================
-function openQuizEditor(levelId, lesIdx) {
-    const allLevels = [...CONFIG.levels, CONFIG.bigBoss];
-    const level = allLevels.find(l => l.id === levelId);
-    const les = level.lessen[lesIdx];
-    const vragen = les.quizVragen || [];
-
-    const content = `
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-        <h3 style="font-size:18px;font-weight:900;color:#fff;">📝 Quiz Editor — ${les.naam}</h3>
-        <button onclick="closeModal('modal-leerkracht'); showLeerkrachtPanel();" style="color:#64748b;font-size:20px;background:none;border:none;">✕</button>
-    </div>
-    <div id="quiz-editor-vragen">
-        ${vragen.map((v, qi) => renderQuizVraagEditor(v, qi, levelId, lesIdx)).join('')}
-    </div>
-    <button class="btn-secondary w-full" style="margin-top:12px;" onclick="voegVraagToe(${levelId}, ${lesIdx})">+ Vraag toevoegen</button>
-    <div style="display:flex;gap:12px;margin-top:16px;">
-        <button class="btn-secondary" style="flex:1;" onclick="closeModal('modal-leerkracht'); showLeerkrachtPanel();">← Terug</button>
-        <button class="btn-primary" style="flex:1;" onclick="saveQuizVragen(${levelId}, ${lesIdx})">💾 Quiz opslaan</button>
-    </div>`;
-
-    document.getElementById('modal-leerkracht-content').innerHTML = content;
-}
-
-function renderQuizVraagEditor(v, qi, levelId, lesIdx) {
-    return `
-    <div style="padding:16px;border-radius:10px;margin-bottom:12px;background:#0a1020;border:1px solid #1e2d4a;" id="quiz-vraag-${qi}">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-            <span style="font-size:11px;font-weight:700;color:#94a3b8;">Vraag ${qi+1}</span>
-            <button onclick="verwijderVraag(${qi}, ${levelId}, ${lesIdx})" class="btn-danger">✕</button>
-        </div>
-        <input type="text" id="qv-vraag-${qi}" value="${v.vraag}" placeholder="Vul de vraag in..." style="font-size:12px;margin-bottom:8px;" />
-        <div style="margin-bottom:8px;">
-            ${v.opties.map((opt, oi) => `
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-                <input type="radio" name="qv-juist-${qi}" value="${oi}" ${v.juist === oi ? 'checked' : ''} id="qv-radio-${qi}-${oi}" style="width:auto;" />
-                <input type="text" id="qv-opt-${qi}-${oi}" value="${opt}" placeholder="Optie ${oi+1}" style="flex:1;font-size:12px;" />
-                <label for="qv-radio-${qi}-${oi}" style="font-size:11px;color:#64748b;">✓</label>
-            </div>`).join('')}
-        </div>
-    </div>`;
-}
-
-function voegVraagToe(levelId, lesIdx) {
-    const allLevels = [...CONFIG.levels, CONFIG.bigBoss];
-    const level = allLevels.find(l => l.id === levelId);
-    const les = level.lessen[lesIdx];
-    if (!les.quizVragen) les.quizVragen = [];
-    les.quizVragen.push({ vraag: "", opties: ["", "", "", ""], juist: 0 });
-    openQuizEditor(levelId, lesIdx);
-}
-
-function verwijderVraag(qi, levelId, lesIdx) {
-    const allLevels = [...CONFIG.levels, CONFIG.bigBoss];
-    const level = allLevels.find(l => l.id === levelId);
-    const les = level.lessen[lesIdx];
-    les.quizVragen.splice(qi, 1);
-    openQuizEditor(levelId, lesIdx);
-}
-
-function saveQuizVragen(levelId, lesIdx) {
-    const allLevels = [...CONFIG.levels, CONFIG.bigBoss];
-    const level = allLevels.find(l => l.id === levelId);
-    const les = level.lessen[lesIdx];
-    const vragen = [];
-    let qi = 0;
-    while (document.getElementById(`qv-vraag-${qi}`)) {
-        const vraag = document.getElementById(`qv-vraag-${qi}`).value.trim();
-        const opties = [0,1,2,3].map(oi => (document.getElementById(`qv-opt-${qi}-${oi}`)?.value.trim() || ''));
-        const juistEl = document.querySelector(`input[name="qv-juist-${qi}"]:checked`);
-        const juist = juistEl ? parseInt(juistEl.value) : 0;
-        if (vraag) vragen.push({ vraag, opties, juist });
-        qi++;
-    }
-    les.quizVragen = vragen;
-    saveState();
-    alert(`✅ ${vragen.length} vragen opgeslagen!`);
-    closeModal('modal-leerkracht');
-    showLeerkrachtPanel();
-}
-
-// ============================================================
-// TABS & MODALS
-// ============================================================
-function switchTab(tab) {
-    ['lessen', 'badges', 'leaderboard'].forEach(t => {
-        document.getElementById('view-' + t).style.display = 'none';
-        document.getElementById('tab-' + t).classList.remove('active');
-    });
-    document.getElementById('view-' + tab).style.display = 'block';
-    document.getElementById('tab-' + tab).classList.add('active');
-}
-
-function closeModal(id) {
-    document.getElementById(id).style.display = 'none';
-}
-
-// Close modal on overlay click
-document.addEventListener('click', (e) => {
-    ['modal-les','modal-gatekeeper','modal-boss','modal-leerkracht','modal-ronde'].forEach(id => {
-        const el = document.getElementById(id);
-        if (e.target === el) closeModal(id);
-    });
-});
 
 // ============================================================
 // INIT
 // ============================================================
-document.addEventListener('DOMContentLoaded', () => {
-    loadState();
-    if (STATE.naam) {
-        document.getElementById('splash-screen').style.display = 'none';
-        document.getElementById('main-app').style.display = 'block';
-        renderApp();
-    }
-});
+loadConfig();
+loadState();
 
+document.getElementById('splash-title').textContent = CONFIG.titel;
+document.getElementById('splash-org').textContent = CONFIG.ondertitel;
+
+if (STATE.naam) {
+  enterApp();
+}
+
+document.getElementById('input-naam').addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('input-klas').focus();
+});
+document.getElementById('input-klas').addEventListener('keydown', e => {
+  if (e.key === 'Enter') startLeerpad();
+});
 </script>
 </body>
 </html>
